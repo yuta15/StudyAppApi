@@ -4,13 +4,12 @@ from pydantic import BaseModel, EmailStr, SecretStr
 from pydantic import EmailStr
 
 
-class CreateUserInput(BaseModel):
+class CreateAccountInput(BaseModel):
     display_name:str
-    username:str
     email:EmailStr
     password:SecretStr
 
 
-class CreateUserOutput(BaseModel):
+class CreateAccountOutput(BaseModel):
     id:UUID
     display_name:str

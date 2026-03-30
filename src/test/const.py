@@ -1,0 +1,5 @@
+display_name = "test_user"
+email = "test@example.com"
+password = "test_user_password"
+hashed_password = "hashed_user_password"
+account_id = "58729a25-71fb-4aee-af0f-6b901220c989"

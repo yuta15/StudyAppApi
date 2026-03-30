@@ -4,5 +4,5 @@ from dataclasses import dataclass
 
 @dataclass
 class Principal:
-    id:UUID
+    principal_id:UUID
     display_name:str
