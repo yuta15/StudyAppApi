@@ -1,8 +1,0 @@
-from abc import ABC, abstractmethod
-
-
-class BasePasswordHasher(ABC):
-    @abstractmethod
-    def hash(self, password:str) -> str:...
-    @abstractmethod
-    def verify(self, hashed_password:str, plain_password:str) -> bool:...

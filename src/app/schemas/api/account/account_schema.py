@@ -13,3 +13,7 @@ class CreateAccountInput(BaseModel):
 class CreateAccountOutput(BaseModel):
     id:UUID
     display_name:str
+
+
+class BaseAccountInput(BaseModel):
+    id:UUID
