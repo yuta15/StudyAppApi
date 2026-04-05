@@ -1,6 +1,6 @@
 from src.app.service.authrization_service.models import TargetAuthorizationUnit
 from src.app.service.authrization_service.authorization_checker import AuthorizationChecker
-from src.app.model.account.entities import AccountSubjcects
+from src.app.model.account.account_subjects import AccountSubjcects
 
 
 class AccountSubjectAuthorizationChecker(AuthorizationChecker):

@@ -1,4 +1,4 @@
-from src.app.model.account.entities import AccountSubjcects
+from src.app.model.account.account_subjects import AccountSubjcects
 from src.app.model.shared.entities import PrincipalTypes
 from src.app.service.authrization_service.principal_data_genrators.account_principa_data_generator import AccoutPrincipalDataGenerator
 

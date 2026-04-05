@@ -1,14 +1,10 @@
 from datetime import datetime, timezone
-from enum import Enum
 from dataclasses import dataclass
+from enum import Enum
 from typing import Self
-from uuid import UUID
+from uuid import uuid4, UUID
 
-
-class AccountSubjcects(Enum):
-    ACCOUNT_PROFILE = "ACCOUNT_PROFILE"
-    ACCOUNT_BASIC_SETTINGS = "ACCOUNT_BASIC_SETTINGS"
-    ACCOUNT_AUTH_SETTINGS = "ACCOUNT_AUTH_SETTINGS"
+from src.app.model.shared.entities import Principal
 
 
 class AccountStatus(Enum):
@@ -18,70 +14,61 @@ class AccountStatus(Enum):
 
 
 @dataclass
-class Metadata:
+class Account(Principal):
+    """権限を割り当てられる対象"""
+    account_name:str
+    status:AccountStatus
+
+    @classmethod
+    def new(cls, account_name:str, **kwargs) -> Self:
+        return Account(
+            principal_id=uuid4(),
+            account_name=account_name,
+            status=AccountStatus.ACTIVE
+        )
+
+    def to_delete(self) -> None:
+        if self.status == AccountStatus.DELETED:
+            raise 
+        self.status = AccountStatus.DELETED
+
+    def to_suspended(self) -> None:
+        if self.status == AccountStatus.DELETED:
+            raise 
+        self.status = AccountStatus.SUSPENDED
+
+    def to_active(self) -> None:
+        if self.status == AccountStatus.DELETED:
+            raise 
+        self.status = AccountStatus.ACTIVE
+
+
+@dataclass
+class AccountMetadata:
+    principal_id:UUID
+    metadata_id:UUID
     created_at:datetime
     updated_at:datetime
     deleted_at:datetime|None = None
-    suspended_at:datetime|None = None
 
     @classmethod
-    def new(cls) -> Self:
+    def new(cls, principal_id:UUID) -> Self:
         utc_now = datetime.now(timezone.utc)
-        return Metadata(created_at=utc_now, updated_at=utc_now)
+        return AccountMetadata(
+            principal_id=principal_id,
+            metadata_id=uuid4(),
+            created_at=utc_now,
+            updated_at=utc_now
+        )
 
-    def to_update(self) -> None:
+    def update(self) -> None:
         utc_now = datetime.now(timezone.utc)
         self.updated_at = utc_now
 
-    def to_delete(self) -> None:
+    def delete(self) -> None:
         utc_now = datetime.now(timezone.utc)
         self.deleted_at = utc_now
 
-    def to_suspend(self) -> None:
-        utc_now = datetime.now(timezone.utc)
-        self.suspended_at = utc_now
-
-
-@dataclass
-class AccountSubject:
-    account_id:UUID
-    subject_id:UUID
-
-
-@dataclass
-class Account(AccountSubject):
-    account_id:UUID
-    status:AccountStatus
-
 
 class AccountAuthorizations(Enum):
-    MODIFY = "MODIFY"
-
-
-@dataclass
-class AccountProfile(AccountSubject):
-    account_id:UUID
-    email:str
-    location:str
-
-
-class AccountProfileAuthorizations(Enum):
-    MODIFY = "MODIFY"
-
-
-@dataclass
-class AccountBasicSettings(AccountSubject):
-    is_public:bool
-
-
-class AccountBasicSettingsAuthorizations(Enum):
-    MODIFY = "MODIFY"
-
-
-@dataclass
-class AccountAuthSettins(AccountSubject):
-    hashed_password:str
-
-
-class AccountAuthSettinsAuthorizations(Enum):
     MODIFY = "MODIFY"
