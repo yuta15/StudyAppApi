@@ -12,6 +12,10 @@ class AccountStatus(Enum):
     SUSPENDED = "SUSPENDED"
 
 
+class AccountAuthorizations(Enum):
+    MODIFY = "MODIFY"
+
+
 @dataclass
 class Account(Principal):
     """権限を割り当てられる対象"""

@@ -23,8 +23,8 @@ class AccountSubject(ABC):
     principal_id:UUID
     subject_id:UUID
 
-    @abstractmethod
     @classmethod
+    @abstractmethod
     def new(cls, principal_id:UUID, **kwargs) -> Self:...
 
     @abstractmethod
@@ -62,6 +62,8 @@ class AccountProfile(AccountSubject):
         self.email = email
     
     def set_country(self, country:Country) -> None:
+        if not isinstance(country, Country):
+            raise ValueError("国名じゃないよ")
         self.country = country
 
 
@@ -71,7 +73,7 @@ class AccountProfileAuthorizations(Enum):
 
 @dataclass
 class AccountBasicSettings(AccountSubject):
-    is_public:bool = False
+    is_public:bool = True
 
     @classmethod
     def new(cls, principal_id:UUID, **kwargs) -> Self:
@@ -84,6 +86,8 @@ class AccountBasicSettings(AccountSubject):
         self.is_public = False
 
     def set_is_public(self, is_public:bool) -> None:
+        if not isinstance(is_public, bool):
+            raise ValueError("boolしかとらないよ")
         self.is_public = is_public
 
 
@@ -108,6 +112,8 @@ class AccountAuthSettins(AccountSubject):
         self.hashed_password = MASK_VALUE
 
     def set_hashed_password(self, hashed_password:str) -> None:
+        if not isinstance(hashed_password, str):
+            raise ValueError("passwordはStrを入れてね")
         self.hashed_password = hashed_password
 
 
