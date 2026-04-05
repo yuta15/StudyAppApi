@@ -67,10 +67,6 @@ class AccountProfile(AccountSubject):
         self.country = country
 
 
-class AccountProfileAuthorizations(Enum):
-    MODIFY = "MODIFY"
-
-
 @dataclass
 class AccountBasicSettings(AccountSubject):
     is_public:bool = True
@@ -90,9 +86,6 @@ class AccountBasicSettings(AccountSubject):
             raise ValueError("boolしかとらないよ")
         self.is_public = is_public
 
-
-class AccountBasicSettingsAuthorizations(Enum):
-    MODIFY = "MODIFY"
 
 
 @dataclass
@@ -115,7 +108,3 @@ class AccountAuthSettins(AccountSubject):
         if not isinstance(hashed_password, str):
             raise ValueError("passwordはStrを入れてね")
         self.hashed_password = hashed_password
-
-
-class AccountAuthSettinsAuthorizations(Enum):
-    MODIFY = "MODIFY"
