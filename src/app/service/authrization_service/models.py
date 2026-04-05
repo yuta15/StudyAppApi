@@ -1,27 +1,12 @@
 from enum import Enum
-from uuid import UUID
 from dataclasses import dataclass
+from uuid import UUID
 
-from src.app.model.shared.entities import PrincipalTypes
-
-
-@dataclass
-class AuthSubjectData:
-    subject_id:UUID
-    subject_type:Enum
-    action:Enum
+from src.app.model.account.entities.subjects import AccountSubjcects
 
 
 @dataclass
-class PrincipalData:
+class AccountAuthInput:
     principal_id:UUID
-    principal_type:PrincipalTypes
-
-
-@dataclass
-class TargetAuthorizationUnit:
-    principal_id:UUID
-    principal_type:PrincipalTypes
     subject_id:UUID
-    subject_type:Enum
-    action:Enum
+    subject_type:AccountSubjcects
