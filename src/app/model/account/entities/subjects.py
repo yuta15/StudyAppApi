@@ -11,7 +11,8 @@ class AccountSubjcects(Enum):
     ACCOUNT_AUTH_SETTINGS = "ACCOUNT_AUTH_SETTINGS"
 
 
-class Location(Enum):
+class Country(Enum):
+    NOT_SET = "NOT_SET"
     JP = "JP"
     US = "US"
 
@@ -32,29 +33,35 @@ class AccountSubject(ABC):
 
 @dataclass
 class AccountProfile(AccountSubject):
-    name:str
+    display_name:str
     email:str
-    country:str | None
+    country:Country = Country.NOT_SET
 
     @classmethod
-    def new(cls, principal_id:UUID, name:str, email:str, **kwargs) -> Self:
+    def new(cls, principal_id:UUID, display_name:str, email:str, **kwargs) -> Self:
         return AccountProfile(
             principal_id=principal_id,
             subject_id=uuid4(),
-            name=name,
+            display_name=display_name,
             email=email,
-            country=None
         )
 
     def delete(self):
         MASK_VALUE = "XXXXXXXXXX"
-        self.name = MASK_VALUE
+        self.display_name = MASK_VALUE
         self.email = MASK_VALUE
 
+    def set_display_name(self, display_name:str) -> None:
+        if not isinstance(display_name, str):
+            raise ValueError("display_nameが文字列じゃないよ")
+        self.display_name = display_name
+
     def set_email(self, email:str) -> None:
+        if not isinstance(email, str):
+            raise ValueError("emailが文字列じゃないよ")
         self.email = email
     
-    def set_country(self, country:str) -> None:
+    def set_country(self, country:Country) -> None:
         self.country = country
 
 
