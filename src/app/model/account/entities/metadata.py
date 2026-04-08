@@ -1,6 +1,5 @@
 from datetime import datetime, timezone
 from dataclasses import dataclass
-from enum import Enum
 from typing import Self
 from uuid import uuid4, UUID
 
@@ -33,5 +32,4 @@ class AccountMetadata:
         self.deleted_at = utc_now
 
 
-class AccountAuthorizations(Enum):
-    MODIFY = "MODIFY"
+

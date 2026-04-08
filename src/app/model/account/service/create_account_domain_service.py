@@ -18,7 +18,8 @@ class CreateAccountResults:
 
 
 class CreateAccountDomainService:
-    def exec(self, account_name:str, display_name:str, email:str, hashed_password:str) -> CreateAccountResults:
+    @staticmethod
+    def exec(account_name:str, display_name:str, email:str, hashed_password:str) -> CreateAccountResults:
         account = Account.new(account_name=account_name)
         return CreateAccountResults(
             account=account,

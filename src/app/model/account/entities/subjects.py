@@ -4,6 +4,9 @@ from enum import Enum
 from typing import Self
 from uuid import UUID, uuid4
 
+from src.app.model.account.entities.validation import is_valid_type
+from src.app.model.account.entities.value_object import EmailStrings
+
 
 class AccountSubjcects(Enum):
     ACCOUNT_PROFILE = "ACCOUNT_PROFILE"
@@ -23,8 +26,8 @@ class AccountSubject(ABC):
     principal_id:UUID
     subject_id:UUID
 
-    @abstractmethod
     @classmethod
+    @abstractmethod
     def new(cls, principal_id:UUID, **kwargs) -> Self:...
 
     @abstractmethod
@@ -34,11 +37,14 @@ class AccountSubject(ABC):
 @dataclass
 class AccountProfile(AccountSubject):
     display_name:str
-    email:str
+    email:EmailStrings
     country:Country = Country.NOT_SET
 
     @classmethod
-    def new(cls, principal_id:UUID, display_name:str, email:str, **kwargs) -> Self:
+    def new(cls, principal_id:UUID, display_name:str, email:EmailStrings, **kwargs) -> Self:
+        is_valid_type(value=principal_id, valid_type=UUID)
+        is_valid_type(value=display_name, valid_type=str)
+        is_valid_type(value=email, valid_type=EmailStrings)
         return AccountProfile(
             principal_id=principal_id,
             subject_id=uuid4(),
@@ -52,29 +58,25 @@ class AccountProfile(AccountSubject):
         self.email = MASK_VALUE
 
     def set_display_name(self, display_name:str) -> None:
-        if not isinstance(display_name, str):
-            raise ValueError("display_nameが文字列じゃないよ")
+        is_valid_type(value=display_name, valid_type=str)
         self.display_name = display_name
 
-    def set_email(self, email:str) -> None:
-        if not isinstance(email, str):
-            raise ValueError("emailが文字列じゃないよ")
+    def set_email(self, email:EmailStrings) -> None:
+        is_valid_type(value=email, valid_type=EmailStrings)
         self.email = email
     
     def set_country(self, country:Country) -> None:
+        is_valid_type(value=country, valid_type=Country)
         self.country = country
-
-
-class AccountProfileAuthorizations(Enum):
-    MODIFY = "MODIFY"
 
 
 @dataclass
 class AccountBasicSettings(AccountSubject):
-    is_public:bool = False
+    is_public:bool = True
 
     @classmethod
     def new(cls, principal_id:UUID, **kwargs) -> Self:
+        is_valid_type(value=principal_id, valid_type=UUID)
         return AccountBasicSettings(
             principal_id=principal_id,
             subject_id=uuid4(),
@@ -84,11 +86,9 @@ class AccountBasicSettings(AccountSubject):
         self.is_public = False
 
     def set_is_public(self, is_public:bool) -> None:
+        is_valid_type(value=is_public, valid_type=bool)
         self.is_public = is_public
 
-
-class AccountBasicSettingsAuthorizations(Enum):
-    MODIFY = "MODIFY"
 
 
 @dataclass
@@ -97,6 +97,8 @@ class AccountAuthSettins(AccountSubject):
 
     @classmethod
     def new(cls, principal_id:UUID, hashed_password:str, **kwargs) -> Self:
+        is_valid_type(value=principal_id, valid_type=UUID)
+        is_valid_type(value=hashed_password, valid_type=str)
         return AccountAuthSettins(
             principal_id=principal_id,
             subject_id=uuid4(),
@@ -108,8 +110,5 @@ class AccountAuthSettins(AccountSubject):
         self.hashed_password = MASK_VALUE
 
     def set_hashed_password(self, hashed_password:str) -> None:
+        is_valid_type(value=hashed_password, valid_type=str)
         self.hashed_password = hashed_password
-
-
-class AccountAuthSettinsAuthorizations(Enum):
-    MODIFY = "MODIFY"

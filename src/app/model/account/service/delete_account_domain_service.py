@@ -18,9 +18,11 @@ class DeleteAccountData:
 
 
 class DeleteAccountDomainService:
-    def exec(self, delete_account_data:DeleteAccountData) -> None:
+    @classmethod
+    def exec(cls, delete_account_data:DeleteAccountData) -> None:
         delete_account_data.account.to_delete()
         delete_account_data.profile.delete()
         delete_account_data.basic_settings.delete()
         delete_account_data.auth_settings.delete()
         delete_account_data.metadata.delete()
+        return
