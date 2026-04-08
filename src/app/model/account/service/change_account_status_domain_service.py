@@ -24,4 +24,3 @@ class ChangeAccountStatusDomainService:
             return
         
         raise ValueError("そんな状態はないよ")
-        

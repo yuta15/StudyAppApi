@@ -4,6 +4,8 @@ from typing import Self
 from uuid import uuid4
 
 from src.app.model.shared.entities import Principal
+from src.app.model.account.entities.value_object import AccountNameStrings
+from src.app.model.account.entities.validation import is_valid_type
 
 
 class AccountStatus(Enum):
@@ -19,11 +21,12 @@ class AccountAuthorizations(Enum):
 @dataclass
 class Account(Principal):
     """権限を割り当てられる対象"""
-    account_name:str
+    account_name:AccountNameStrings
     status:AccountStatus
 
     @classmethod
-    def new(cls, account_name:str, **kwargs) -> Self:
+    def new(cls, account_name:AccountNameStrings, **kwargs) -> Self:
+        is_valid_type(value=account_name, valid_type=AccountNameStrings)
         return Account(
             principal_id=uuid4(),
             account_name=account_name,

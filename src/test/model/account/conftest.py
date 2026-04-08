@@ -5,12 +5,12 @@ import pytest
 from src.test import const
 from src.app.model.account.entities.metadata import AccountMetadata
 from src.app.model.account.entities.principals import Account
+from src.app.model.account.entities.value_object import AccountNameStrings, EmailStrings
 from src.app.model.account.entities.subjects import (
     AccountProfile,
     AccountBasicSettings,
     AccountAuthSettins
 )
-
 
 
 @pytest.fixture
@@ -19,7 +19,7 @@ def account_principal_id():
 
 @pytest.fixture
 def account_name():
-    return const.account_name
+    return AccountNameStrings(const.account_name)
 
 @pytest.fixture
 def display_name():
@@ -27,14 +27,14 @@ def display_name():
 
 @pytest.fixture
 def email():
-    return const.email
+    return EmailStrings(const.email)
 
 @pytest.fixture
 def hashed_password():
     return const.hashed_password
 
 @pytest.fixture
-def account():
+def account(account_name):
     return Account.new(account_name=account_name)
 
 @pytest.fixture
