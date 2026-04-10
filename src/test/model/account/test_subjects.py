@@ -52,7 +52,7 @@ def test_profile_delete(profile):
     profile.delete()
     MASK_VALUE = "XXXXXXXXXX"
     assert profile.display_name == MASK_VALUE
-    assert profile.email == f"{MASK_VALUE}@{MASK_VALUE}"
+    assert profile.email == EmailStrings(f"{MASK_VALUE}@{MASK_VALUE}")
 
 
 def test_basic_settings_new(account_principal_id):

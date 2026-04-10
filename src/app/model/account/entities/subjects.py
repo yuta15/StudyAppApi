@@ -55,7 +55,7 @@ class AccountProfile(AccountSubject):
     def delete(self):
         MASK_VALUE = "XXXXXXXXXX"
         self.display_name = MASK_VALUE
-        self.email = f"{MASK_VALUE}@{MASK_VALUE}"
+        self.email = EmailStrings(f"{MASK_VALUE}@{MASK_VALUE}")
 
     def set_display_name(self, display_name:str) -> None:
         validate_value_type(value=display_name, valid_type=str)
