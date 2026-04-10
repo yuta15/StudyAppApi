@@ -1,4 +1,4 @@
-from src.app.service.authrization_service.account_auth_read_interface import AccountAuthReadInterface
+from src.app.service.authorization_service.account_auth_read_interface import AccountAuthReadInterface
 
 
 class AccountAuthReadRepository(AccountAuthReadInterface):

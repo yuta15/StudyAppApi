@@ -1,7 +1,6 @@
 from uuid import UUID
 
 from pydantic import BaseModel, EmailStr, SecretStr
-from pydantic import EmailStr
 
 
 class CreateAccountInput(BaseModel):
