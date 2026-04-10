@@ -1,24 +1,28 @@
+from dataclasses import dataclass
+
+from src.app.model.account.entities.value_object import EmailStrings
 from src.app.model.account.entities.metadata import AccountMetadata
 from src.app.model.account.entities.subjects import (
     Country,
     AccountSubject,
     AccountProfile,
     AccountBasicSettings, 
-    AccountAuthSettins
+    AccountAuthSettings
 )
 
 
+@dataclass
 class UpdateSubjectData:
     subject:AccountSubject
     metadata:AccountMetadata
 
 
 class UpdateSubjectsDomainService:
+    @staticmethod
     def update_profile(
-            self,
             update_subject_data:UpdateSubjectData,
             display_name:str|None=None,
-            email:str|None=None,
+            email:EmailStrings|None=None,
             country:Country|None=None
         ) -> None:
         if not isinstance(update_subject_data.subject, AccountProfile):
@@ -37,7 +41,8 @@ class UpdateSubjectsDomainService:
         if changed:
             update_subject_data.metadata.update()
 
-    def update_basic_settings(self, update_subject_data:UpdateSubjectData, is_public:bool|None = None) -> None:
+    @staticmethod
+    def update_basic_settings(update_subject_data:UpdateSubjectData, is_public:bool|None = None) -> None:
         if not isinstance(update_subject_data.subject, AccountBasicSettings):
             raise ValueError("異なるデータが入っているよ")
 
@@ -49,13 +54,14 @@ class UpdateSubjectsDomainService:
         if changed:
             update_subject_data.metadata.update()
 
-    def update_auth_settings(self, update_subject_data:UpdateSubjectData, hashed_password:str|None = None) -> None:
-        if not isinstance(update_subject_data.subject, AccountAuthSettins):
+    @staticmethod
+    def update_auth_settings(update_subject_data:UpdateSubjectData, hashed_password:str|None = None) -> None:
+        if not isinstance(update_subject_data.subject, AccountAuthSettings):
             raise ValueError("異なるデータが入っているよ")
         
         changed = False
         if hashed_password is not None and hashed_password != update_subject_data.subject.hashed_password:
-            update_subject_data.subject.set_hashed_password(is_public=hashed_password)
+            update_subject_data.subject.set_hashed_password(hashed_password=hashed_password)
             changed = True
 
         if changed:

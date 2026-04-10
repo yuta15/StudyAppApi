@@ -9,7 +9,7 @@ from src.app.model.account.entities.value_object import AccountNameStrings, Emai
 from src.app.model.account.entities.subjects import (
     AccountProfile,
     AccountBasicSettings,
-    AccountAuthSettins
+    AccountAuthSettings
 )
 
 
@@ -47,7 +47,7 @@ def basic_settings(account_principal_id):
 
 @pytest.fixture
 def auth_settings(account_principal_id, hashed_password):
-    return AccountAuthSettins.new(principal_id=account_principal_id, hashed_password=hashed_password)
+    return AccountAuthSettings.new(principal_id=account_principal_id, hashed_password=hashed_password)
 
 @pytest.fixture
 def metadata(account_principal_id):

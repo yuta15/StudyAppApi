@@ -4,11 +4,11 @@ from enum import Enum
 from typing import Self
 from uuid import UUID, uuid4
 
-from src.app.model.account.entities.validation import is_valid_type
+from src.app.model.account.entities.validation import validate_value_type
 from src.app.model.account.entities.value_object import EmailStrings
 
 
-class AccountSubjcects(Enum):
+class AccountSubjects(Enum):
     ACCOUNT_PROFILE = "ACCOUNT_PROFILE"
     ACCOUNT_BASIC_SETTINGS = "ACCOUNT_BASIC_SETTINGS"
     ACCOUNT_AUTH_SETTINGS = "ACCOUNT_AUTH_SETTINGS"
@@ -42,9 +42,9 @@ class AccountProfile(AccountSubject):
 
     @classmethod
     def new(cls, principal_id:UUID, display_name:str, email:EmailStrings, **kwargs) -> Self:
-        is_valid_type(value=principal_id, valid_type=UUID)
-        is_valid_type(value=display_name, valid_type=str)
-        is_valid_type(value=email, valid_type=EmailStrings)
+        validate_value_type(value=principal_id, valid_type=UUID)
+        validate_value_type(value=display_name, valid_type=str)
+        validate_value_type(value=email, valid_type=EmailStrings)
         return AccountProfile(
             principal_id=principal_id,
             subject_id=uuid4(),
@@ -55,18 +55,18 @@ class AccountProfile(AccountSubject):
     def delete(self):
         MASK_VALUE = "XXXXXXXXXX"
         self.display_name = MASK_VALUE
-        self.email = MASK_VALUE
+        self.email = f"{MASK_VALUE}@{MASK_VALUE}"
 
     def set_display_name(self, display_name:str) -> None:
-        is_valid_type(value=display_name, valid_type=str)
+        validate_value_type(value=display_name, valid_type=str)
         self.display_name = display_name
 
     def set_email(self, email:EmailStrings) -> None:
-        is_valid_type(value=email, valid_type=EmailStrings)
+        validate_value_type(value=email, valid_type=EmailStrings)
         self.email = email
     
     def set_country(self, country:Country) -> None:
-        is_valid_type(value=country, valid_type=Country)
+        validate_value_type(value=country, valid_type=Country)
         self.country = country
 
 
@@ -76,7 +76,7 @@ class AccountBasicSettings(AccountSubject):
 
     @classmethod
     def new(cls, principal_id:UUID, **kwargs) -> Self:
-        is_valid_type(value=principal_id, valid_type=UUID)
+        validate_value_type(value=principal_id, valid_type=UUID)
         return AccountBasicSettings(
             principal_id=principal_id,
             subject_id=uuid4(),
@@ -86,20 +86,20 @@ class AccountBasicSettings(AccountSubject):
         self.is_public = False
 
     def set_is_public(self, is_public:bool) -> None:
-        is_valid_type(value=is_public, valid_type=bool)
+        validate_value_type(value=is_public, valid_type=bool)
         self.is_public = is_public
 
 
 
 @dataclass
-class AccountAuthSettins(AccountSubject):
+class AccountAuthSettings(AccountSubject):
     hashed_password:str
 
     @classmethod
     def new(cls, principal_id:UUID, hashed_password:str, **kwargs) -> Self:
-        is_valid_type(value=principal_id, valid_type=UUID)
-        is_valid_type(value=hashed_password, valid_type=str)
-        return AccountAuthSettins(
+        validate_value_type(value=principal_id, valid_type=UUID)
+        validate_value_type(value=hashed_password, valid_type=str)
+        return cls(
             principal_id=principal_id,
             subject_id=uuid4(),
             hashed_password=hashed_password
@@ -110,5 +110,5 @@ class AccountAuthSettins(AccountSubject):
         self.hashed_password = MASK_VALUE
 
     def set_hashed_password(self, hashed_password:str) -> None:
-        is_valid_type(value=hashed_password, valid_type=str)
+        validate_value_type(value=hashed_password, valid_type=str)
         self.hashed_password = hashed_password

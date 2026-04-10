@@ -2,11 +2,12 @@ from uuid import UUID
 
 import pytest
 
+from src.app.model.account.entities.value_object import EmailStrings
 from src.app.model.account.entities.subjects import (
     Country,
     AccountProfile,
     AccountBasicSettings,
-    AccountAuthSettins
+    AccountAuthSettings
 )
 
 
@@ -29,7 +30,7 @@ def test_profile_set_display_name_failure(profile):
         profile.set_display_name(display_name=new_display_name)
 
 def test_profile_set_email_success(profile):
-    email = "new_email@example.com"
+    email = EmailStrings("new_email@example.com")
     profile.set_email(email=email)
     assert profile.email == email
 
@@ -51,7 +52,7 @@ def test_profile_delete(profile):
     profile.delete()
     MASK_VALUE = "XXXXXXXXXX"
     assert profile.display_name == MASK_VALUE
-    assert profile.email == MASK_VALUE
+    assert profile.email == f"{MASK_VALUE}@{MASK_VALUE}"
 
 
 def test_basic_settings_new(account_principal_id):
@@ -74,7 +75,7 @@ def test_basic_settings_delete(basic_settings):
 
 
 def test_auth_settings_new(account_principal_id, hashed_password):
-    auth_settings = AccountAuthSettins.new(principal_id=account_principal_id, hashed_password=hashed_password)
+    auth_settings = AccountAuthSettings.new(principal_id=account_principal_id, hashed_password=hashed_password)
     assert auth_settings.principal_id == account_principal_id
     assert isinstance(auth_settings.subject_id, UUID)
     assert auth_settings.hashed_password == hashed_password

@@ -1,6 +1,6 @@
-from src.app.service.authrization_service.models import AccountAuthInput
-from src.app.service.authrization_service.auth_service_base import AuthServiceBase
-from src.app.service.authrization_service.account_auth_read_interface import AccountAuthReadInterface
+from src.app.service.authorization_service.models import AccountAuthInput
+from src.app.service.authorization_service.auth_service_base import AuthServiceBase
+from src.app.service.authorization_service.account_auth_read_interface import AccountAuthReadInterface
 
 
 class AccountAuthService(AuthServiceBase[AccountAuthInput]):
