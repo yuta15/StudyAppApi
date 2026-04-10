@@ -14,10 +14,6 @@ from src.app.model.account.entities.subjects import (
 
 
 @pytest.fixture
-def account_principal_id():
-    return UUID(const.account_principal_id)
-
-@pytest.fixture
 def account_name():
     return AccountNameStrings(const.account_name)
 
