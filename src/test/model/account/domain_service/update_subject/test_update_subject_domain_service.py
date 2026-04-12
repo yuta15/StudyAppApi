@@ -57,14 +57,12 @@ def test_update_profile_no_change(profile_update_subject):
     assert profile_update_subject.metadata.updated_at == profile_update_subject.metadata.created_at
 
 
-def test_update_profile_invalid_subject(basic_settings_update_subject, auth_settings_update_subject):
+def test_update_profile_invalid_subject(basic_settings_update_subject):
     """
     不正なsubjectを入力した場合にValueErrorが発生することをチェックする。
     """
     with pytest.raises(ValueError):
         UpdateSubjectsDomainService.update_profile(basic_settings_update_subject)
-    with pytest.raises(ValueError):
-        UpdateSubjectsDomainService.update_profile(auth_settings_update_subject)
 
 
 @pytest.mark.parametrize(
@@ -92,47 +90,9 @@ def test_update_basic_settings_no_change(basic_settings_update_subject):
     assert basic_settings_update_subject.metadata.updated_at == basic_settings_update_subject.metadata.created_at
 
 
-
-def test_update_basic_settings_invalid_subject_failure(profile_update_subject, auth_settings_update_subject):
+def test_update_basic_settings_invalid_subject_failure(profile_update_subject):
     """
     不正なsubjectを入力した場合にValueErrorが発生することをチェックする。
     """
     with pytest.raises(ValueError):
         UpdateSubjectsDomainService.update_basic_settings(profile_update_subject)
-    with pytest.raises(ValueError):
-        UpdateSubjectsDomainService.update_basic_settings(auth_settings_update_subject)
-
-
-@pytest.mark.parametrize(
-        "values",
-        [
-            {"hashed_password": "new_hashed_password"}
-        ]
-)
-def test_update_auth_settings_success(auth_settings_update_subject, values):
-    """
-    更新可能であることをチェックする。
-    想定通り更新されることをチェックする。
-    """
-    UpdateSubjectsDomainService.update_auth_settings(auth_settings_update_subject, **values)
-    for k, v in values.items():
-        if k == "hashed_password":
-            assert auth_settings_update_subject.subject.hashed_password == v
-    assert auth_settings_update_subject.metadata.updated_at != auth_settings_update_subject.metadata.created_at
-
-
-def test_update_auth_settings_no_change(auth_settings_update_subject):
-    hashed_password = auth_settings_update_subject.subject.hashed_password
-    UpdateSubjectsDomainService.update_auth_settings(auth_settings_update_subject)
-    assert auth_settings_update_subject.subject.hashed_password == hashed_password
-    assert auth_settings_update_subject.metadata.updated_at == auth_settings_update_subject.metadata.created_at
-
-
-def test_update_auth_settings_invalid_subject_failure(profile_update_subject, basic_settings_update_subject):
-    """
-    不正なsubjectを入力した場合にValueErrorが発生することをチェックする。
-    """
-    with pytest.raises(ValueError):
-        UpdateSubjectsDomainService.update_auth_settings(profile_update_subject)
-    with pytest.raises(ValueError):
-        UpdateSubjectsDomainService.update_auth_settings(basic_settings_update_subject)

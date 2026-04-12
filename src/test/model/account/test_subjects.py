@@ -7,7 +7,6 @@ from src.app.model.account.entities.subjects import (
     Country,
     AccountProfile,
     AccountBasicSettings,
-    AccountAuthSettings
 )
 
 
@@ -72,20 +71,3 @@ def test_basic_settings_is_public_failure(basic_settings):
 def test_basic_settings_delete(basic_settings):
     basic_settings.delete()
     assert basic_settings.is_public == False
-
-
-def test_auth_settings_new(account_principal_id, hashed_password):
-    auth_settings = AccountAuthSettings.new(principal_id=account_principal_id, hashed_password=hashed_password)
-    assert auth_settings.principal_id == account_principal_id
-    assert isinstance(auth_settings.subject_id, UUID)
-    assert auth_settings.hashed_password == hashed_password
-
-def test_auth_settings_set_hashed_password_success(auth_settings):
-    new_password = "new_password"
-    auth_settings.set_hashed_password(new_password)
-    assert auth_settings.hashed_password == new_password
-
-
-def test_auth_settings_set_hashed_password_failure(auth_settings):
-    with pytest.raises(Exception):
-        auth_settings.set_hashed_password(1)

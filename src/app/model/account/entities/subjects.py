@@ -88,27 +88,3 @@ class AccountBasicSettings(AccountSubject):
     def set_is_public(self, is_public:bool) -> None:
         validate_value_type(value=is_public, valid_type=bool)
         self.is_public = is_public
-
-
-
-@dataclass
-class AccountAuthSettings(AccountSubject):
-    hashed_password:str
-
-    @classmethod
-    def new(cls, principal_id:UUID, hashed_password:str, **kwargs) -> Self:
-        validate_value_type(value=principal_id, valid_type=UUID)
-        validate_value_type(value=hashed_password, valid_type=str)
-        return cls(
-            principal_id=principal_id,
-            subject_id=uuid4(),
-            hashed_password=hashed_password
-        )
-
-    def delete(self):
-        MASK_VALUE = "XXXXXXXXXX"
-        self.hashed_password = MASK_VALUE
-
-    def set_hashed_password(self, hashed_password:str) -> None:
-        validate_value_type(value=hashed_password, valid_type=str)
-        self.hashed_password = hashed_password

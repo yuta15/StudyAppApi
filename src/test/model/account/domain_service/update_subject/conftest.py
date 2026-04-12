@@ -11,7 +11,3 @@ def profile_update_subject(profile, metadata):
 @pytest.fixture
 def basic_settings_update_subject(basic_settings, metadata):
     return UpdateSubjectData(subject=basic_settings, metadata=metadata)
-
-@pytest.fixture
-def auth_settings_update_subject(auth_settings, metadata):
-    return UpdateSubjectData(subject=auth_settings, metadata=metadata)

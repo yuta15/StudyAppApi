@@ -6,8 +6,7 @@ from src.app.model.account.entities.subjects import (
     Country,
     AccountSubject,
     AccountProfile,
-    AccountBasicSettings, 
-    AccountAuthSettings
+    AccountBasicSettings,
 )
 
 
@@ -49,19 +48,6 @@ class UpdateSubjectsDomainService:
         changed = False
         if is_public is not None and is_public != update_subject_data.subject.is_public:
             update_subject_data.subject.set_is_public(is_public=is_public)
-            changed = True
-
-        if changed:
-            update_subject_data.metadata.update()
-
-    @staticmethod
-    def update_auth_settings(update_subject_data:UpdateSubjectData, hashed_password:str|None = None) -> None:
-        if not isinstance(update_subject_data.subject, AccountAuthSettings):
-            raise ValueError("異なるデータが入っているよ")
-        
-        changed = False
-        if hashed_password is not None and hashed_password != update_subject_data.subject.hashed_password:
-            update_subject_data.subject.set_hashed_password(hashed_password=hashed_password)
             changed = True
 
         if changed:
