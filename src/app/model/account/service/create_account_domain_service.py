@@ -12,7 +12,7 @@ from src.app.model.account.entities.subjects import (
 
 @dataclass
 class CreateAccountInput:
-    account_name:str
+    account_name:AccountNameStrings
     display_name:str
     email:EmailStrings
     subject:str

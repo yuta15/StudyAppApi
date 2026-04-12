@@ -6,11 +6,12 @@ from src.app.model.account.entities.metadata import AccountMetadata
 from src.app.model.account.entities.principals import Account
 from src.app.model.account.entities.subjects import (
     AccountProfile,
-    AccountBasicSettings
+    AccountBasicSettings,
+    AccountIdentity
 )
 
 
-class AccountRepositoryInterfaces(ABC):
+class AccountRepositoryInterface(ABC):
     @abstractmethod
     def save(self, account:Account) -> Account:...
 
@@ -40,3 +41,10 @@ class AccountBasicSettingsRepositoryInterface(ABC):
 
     @abstractmethod
     def get(self, account_id:UUID) -> AccountBasicSettings:...
+
+class AccountIdentityRepositoryInterface(ABC):
+    @abstractmethod
+    def save(self, profile:AccountIdentity) -> AccountIdentity:...
+
+    @abstractmethod
+    def get(self, account_id:UUID) -> AccountIdentity:...
