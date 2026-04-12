@@ -6,11 +6,10 @@ class DummyAccuntAuthReader(AccountAuthReadInterface):
         self.result = result
         self._called_args = {}
 
-    def is_owned_subject(self, account_id, subject_type, subject_id) -> bool:
+    def is_owned_subject(self, account_id, subject_type) -> bool:
         self._called_args = {
             "account_id":account_id,
             "subject_type":subject_type,
-            "subject_id":subject_id
         }
         return self.result
     

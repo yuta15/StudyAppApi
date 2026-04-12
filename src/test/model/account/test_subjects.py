@@ -1,20 +1,18 @@
-from uuid import UUID
-
 import pytest
 
 from src.app.model.account.entities.value_object import EmailStrings
 from src.app.model.account.entities.subjects import (
     Country,
+    AllowedIdentityProvider,
     AccountProfile,
     AccountBasicSettings,
-    AccountAuthSettings
+    AccountIdentity
 )
 
 
 def test_profile_new(account_principal_id, display_name, email):
     profile = AccountProfile.new(principal_id=account_principal_id, display_name=display_name, email=email)
     assert profile.principal_id == account_principal_id
-    assert isinstance(profile.subject_id, UUID)
     assert profile.display_name == display_name
     assert profile.email == email
     assert profile.country == Country.NOT_SET
@@ -58,7 +56,6 @@ def test_profile_delete(profile):
 def test_basic_settings_new(account_principal_id):
     basic_settings = AccountBasicSettings.new(principal_id=account_principal_id)
     assert basic_settings.principal_id == account_principal_id
-    assert isinstance(basic_settings.subject_id, UUID)
     assert basic_settings.is_public == True
 
 def test_basic_settings_is_public_success(basic_settings):
@@ -74,18 +71,35 @@ def test_basic_settings_delete(basic_settings):
     assert basic_settings.is_public == False
 
 
-def test_auth_settings_new(account_principal_id, hashed_password):
-    auth_settings = AccountAuthSettings.new(principal_id=account_principal_id, hashed_password=hashed_password)
-    assert auth_settings.principal_id == account_principal_id
-    assert isinstance(auth_settings.subject_id, UUID)
-    assert auth_settings.hashed_password == hashed_password
+@pytest.mark.parametrize(
+        ["provider", "subject"],
+        [
+            [AllowedIdentityProvider.FIREBASE, "test_user"],
+            [AllowedIdentityProvider.FIREBASE, "d6c90ea7-c7bd-4963-9d1b-8766c2f41d92"]
+        ]
+)
+def test_identity_new(account_principal_id, provider, subject):
+    identity = AccountIdentity.new(principal_id=account_principal_id, subject=subject, provider=provider)
+    assert identity.principal_id == account_principal_id
+    assert identity.provider == provider
+    assert identity.subject == subject
 
-def test_auth_settings_set_hashed_password_success(auth_settings):
-    new_password = "new_password"
-    auth_settings.set_hashed_password(new_password)
-    assert auth_settings.hashed_password == new_password
+@pytest.mark.parametrize(
+        ["provider", "subject"],
+        [
+            [None, None],
+            ["AllowedIdentityProvider.FIREBASE", "test_user"],
+            [AllowedIdentityProvider.FIREBASE, None],
+            [AllowedIdentityProvider.FIREBASE, 1],
+            [AllowedIdentityProvider.FIREBASE, ""],
+            [AllowedIdentityProvider.FIREBASE, " "],
 
-
-def test_auth_settings_set_hashed_password_failure(auth_settings):
+        ]
+)
+def test_identity_new_failure(account_principal_id, provider, subject):
     with pytest.raises(Exception):
-        auth_settings.set_hashed_password(1)
+        AccountIdentity.new(principal_id=account_principal_id, subject=subject, provider=provider)
+
+def test_indeity_delete(identity):
+    identity.delete()
+    assert identity.subject == "XXXXXXXXXX"

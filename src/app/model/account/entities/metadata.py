@@ -30,6 +30,3 @@ class AccountMetadata:
     def delete(self) -> None:
         utc_now = datetime.now(timezone.utc)
         self.deleted_at = utc_now
-
-
-

@@ -11,5 +11,4 @@ class AccountAuthService(AuthServiceBase[AccountAuthInput]):
         return self.repository.is_owned_subject(
             account_id=account_auth_input.principal_id,
             subject_type=account_auth_input.subject_type,
-            subject_id=account_auth_input.subject_id
         )

@@ -1,8 +1,7 @@
-from abc import ABC, abstractmethod
 from dataclasses import dataclass
 from enum import Enum
 from typing import Self
-from uuid import UUID, uuid4
+from uuid import UUID
 
 from src.app.model.account.entities.validation import validate_value_type
 from src.app.model.account.entities.value_object import EmailStrings
@@ -11,7 +10,6 @@ from src.app.model.account.entities.value_object import EmailStrings
 class AccountSubjects(Enum):
     ACCOUNT_PROFILE = "ACCOUNT_PROFILE"
     ACCOUNT_BASIC_SETTINGS = "ACCOUNT_BASIC_SETTINGS"
-    ACCOUNT_AUTH_SETTINGS = "ACCOUNT_AUTH_SETTINGS"
 
 
 class Country(Enum):
@@ -20,22 +18,13 @@ class Country(Enum):
     US = "US"
 
 
+class AllowedIdentityProvider(Enum):
+    FIREBASE = "firebase"
+
+
 @dataclass
-class AccountSubject(ABC):
-    """権限を持つ対象"""
+class AccountProfile:
     principal_id:UUID
-    subject_id:UUID
-
-    @classmethod
-    @abstractmethod
-    def new(cls, principal_id:UUID, **kwargs) -> Self:...
-
-    @abstractmethod
-    def delete(self) -> None:...
-
-
-@dataclass
-class AccountProfile(AccountSubject):
     display_name:str
     email:EmailStrings
     country:Country = Country.NOT_SET
@@ -47,7 +36,6 @@ class AccountProfile(AccountSubject):
         validate_value_type(value=email, valid_type=EmailStrings)
         return AccountProfile(
             principal_id=principal_id,
-            subject_id=uuid4(),
             display_name=display_name,
             email=email,
         )
@@ -71,7 +59,8 @@ class AccountProfile(AccountSubject):
 
 
 @dataclass
-class AccountBasicSettings(AccountSubject):
+class AccountBasicSettings:
+    principal_id:UUID
     is_public:bool = True
 
     @classmethod
@@ -79,7 +68,6 @@ class AccountBasicSettings(AccountSubject):
         validate_value_type(value=principal_id, valid_type=UUID)
         return AccountBasicSettings(
             principal_id=principal_id,
-            subject_id=uuid4(),
         )
 
     def delete(self):
@@ -90,25 +78,28 @@ class AccountBasicSettings(AccountSubject):
         self.is_public = is_public
 
 
-
 @dataclass
-class AccountAuthSettings(AccountSubject):
-    hashed_password:str
+class AccountIdentity:
+    principal_id:UUID
+    subject:str
+    provider:AllowedIdentityProvider
 
     @classmethod
-    def new(cls, principal_id:UUID, hashed_password:str, **kwargs) -> Self:
+    def new(cls, principal_id:UUID, subject:str, provider:AllowedIdentityProvider) -> Self:
         validate_value_type(value=principal_id, valid_type=UUID)
-        validate_value_type(value=hashed_password, valid_type=str)
+        validate_value_type(value=subject, valid_type=str)
+        validate_value_type(value=provider, valid_type=AllowedIdentityProvider)
+        if subject in ["", " "]:
+            raise ValueError("invalid value")
+
         return cls(
             principal_id=principal_id,
-            subject_id=uuid4(),
-            hashed_password=hashed_password
+            subject=subject,
+            provider=provider
         )
 
-    def delete(self):
+    def delete(self) -> None:
         MASK_VALUE = "XXXXXXXXXX"
-        self.hashed_password = MASK_VALUE
+        self.subject = MASK_VALUE
 
-    def set_hashed_password(self, hashed_password:str) -> None:
-        validate_value_type(value=hashed_password, valid_type=str)
-        self.hashed_password = hashed_password
+

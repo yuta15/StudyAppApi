@@ -1,68 +1,44 @@
-from dataclasses import dataclass
-
 from src.app.model.account.entities.value_object import EmailStrings
 from src.app.model.account.entities.metadata import AccountMetadata
 from src.app.model.account.entities.subjects import (
     Country,
-    AccountSubject,
     AccountProfile,
-    AccountBasicSettings, 
-    AccountAuthSettings
+    AccountBasicSettings,
 )
-
-
-@dataclass
-class UpdateSubjectData:
-    subject:AccountSubject
-    metadata:AccountMetadata
 
 
 class UpdateSubjectsDomainService:
     @staticmethod
     def update_profile(
-            update_subject_data:UpdateSubjectData,
+            target_profile:AccountProfile,
+            metadata:AccountMetadata,
             display_name:str|None=None,
             email:EmailStrings|None=None,
             country:Country|None=None
         ) -> None:
-        if not isinstance(update_subject_data.subject, AccountProfile):
-            raise ValueError("異なるデータが入っているよ")
-
         changed = False
-        if email is not None and email != update_subject_data.subject.email:
-            update_subject_data.subject.set_email(email=email)
+        if email is not None and email != target_profile.email:
+            target_profile.set_email(email=email)
             changed = True
-        if display_name is not None and display_name != update_subject_data.subject.display_name:
-            update_subject_data.subject.set_display_name(display_name=display_name)
+        if display_name is not None and display_name != target_profile.display_name:
+            target_profile.set_display_name(display_name=display_name)
             changed = True
-        if country is not None and country != update_subject_data.subject.country:
-            update_subject_data.subject.set_country(country=country)
+        if country is not None and country != target_profile.country:
+            target_profile.set_country(country=country)
             changed = True
         if changed:
-            update_subject_data.metadata.update()
+            metadata.update()
 
     @staticmethod
-    def update_basic_settings(update_subject_data:UpdateSubjectData, is_public:bool|None = None) -> None:
-        if not isinstance(update_subject_data.subject, AccountBasicSettings):
-            raise ValueError("異なるデータが入っているよ")
-
+    def update_basic_settings(
+        target_basic_settings:AccountBasicSettings,
+        metadata:AccountMetadata,
+        is_public:bool|None = None
+    ) -> None:
         changed = False
-        if is_public is not None and is_public != update_subject_data.subject.is_public:
-            update_subject_data.subject.set_is_public(is_public=is_public)
+        if is_public is not None and is_public != target_basic_settings.is_public:
+            target_basic_settings.set_is_public(is_public=is_public)
             changed = True
 
         if changed:
-            update_subject_data.metadata.update()
-
-    @staticmethod
-    def update_auth_settings(update_subject_data:UpdateSubjectData, hashed_password:str|None = None) -> None:
-        if not isinstance(update_subject_data.subject, AccountAuthSettings):
-            raise ValueError("異なるデータが入っているよ")
-        
-        changed = False
-        if hashed_password is not None and hashed_password != update_subject_data.subject.hashed_password:
-            update_subject_data.subject.set_hashed_password(hashed_password=hashed_password)
-            changed = True
-
-        if changed:
-            update_subject_data.metadata.update()
+            metadata.update()

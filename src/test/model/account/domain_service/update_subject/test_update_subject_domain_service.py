@@ -27,44 +27,34 @@ from src.app.model.account.service.update_subjects_domain_service import UpdateS
         ]
 
 )
-def test_update_profile_success(profile_update_subject, values):
+def test_update_profile_success(profile, metadata, values):
     """
     profileが更新可能であることを確認する。
     単一・複数の値を入れた場合に適切に更新されていることをチェックする。
     """
-    UpdateSubjectsDomainService.update_profile(update_subject_data=profile_update_subject, **values)
+    UpdateSubjectsDomainService.update_profile(target_profile=profile, metadata=metadata, **values)
     for p, v in values.items():
         if p == "display_name":
-            assert profile_update_subject.subject.display_name == v
+            assert profile.display_name == v
         elif p == "email":
-            assert profile_update_subject.subject.email == v
+            assert profile.email == v
         elif p == "country":
-            assert profile_update_subject.subject.country == v
-    assert profile_update_subject.metadata.updated_at != profile_update_subject.metadata.created_at
+            assert profile.country == v
+    assert metadata.updated_at != metadata.created_at
 
 
-def test_update_profile_no_change(profile_update_subject):
+def test_update_profile_no_change(profile, metadata):
     """
     変更せず、metadataも更新されないことをチェックする。
     """
-    display_name = profile_update_subject.subject.display_name
-    email = profile_update_subject.subject.email
-    country = profile_update_subject.subject.country
-    UpdateSubjectsDomainService.update_profile(profile_update_subject)
-    assert profile_update_subject.subject.display_name == display_name
-    assert profile_update_subject.subject.email == email
-    assert profile_update_subject.subject.country == country
-    assert profile_update_subject.metadata.updated_at == profile_update_subject.metadata.created_at
-
-
-def test_update_profile_invalid_subject(basic_settings_update_subject, auth_settings_update_subject):
-    """
-    不正なsubjectを入力した場合にValueErrorが発生することをチェックする。
-    """
-    with pytest.raises(ValueError):
-        UpdateSubjectsDomainService.update_profile(basic_settings_update_subject)
-    with pytest.raises(ValueError):
-        UpdateSubjectsDomainService.update_profile(auth_settings_update_subject)
+    display_name = profile.display_name
+    email = profile.email
+    country = profile.country
+    UpdateSubjectsDomainService.update_profile(target_profile=profile, metadata=metadata)
+    assert profile.display_name == display_name
+    assert profile.email == email
+    assert profile.country == country
+    assert metadata.updated_at == metadata.created_at
 
 
 @pytest.mark.parametrize(
@@ -73,66 +63,20 @@ def test_update_profile_invalid_subject(basic_settings_update_subject, auth_sett
             {"is_public": False}
         ]
 )
-def test_update_basic_settings_success(basic_settings_update_subject, values):
+def test_update_basic_settings_success(basic_settings, metadata, values):
     """
     basic_settingsの更新可能であることをチェックする。
     想定通り更新されることをチェックする。
     """
-    UpdateSubjectsDomainService.update_basic_settings(basic_settings_update_subject, **values)
+    UpdateSubjectsDomainService.update_basic_settings(target_basic_settings=basic_settings, metadata=metadata, **values)
     for k, v in values.items():
         if k == "is_public":
-            assert basic_settings_update_subject.subject.is_public == v
-    assert basic_settings_update_subject.metadata.updated_at != basic_settings_update_subject.metadata.created_at
+            assert basic_settings.is_public == v
+    assert metadata.updated_at != metadata.created_at
 
 
-def test_update_basic_settings_no_change(basic_settings_update_subject):
-    is_public = basic_settings_update_subject.subject.is_public
-    UpdateSubjectsDomainService.update_basic_settings(basic_settings_update_subject)
-    assert basic_settings_update_subject.subject.is_public == is_public
-    assert basic_settings_update_subject.metadata.updated_at == basic_settings_update_subject.metadata.created_at
-
-
-
-def test_update_basic_settings_invalid_subject_failure(profile_update_subject, auth_settings_update_subject):
-    """
-    不正なsubjectを入力した場合にValueErrorが発生することをチェックする。
-    """
-    with pytest.raises(ValueError):
-        UpdateSubjectsDomainService.update_basic_settings(profile_update_subject)
-    with pytest.raises(ValueError):
-        UpdateSubjectsDomainService.update_basic_settings(auth_settings_update_subject)
-
-
-@pytest.mark.parametrize(
-        "values",
-        [
-            {"hashed_password": "new_hashed_password"}
-        ]
-)
-def test_update_auth_settings_success(auth_settings_update_subject, values):
-    """
-    更新可能であることをチェックする。
-    想定通り更新されることをチェックする。
-    """
-    UpdateSubjectsDomainService.update_auth_settings(auth_settings_update_subject, **values)
-    for k, v in values.items():
-        if k == "hashed_password":
-            assert auth_settings_update_subject.subject.hashed_password == v
-    assert auth_settings_update_subject.metadata.updated_at != auth_settings_update_subject.metadata.created_at
-
-
-def test_update_auth_settings_no_change(auth_settings_update_subject):
-    hashed_password = auth_settings_update_subject.subject.hashed_password
-    UpdateSubjectsDomainService.update_auth_settings(auth_settings_update_subject)
-    assert auth_settings_update_subject.subject.hashed_password == hashed_password
-    assert auth_settings_update_subject.metadata.updated_at == auth_settings_update_subject.metadata.created_at
-
-
-def test_update_auth_settings_invalid_subject_failure(profile_update_subject, basic_settings_update_subject):
-    """
-    不正なsubjectを入力した場合にValueErrorが発生することをチェックする。
-    """
-    with pytest.raises(ValueError):
-        UpdateSubjectsDomainService.update_auth_settings(profile_update_subject)
-    with pytest.raises(ValueError):
-        UpdateSubjectsDomainService.update_auth_settings(basic_settings_update_subject)
+def test_update_basic_settings_no_change(basic_settings, metadata):
+    is_public = basic_settings.is_public
+    UpdateSubjectsDomainService.update_basic_settings(target_basic_settings=basic_settings, metadata=metadata)
+    assert basic_settings.is_public == is_public
+    assert metadata.updated_at == metadata.created_at
