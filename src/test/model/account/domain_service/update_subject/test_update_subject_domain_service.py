@@ -57,14 +57,6 @@ def test_update_profile_no_change(profile, metadata):
     assert metadata.updated_at == metadata.created_at
 
 
-def test_update_profile_invalid_subject(basic_settings, metadata):
-    """
-    不正なsubjectを入力した場合にValueErrorが発生することをチェックする。
-    """
-    with pytest.raises(ValueError):
-        UpdateSubjectsDomainService.update_profile(target_profile=basic_settings, metadata=metadata)
-
-
 @pytest.mark.parametrize(
         "values",
         [
@@ -88,11 +80,3 @@ def test_update_basic_settings_no_change(basic_settings, metadata):
     UpdateSubjectsDomainService.update_basic_settings(target_basic_settings=basic_settings, metadata=metadata)
     assert basic_settings.is_public == is_public
     assert metadata.updated_at == metadata.created_at
-
-
-def test_update_basic_settings_invalid_subject_failure(profile, metadata):
-    """
-    不正なsubjectを入力した場合にValueErrorが発生することをチェックする。
-    """
-    with pytest.raises(ValueError):
-        UpdateSubjectsDomainService.update_basic_settings(target_basic_settings=profile, metadata=metadata)

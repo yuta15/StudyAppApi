@@ -4,6 +4,7 @@ from src.app.model.account.entities.metadata import AccountMetadata
 from src.app.model.account.entities.subjects import (
     AccountProfile,
     AccountBasicSettings, 
+    AccountIdentity
 )
 
 
@@ -13,6 +14,7 @@ class DeleteAccountData:
     metadata:AccountMetadata
     profile:AccountProfile
     basic_settings:AccountBasicSettings
+    identity:AccountIdentity
 
 
 class DeleteAccountDomainService:
@@ -22,4 +24,5 @@ class DeleteAccountDomainService:
         delete_account_data.profile.delete()
         delete_account_data.basic_settings.delete()
         delete_account_data.metadata.delete()
+        delete_account_data.identity.delete()
         return

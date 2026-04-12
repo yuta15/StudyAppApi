@@ -3,8 +3,10 @@ import pytest
 from src.app.model.account.entities.value_object import EmailStrings
 from src.app.model.account.entities.subjects import (
     Country,
+    AllowedIdentityProvider,
     AccountProfile,
     AccountBasicSettings,
+    AccountIdentity
 )
 
 
@@ -67,3 +69,37 @@ def test_basic_settings_is_public_failure(basic_settings):
 def test_basic_settings_delete(basic_settings):
     basic_settings.delete()
     assert basic_settings.is_public == False
+
+
+@pytest.mark.parametrize(
+        ["provider", "subject"],
+        [
+            [AllowedIdentityProvider.FIREBASE, "test_user"],
+            [AllowedIdentityProvider.FIREBASE, "d6c90ea7-c7bd-4963-9d1b-8766c2f41d92"]
+        ]
+)
+def test_identity_new(account_principal_id, provider, subject):
+    identity = AccountIdentity.new(principal_id=account_principal_id, subject=subject, provider=provider)
+    assert identity.principal_id == account_principal_id
+    assert identity.provider == provider
+    assert identity.subject == subject
+
+@pytest.mark.parametrize(
+        ["provider", "subject"],
+        [
+            [None, None],
+            ["AllowedIdentityProvider.FIREBASE", "test_user"],
+            [AllowedIdentityProvider.FIREBASE, None],
+            [AllowedIdentityProvider.FIREBASE, 1],
+            [AllowedIdentityProvider.FIREBASE, ""],
+            [AllowedIdentityProvider.FIREBASE, " "],
+
+        ]
+)
+def test_identity_new_failure(account_principal_id, provider, subject):
+    with pytest.raises(Exception):
+        AccountIdentity.new(principal_id=account_principal_id, subject=subject, provider=provider)
+
+def test_indeity_delete(identity):
+    identity.delete()
+    assert identity.subject == "XXXXXXXXXX"

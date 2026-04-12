@@ -18,6 +18,10 @@ class Country(Enum):
     US = "US"
 
 
+class AllowedIdentityProvider(Enum):
+    FIREBASE = "firebase"
+
+
 @dataclass
 class AccountProfile:
     principal_id:UUID
@@ -78,4 +82,24 @@ class AccountBasicSettings:
 class AccountIdentity:
     principal_id:UUID
     subject:str
+    provider:AllowedIdentityProvider
+
+    @classmethod
+    def new(cls, principal_id:UUID, subject:str, provider:AllowedIdentityProvider) -> Self:
+        validate_value_type(value=principal_id, valid_type=UUID)
+        validate_value_type(value=subject, valid_type=str)
+        validate_value_type(value=provider, valid_type=AllowedIdentityProvider)
+        if subject in ["", " "]:
+            raise ValueError("invalid value")
+
+        return cls(
+            principal_id=principal_id,
+            subject=subject,
+            provider=provider
+        )
+
+    def delete(self) -> None:
+        MASK_VALUE = "XXXXXXXXXX"
+        self.subject = MASK_VALUE
+
 
