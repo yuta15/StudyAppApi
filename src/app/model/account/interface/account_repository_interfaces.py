@@ -1,15 +1,13 @@
 from uuid import UUID
 from abc import ABC, abstractmethod
-from typing import Generic, TypeVar
 
 
 from src.app.model.account.entities.metadata import AccountMetadata
 from src.app.model.account.entities.principals import Account
-from src.app.model.account.entities.subjects import AccountSubject
-
-
-
-Subject = TypeVar("Subject", bound=AccountSubject)
+from src.app.model.account.entities.subjects import (
+    AccountProfile,
+    AccountBasicSettings
+)
 
 
 class AccountRepositoryInterfaces(ABC):
@@ -28,9 +26,17 @@ class AccountMetadataRepositoryInterface(ABC):
     def get(self, account_id:UUID) -> AccountMetadata:...
 
 
-class AccountSubjectRepositoryInterface(ABC, Generic[Subject]):
+class AccountProfileRepositoryInterface(ABC):
     @abstractmethod
-    def save(self, subject:Subject) -> Subject:...
+    def save(self, profile:AccountProfile) -> AccountProfile:...
 
     @abstractmethod
-    def get(self, account_id:UUID) -> Subject:...
+    def get(self, account_id:UUID) -> AccountProfile:...
+
+
+class AccountBasicSettingsRepositoryInterface(ABC):
+    @abstractmethod
+    def save(self, profile:AccountBasicSettings) -> AccountBasicSettings:...
+
+    @abstractmethod
+    def get(self, account_id:UUID) -> AccountBasicSettings:...

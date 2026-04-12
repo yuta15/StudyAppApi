@@ -1,8 +1,7 @@
-from abc import ABC, abstractmethod
 from dataclasses import dataclass
 from enum import Enum
 from typing import Self
-from uuid import UUID, uuid4
+from uuid import UUID
 
 from src.app.model.account.entities.validation import validate_value_type
 from src.app.model.account.entities.value_object import EmailStrings
@@ -11,7 +10,6 @@ from src.app.model.account.entities.value_object import EmailStrings
 class AccountSubjects(Enum):
     ACCOUNT_PROFILE = "ACCOUNT_PROFILE"
     ACCOUNT_BASIC_SETTINGS = "ACCOUNT_BASIC_SETTINGS"
-    ACCOUNT_AUTH_SETTINGS = "ACCOUNT_AUTH_SETTINGS"
 
 
 class Country(Enum):
@@ -21,21 +19,8 @@ class Country(Enum):
 
 
 @dataclass
-class AccountSubject(ABC):
-    """権限を持つ対象"""
+class AccountProfile:
     principal_id:UUID
-    subject_id:UUID
-
-    @classmethod
-    @abstractmethod
-    def new(cls, principal_id:UUID, **kwargs) -> Self:...
-
-    @abstractmethod
-    def delete(self) -> None:...
-
-
-@dataclass
-class AccountProfile(AccountSubject):
     display_name:str
     email:EmailStrings
     country:Country = Country.NOT_SET
@@ -47,7 +32,6 @@ class AccountProfile(AccountSubject):
         validate_value_type(value=email, valid_type=EmailStrings)
         return AccountProfile(
             principal_id=principal_id,
-            subject_id=uuid4(),
             display_name=display_name,
             email=email,
         )
@@ -71,7 +55,8 @@ class AccountProfile(AccountSubject):
 
 
 @dataclass
-class AccountBasicSettings(AccountSubject):
+class AccountBasicSettings:
+    principal_id:UUID
     is_public:bool = True
 
     @classmethod
@@ -79,7 +64,6 @@ class AccountBasicSettings(AccountSubject):
         validate_value_type(value=principal_id, valid_type=UUID)
         return AccountBasicSettings(
             principal_id=principal_id,
-            subject_id=uuid4(),
         )
 
     def delete(self):
@@ -88,3 +72,10 @@ class AccountBasicSettings(AccountSubject):
     def set_is_public(self, is_public:bool) -> None:
         validate_value_type(value=is_public, valid_type=bool)
         self.is_public = is_public
+
+
+@dataclass
+class AccountIdentity:
+    principal_id:UUID
+    subject:str
+

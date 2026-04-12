@@ -1,5 +1,3 @@
-from uuid import UUID
-
 import pytest
 
 from src.app.model.account.entities.value_object import EmailStrings
@@ -13,7 +11,6 @@ from src.app.model.account.entities.subjects import (
 def test_profile_new(account_principal_id, display_name, email):
     profile = AccountProfile.new(principal_id=account_principal_id, display_name=display_name, email=email)
     assert profile.principal_id == account_principal_id
-    assert isinstance(profile.subject_id, UUID)
     assert profile.display_name == display_name
     assert profile.email == email
     assert profile.country == Country.NOT_SET
@@ -57,7 +54,6 @@ def test_profile_delete(profile):
 def test_basic_settings_new(account_principal_id):
     basic_settings = AccountBasicSettings.new(principal_id=account_principal_id)
     assert basic_settings.principal_id == account_principal_id
-    assert isinstance(basic_settings.subject_id, UUID)
     assert basic_settings.is_public == True
 
 def test_basic_settings_is_public_success(basic_settings):
