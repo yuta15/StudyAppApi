@@ -27,34 +27,39 @@ from src.app.model.account.service.update_subjects_domain_service import UpdateS
         ]
 
 )
-def test_update_profile_success(profile, metadata, values):
+def test_update_profile_success(profile_generator, metadata_generator, values):
     """
     profileが更新可能であることを確認する。
     単一・複数の値を入れた場合に適切に更新されていることをチェックする。
     """
-    UpdateSubjectsDomainService.update_profile(target_profile=profile, metadata=metadata, **values)
+    profile_data = profile_generator()
+    metadata_data = metadata_generator()
+    UpdateSubjectsDomainService.update_profile(target_profile=profile_data, metadata=metadata_data, **values)
     for p, v in values.items():
         if p == "display_name":
-            assert profile.display_name == v
+            assert profile_data.display_name == v
         elif p == "email":
-            assert profile.email == v
+            assert profile_data.email == v
         elif p == "country":
-            assert profile.country == v
-    assert metadata.updated_at != metadata.created_at
+            assert profile_data.country == v
+    assert metadata_data.updated_at != metadata_data.created_at
 
 
-def test_update_profile_no_change(profile, metadata):
+def test_update_profile_no_change(profile_generator, metadata_generator):
     """
     変更せず、metadataも更新されないことをチェックする。
     """
-    display_name = profile.display_name
-    email = profile.email
-    country = profile.country
-    UpdateSubjectsDomainService.update_profile(target_profile=profile, metadata=metadata)
-    assert profile.display_name == display_name
-    assert profile.email == email
-    assert profile.country == country
-    assert metadata.updated_at == metadata.created_at
+    profile_data = profile_generator()
+    metadata_data = metadata_generator()
+    updated_at = metadata_data.updated_at
+    display_name = profile_data.display_name
+    email = profile_data.email
+    country = profile_data.country
+    UpdateSubjectsDomainService.update_profile(target_profile=profile_data, metadata=metadata_data)
+    assert profile_data.display_name == display_name
+    assert profile_data.email == email
+    assert profile_data.country == country
+    assert metadata_data.updated_at == updated_at
 
 
 @pytest.mark.parametrize(
@@ -63,20 +68,28 @@ def test_update_profile_no_change(profile, metadata):
             {"is_public": False}
         ]
 )
-def test_update_basic_settings_success(basic_settings, metadata, values):
+def test_update_basic_settings_success(basic_settings_generator, metadata_generator, values):
     """
     basic_settingsの更新可能であることをチェックする。
     想定通り更新されることをチェックする。
     """
-    UpdateSubjectsDomainService.update_basic_settings(target_basic_settings=basic_settings, metadata=metadata, **values)
+    basic_settings_data = basic_settings_generator()
+    metadata_data = metadata_generator()
+    updated_at = metadata_data.updated_at
+    UpdateSubjectsDomainService.update_basic_settings(
+        target_basic_settings=basic_settings_data,
+        metadata=metadata_data,
+        **values)
     for k, v in values.items():
         if k == "is_public":
-            assert basic_settings.is_public == v
-    assert metadata.updated_at != metadata.created_at
+            assert basic_settings_data.is_public == v
+    assert metadata_data.updated_at != updated_at
 
 
-def test_update_basic_settings_no_change(basic_settings, metadata):
-    is_public = basic_settings.is_public
-    UpdateSubjectsDomainService.update_basic_settings(target_basic_settings=basic_settings, metadata=metadata)
-    assert basic_settings.is_public == is_public
-    assert metadata.updated_at == metadata.created_at
+def test_update_basic_settings_no_change(basic_settings_generator, metadata_generator):
+    basic_settings_data = basic_settings_generator()
+    metadata_data = metadata_generator()
+    is_public = basic_settings_data.is_public
+    UpdateSubjectsDomainService.update_basic_settings(target_basic_settings=basic_settings_data, metadata=metadata_data)
+    assert basic_settings_data.is_public == is_public
+    assert metadata_data.updated_at == metadata_data.created_at

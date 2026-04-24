@@ -1,0 +1,109 @@
+import pytest
+
+from src.app.model.account.entities.subjects import AllowedIdentityProvider
+from src.app.usecase.account.models import CreateAccountRepositories, CreateAccountDTO, DeleteAccountRepositories
+from src.test.usecase.account.repositories import (
+    TestAccountAuthReadInterface,
+    TestAccountRepositoryInterface,
+    TestAccountMetadataInterface,
+    TestAccountProfileInterface,
+    TestAccountBasicSettingsInterface,
+    TestAccountIdentityInterface,
+)
+
+
+@pytest.fixture
+def positive_create_account_repositories(
+    account_generator,
+    metadata_generator,
+    profile_generator,
+    basic_settings_generator,
+    identity_generator,
+):
+    return CreateAccountRepositories(
+        account=TestAccountRepositoryInterface(return_account=account_generator()),
+        metadata=TestAccountMetadataInterface(return_account_metadata=metadata_generator()),
+        profile=TestAccountProfileInterface(return_account_profile=profile_generator()),
+        basic_settings=TestAccountBasicSettingsInterface(return_account_basic_settings=basic_settings_generator()),
+        identity=TestAccountIdentityInterface(return_principal_identity=identity_generator()),
+    )
+
+
+@pytest.fixture
+def account_negative_create_account_repositories(
+    account_generator,
+    metadata_generator,
+    profile_generator,
+    basic_settings_generator,
+    identity_generator,
+):
+    return CreateAccountRepositories(
+        account=TestAccountRepositoryInterface(return_account=account_generator(), is_negative=True),
+        metadata=TestAccountMetadataInterface(return_account_metadata=metadata_generator()),
+        profile=TestAccountProfileInterface(return_account_profile=profile_generator()),
+        basic_settings=TestAccountBasicSettingsInterface(return_account_basic_settings=basic_settings_generator()),
+        identity=TestAccountIdentityInterface(return_principal_identity=identity_generator()),
+    )
+
+
+@pytest.fixture
+def create_account_dto(account_name, display_name, email, identity_subject):
+    return CreateAccountDTO(
+        account_name=account_name,
+        display_name=display_name,
+        email=email,
+        subject=identity_subject,
+        provider=AllowedIdentityProvider.FIREBASE
+    )
+
+
+@pytest.fixture
+def positive_delete_account_repositories(
+    account_generator,
+    metadata_generator,
+    profile_generator,
+    basic_settings_generator,
+    identity_generator,
+):
+    return DeleteAccountRepositories(
+        account_auth_read=TestAccountAuthReadInterface(auth_result=True),
+        account=TestAccountRepositoryInterface(return_account=account_generator()),
+        metadata=TestAccountMetadataInterface(return_account_metadata=metadata_generator()),
+        profile=TestAccountProfileInterface(return_account_profile=profile_generator()),
+        basic_settings=TestAccountBasicSettingsInterface(return_account_basic_settings=basic_settings_generator()),
+        identity=TestAccountIdentityInterface(return_principal_identity=identity_generator()))
+
+
+@pytest.fixture
+def negative_delete_account_repositories(
+    account_generator,
+    metadata_generator,
+    profile_generator,
+    basic_settings_generator,
+    identity_generator,
+):
+    return DeleteAccountRepositories(
+        account_auth_read=TestAccountAuthReadInterface(auth_result=True),
+        account=TestAccountRepositoryInterface(return_account=account_generator(), is_negative=True),
+        metadata=TestAccountMetadataInterface(return_account_metadata=metadata_generator()),
+        profile=TestAccountProfileInterface(return_account_profile=profile_generator()),
+        basic_settings=TestAccountBasicSettingsInterface(return_account_basic_settings=basic_settings_generator()),
+        identity=TestAccountIdentityInterface(return_principal_identity=identity_generator()))
+
+
+@pytest.fixture
+def auth_failed_delete_account_repositories(
+    account_generator,
+    metadata_generator,
+    profile_generator,
+    basic_settings_generator,
+    identity_generator,
+):
+    return DeleteAccountRepositories(
+        account_auth_read=TestAccountAuthReadInterface(auth_result=False),
+        account=TestAccountRepositoryInterface(return_account=account_generator(), is_negative=True),
+        metadata=TestAccountMetadataInterface(return_account_metadata=metadata_generator()),
+        profile=TestAccountProfileInterface(return_account_profile=profile_generator()),
+        basic_settings=TestAccountBasicSettingsInterface(return_account_basic_settings=basic_settings_generator()),
+        identity=TestAccountIdentityInterface(return_principal_identity=identity_generator()))
+
