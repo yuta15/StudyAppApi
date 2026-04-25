@@ -1,8 +1,6 @@
 import pytest
 
 from src.test.service.dummy_account_auth_repository import DummyAccuntAuthReader
-from src.app.service.authorization_service.models import AccountAuthInput
-from src.app.model.account.entities.subjects import AccountSubjects
 
 
 @pytest.fixture
