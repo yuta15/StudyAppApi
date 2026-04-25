@@ -1,4 +1,5 @@
 account_principal_id="58729a25-71fb-4aee-af0f-6b901220c989"
+metadata_id = "d51b2dfd-207f-48e7-91b8-897314725d04"
 account_name="test_account_name"
 display_name="test_display_name"
 name="test_name"

@@ -1,5 +1,3 @@
-import pytest
-
 from src.app.model.account.service.create_account_domain_service import CreateAccountDomainService
 
 

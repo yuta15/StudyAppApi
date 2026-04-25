@@ -6,23 +6,13 @@ from src.app.model.account.entities.subjects import AccountSubjects
 
 
 @pytest.fixture
-def success_account_repo():
+def found_account_auth_reader():
     return DummyAccuntAuthReader(result=True)
 
 @pytest.fixture
-def failed_account_repo():
+def not_found_account_auth_reader():
     return DummyAccuntAuthReader(result=False)
 
 @pytest.fixture
-def profile_account_auth_input(account_principal_id):
-    return AccountAuthInput(
-        principal_id=account_principal_id,
-        subject_type=AccountSubjects.ACCOUNT_PROFILE
-    )
-
-@pytest.fixture
-def basic_settings_account_auth_input(account_principal_id):
-    return AccountAuthInput(
-        principal_id=account_principal_id,
-        subject_type=AccountSubjects.ACCOUNT_BASIC_SETTINGS
-    )
+def negative_account_auth_reader():
+    return DummyAccuntAuthReader(result=True, is_negative=True)

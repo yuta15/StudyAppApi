@@ -1,9 +1,7 @@
+from uuid import UUID
 from abc import ABC, abstractmethod
-from typing import TypeVar, Generic
 
 
-AuthInput = TypeVar("AuthInput")
-
-class AuthServiceBase(ABC, Generic[AuthInput]):
+class AuthServiceBase(ABC, ):
     @abstractmethod
-    def is_allowed(self, auth_input:AuthInput) -> bool:...
+    def auth(self, principal_id:UUID) -> None:...
