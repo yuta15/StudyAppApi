@@ -77,7 +77,7 @@ def modify_account_profile_dto(account_principal_id):
             email=EmailStrings("updated@example.com"),
             country=Country.JP,
         ),
-        basic_settings=None,
+        basic_settings=ModifyBasicSettings(),
     )
 
 
@@ -85,7 +85,7 @@ def modify_account_profile_dto(account_principal_id):
 def modify_account_basic_settings_dto(account_principal_id):
     return ModifyAccountDTO(
         principal_id=account_principal_id,
-        profile=None,
+        profile=ModifyProfile(),
         basic_settings=ModifyBasicSettings(is_public=False),
     )
 

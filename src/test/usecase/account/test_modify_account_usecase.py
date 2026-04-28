@@ -38,7 +38,7 @@ def test_modify_account_settings_usecase_update_profile(
     assert profile.input_profile.country == profile_dto.country
     assert metadata.input_metadata.principal_id == principal_id
     assert metadata.input_metadata.updated_at != metadata.input_metadata.created_at
-    assert basic_settings.input_basic_settings.principal_id == principal_id
+    assert basic_settings.input_basic_settings == None
 
     assert result.principal_id == principal_id
     assert result.profile.display_name == profile_dto.display_name
@@ -77,7 +77,7 @@ def test_modify_account_settings_usecase_update_basic_settings(
     assert basic_settings.input_basic_settings.is_public == basic_settings_dto.is_public
     assert metadata.input_metadata.principal_id == principal_id
     assert metadata.input_metadata.updated_at != metadata.input_metadata.created_at
-    assert profile.input_profile.principal_id == principal_id
+    assert profile.input_profile == None
 
     assert result.principal_id == principal_id
     assert result.settings.is_public == basic_settings_dto.is_public

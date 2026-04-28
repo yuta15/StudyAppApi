@@ -25,24 +25,26 @@ class ModifyAccountSettingsUsecase:
             basic_settings = self.repositories.basic_settings.get(principal_id=modify_account_dto.principal_id)
 
             # domain serviceの呼び出し
-            if modify_account_dto.basic_settings:
-                UpdateSubjectsDomainService.update_basic_settings(
-                    target_basic_settings=basic_settings,
-                    metadata=metadata,
-                    is_public=modify_account_dto.basic_settings.is_public)
-            if modify_account_dto.profile:
-                UpdateSubjectsDomainService.update_profile(
+            print(modify_account_dto)
+            print(modify_account_dto.profile.display_name)
+            print(modify_account_dto.basic_settings)
+            basic_settings_changed = UpdateSubjectsDomainService.update_basic_settings(
+                target_basic_settings=basic_settings,
+                metadata=metadata,
+                is_public=modify_account_dto.basic_settings.is_public)
+            profile_changed = UpdateSubjectsDomainService.update_profile(
                     target_profile=profile,
                     metadata=metadata,
                     display_name=modify_account_dto.profile.display_name,
                     email=modify_account_dto.profile.email,
                     country=modify_account_dto.profile.country)
 
-            if modify_account_dto.basic_settings or modify_account_dto.profile:
-                # save
-                self.repositories.metadata.save(metadata=metadata)
-                self.repositories.profile.save(profile=profile)
+            if basic_settings_changed:
                 self.repositories.basic_settings.save(basic_settings=basic_settings)
+            if profile_changed:
+                self.repositories.profile.save(profile=profile)
+            if basic_settings_changed or profile_changed:
+                self.repositories.metadata.save(metadata=metadata)
 
             # ReadAccountの形に整形する。
             return ReadAccount(

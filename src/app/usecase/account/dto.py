@@ -16,18 +16,23 @@ class CreateAccountDTO:
 
 @dataclass
 class ModifyProfile:
-    display_name:str|None
-    email:EmailStrings|None
-    country:Country|None
+    display_name:str|None=None
+    email:EmailStrings|None=None
+    country:Country|None=None
 
 
 @dataclass
 class ModifyBasicSettings:
-    is_public:bool|None
+    is_public:bool|None=None
 
 
 @dataclass
 class ModifyAccountDTO:
     principal_id:UUID
-    profile:ModifyProfile|None
-    basic_settings:ModifyBasicSettings|None
+    profile:ModifyProfile
+    basic_settings:ModifyBasicSettings
+
+    def __post_init__(self):
+        if isinstance(self.profile, ModifyProfile) and isinstance(self.basic_settings, ModifyBasicSettings):
+            return
+        raise ValueError("invalid value")
