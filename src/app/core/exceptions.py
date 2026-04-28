@@ -8,3 +8,7 @@ class UserOperationError(Exception):
 
 class UnauthorizedError(UserOperationError):
     """認可エラー"""
+
+
+class DomainError(Exception):
+    """ドメイン系のエラー"""
