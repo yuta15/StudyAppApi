@@ -25,9 +25,6 @@ class ModifyAccountSettingsUsecase:
             basic_settings = self.repositories.basic_settings.get(principal_id=modify_account_dto.principal_id)
 
             # domain serviceの呼び出し
-            print(modify_account_dto)
-            print(modify_account_dto.profile.display_name)
-            print(modify_account_dto.basic_settings)
             basic_settings_changed = UpdateSubjectsDomainService.update_basic_settings(
                 target_basic_settings=basic_settings,
                 metadata=metadata,
