@@ -6,6 +6,7 @@ from uuid import uuid4
 from src.app.model.shared.entities import Principal
 from src.app.model.account.entities.value_object import AccountNameStrings
 from src.app.model.account.entities.validation import validate_value_type
+from src.app.core.exceptions import DomainError
 
 
 class AccountStatus(Enum):
@@ -35,16 +36,16 @@ class Account(Principal):
 
     def to_delete(self) -> None:
         if self.status == AccountStatus.DELETED:
-            raise 
+            raise DomainError("Already deleted")
         self.status = AccountStatus.DELETED
 
     def to_suspended(self) -> None:
         if self.status == AccountStatus.DELETED:
-            raise 
+            raise DomainError("Already deleted")
         self.status = AccountStatus.SUSPENDED
 
     def to_active(self) -> None:
         if self.status == AccountStatus.DELETED:
-            raise 
+            raise DomainError("Already deleted")
         self.status = AccountStatus.ACTIVE
 

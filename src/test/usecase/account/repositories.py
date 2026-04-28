@@ -19,6 +19,7 @@ from src.app.service.authorization_service.account_auth_read_interface import Ac
 
 class TestException(Exception):
     """テスト用のダミーエラー"""
+    __test__ = False
 
 
 class TestAccountRepositoryInterface(AccountRepositoryInterface):

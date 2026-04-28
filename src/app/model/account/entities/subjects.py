@@ -7,7 +7,7 @@ from src.app.model.account.entities.validation import validate_value_type
 from src.app.model.account.entities.value_object import EmailStrings
 
 
-class AccountSubjects(Enum):
+class AccountSubjectTypes(Enum):
     ACCOUNT_PROFILE = "ACCOUNT_PROFILE"
     ACCOUNT_BASIC_SETTINGS = "ACCOUNT_BASIC_SETTINGS"
 
@@ -101,5 +101,3 @@ class AccountIdentity:
     def delete(self) -> None:
         MASK_VALUE = "XXXXXXXXXX"
         self.subject = MASK_VALUE
-
-

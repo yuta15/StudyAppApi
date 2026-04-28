@@ -3,6 +3,7 @@ from uuid import UUID
 import pytest
 
 from src.app.model.account.entities.principals import Account, AccountStatus
+from src.app.core.exceptions import DomainError
 
 
 def test_account_new(account_name):
@@ -34,19 +35,19 @@ def test_account_to_active_success(account_name):
 def test_account_to_delete_failure(account_name):
     account = Account.new(account_name=account_name)
     account.to_delete()
-    with pytest.raises(Exception):
+    with pytest.raises(DomainError):
         account.to_delete()
 
 
 def test_account_to_suspend_failure(account_name):
     account = Account.new(account_name=account_name)
     account.to_delete()
-    with pytest.raises(Exception):
+    with pytest.raises(DomainError):
         account.to_suspended()
 
 
 def test_account_to_active_failure(account_name):
     account = Account.new(account_name=account_name)
     account.to_delete()
-    with pytest.raises(Exception):
+    with pytest.raises(DomainError):
         account.to_active()

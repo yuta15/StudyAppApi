@@ -5,6 +5,7 @@ import pytest
 from src.app.model.account.entities.principals import AccountStatus
 from src.app.usecase.account.delete_account_usecase import DeleteAccountUsecase
 from src.app.core.exceptions import UnauthorizedError
+from src.test.usecase.account.repositories import TestException
 
 
 def test_delete_account_usecase_success(
@@ -63,7 +64,7 @@ def test_delete_account_usecase_success(
 
 def test_delete_account_usecase_failure(dummy_session, negative_delete_account_repositories, account_principal_id):
     usecase = DeleteAccountUsecase(session=dummy_session, repositories=negative_delete_account_repositories)
-    with pytest.raises(Exception):
+    with pytest.raises(TestException):
         usecase.exec(principal_id=account_principal_id)
 
 

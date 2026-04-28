@@ -15,7 +15,7 @@ class UpdateSubjectsDomainService:
             display_name:str|None=None,
             email:EmailStrings|None=None,
             country:Country|None=None
-        ) -> None:
+        ) -> bool:
         changed = False
         if email is not None and email != target_profile.email:
             target_profile.set_email(email=email)
@@ -28,13 +28,14 @@ class UpdateSubjectsDomainService:
             changed = True
         if changed:
             metadata.update()
+        return changed
 
     @staticmethod
     def update_basic_settings(
         target_basic_settings:AccountBasicSettings,
         metadata:AccountMetadata,
         is_public:bool|None = None
-    ) -> None:
+    ) -> bool:
         changed = False
         if is_public is not None and is_public != target_basic_settings.is_public:
             target_basic_settings.set_is_public(is_public=is_public)
@@ -42,3 +43,4 @@ class UpdateSubjectsDomainService:
 
         if changed:
             metadata.update()
+        return changed
