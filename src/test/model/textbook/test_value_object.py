@@ -27,7 +27,6 @@ INVALID_TITLE_IDS = [
 )
 def test_title_string_success_creates_value(title):
     """有効な文字列からタイトル値を作成できること。"""
-
     # Act
     title_string = TitleString(title)
 
@@ -42,7 +41,6 @@ def test_title_string_success_creates_value(title):
 )
 def test_title_string_failure_invalid_value(title):
     """不正なタイトル文字列では作成できないこと。"""
-
     # Assert
     with pytest.raises(ValueError):
         TitleString(title)

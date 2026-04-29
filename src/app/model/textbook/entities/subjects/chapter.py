@@ -17,7 +17,6 @@ class Chapter:
     @classmethod
     def new(cls, title: TitleString, content: str) -> Self:
         """新しい章を作成する。"""
-
         validate_value_type(value=title, valid_type=TitleString)
         validate_value_type(value=content, valid_type=str)
         return cls(
@@ -28,12 +27,10 @@ class Chapter:
 
     def set_title(self, title: TitleString) -> None:
         """章タイトルを変更する。"""
-
         validate_value_type(value=title, valid_type=TitleString)
         self.title = title
 
     def set_content(self, content: str) -> None:
         """章本文を変更する。"""
-
         validate_value_type(value=content, valid_type=str)
         self.content = content
