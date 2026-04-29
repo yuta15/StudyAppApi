@@ -10,13 +10,14 @@ def test_account_metadata_new(account_principal_id):
     assert isinstance(metadata.metadata_id, UUID)
     assert isinstance(metadata.created_at, datetime)
     assert isinstance(metadata.updated_at, datetime)
-    assert metadata.deleted_at == None
+    assert metadata.deleted_at is None
 
 
 def test_account_metadata_update(metadata_generator):
     metadata = metadata_generator()
     metadata.update()
     assert metadata.created_at != metadata.updated_at
+
 
 def test_account_metadata_delete(metadata_generator):
     metadata = metadata_generator()

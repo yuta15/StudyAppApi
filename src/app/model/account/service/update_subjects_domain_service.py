@@ -10,12 +10,12 @@ from src.app.model.account.entities.subjects import (
 class UpdateSubjectsDomainService:
     @staticmethod
     def update_profile(
-            target_profile:AccountProfile,
-            metadata:AccountMetadata,
-            display_name:str|None=None,
-            email:EmailStrings|None=None,
-            country:Country|None=None
-        ) -> bool:
+        target_profile: AccountProfile,
+        metadata: AccountMetadata,
+        display_name: str | None = None,
+        email: EmailStrings | None = None,
+        country: Country | None = None,
+    ) -> bool:
         changed = False
         if email is not None and email != target_profile.email:
             target_profile.set_email(email=email)
@@ -32,9 +32,9 @@ class UpdateSubjectsDomainService:
 
     @staticmethod
     def update_basic_settings(
-        target_basic_settings:AccountBasicSettings,
-        metadata:AccountMetadata,
-        is_public:bool|None = None
+        target_basic_settings: AccountBasicSettings,
+        metadata: AccountMetadata,
+        is_public: bool | None = None,
     ) -> bool:
         changed = False
         if is_public is not None and is_public != target_basic_settings.is_public:

@@ -4,15 +4,20 @@ from src.app.service.authorization_service.account_auth_service import AccountAu
 from src.app.model.account.service.update_subjects_domain_service import UpdateSubjectsDomainService
 from src.app.usecase.account.repository import ModifyAccountRepositories
 from src.app.usecase.account.dto import ModifyAccountDTO
-from src.app.usecase.account.read_model import ReadAccount, ReadMetadata, ReadProfile, ReadSettings
+from src.app.usecase.account.read_model import (
+    ReadAccount,
+    ReadMetadata,
+    ReadProfile,
+    ReadSettings,
+)
 
 
 class ModifyAccountSettingsUsecase:
-    def __init__(self, session:Session, repositories:ModifyAccountRepositories):
+    def __init__(self, session: Session, repositories: ModifyAccountRepositories):
         self.session = session
         self.repositories = repositories
 
-    def exec(self, modify_account_dto:ModifyAccountDTO) -> ReadAccount:
+    def exec(self, modify_account_dto: ModifyAccountDTO) -> ReadAccount:
         with self.session.begin():
             # Auth
             auth_service = AccountAuthService(repository=self.repositories.account_auth_read)
@@ -28,13 +33,15 @@ class ModifyAccountSettingsUsecase:
             basic_settings_changed = UpdateSubjectsDomainService.update_basic_settings(
                 target_basic_settings=basic_settings,
                 metadata=metadata,
-                is_public=modify_account_dto.basic_settings.is_public)
+                is_public=modify_account_dto.basic_settings.is_public,
+            )
             profile_changed = UpdateSubjectsDomainService.update_profile(
-                    target_profile=profile,
-                    metadata=metadata,
-                    display_name=modify_account_dto.profile.display_name,
-                    email=modify_account_dto.profile.email,
-                    country=modify_account_dto.profile.country)
+                target_profile=profile,
+                metadata=metadata,
+                display_name=modify_account_dto.profile.display_name,
+                email=modify_account_dto.profile.email,
+                country=modify_account_dto.profile.country,
+            )
 
             if basic_settings_changed:
                 self.repositories.basic_settings.save(basic_settings=basic_settings)
@@ -49,5 +56,10 @@ class ModifyAccountSettingsUsecase:
                 account_name=account.account_name,
                 status=account.status,
                 metadata=ReadMetadata(created_at=metadata.created_at, last_update=metadata.updated_at),
-                profile=ReadProfile(display_name=profile.display_name, email=profile.email, country=profile.country),
-                settings=ReadSettings(is_public=basic_settings.is_public))
+                profile=ReadProfile(
+                    display_name=profile.display_name,
+                    email=profile.email,
+                    country=profile.country,
+                ),
+                settings=ReadSettings(is_public=basic_settings.is_public),
+            )

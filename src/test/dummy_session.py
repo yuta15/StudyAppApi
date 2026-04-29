@@ -9,4 +9,4 @@ class DummySession:
     @contextmanager
     def begin(self) -> Generator[None, None, None]:
         self.is_called = True
-        yield self      
+        yield self

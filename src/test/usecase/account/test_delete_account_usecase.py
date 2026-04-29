@@ -9,15 +9,15 @@ from src.test.usecase.account.repositories import TestException
 
 
 def test_delete_account_usecase_success(
-        dummy_session,
-        positive_delete_account_repositories,
-        account_principal_id,
-        account_generator,
-        profile_generator,
-        basic_settings_generator,
-        metadata_generator,
-        identity_generator
-    ):
+    dummy_session,
+    positive_delete_account_repositories,
+    account_principal_id,
+    account_generator,
+    profile_generator,
+    basic_settings_generator,
+    metadata_generator,
+    identity_generator,
+):
     usecase = DeleteAccountUsecase(session=dummy_session, repositories=positive_delete_account_repositories)
     usecase.exec(principal_id=account_principal_id)
 
@@ -69,10 +69,8 @@ def test_delete_account_usecase_failure(dummy_session, negative_delete_account_r
 
 
 def test_delete_account_usecase_auth_failure(
-        dummy_session,
-        auth_failed_delete_account_repositories,
-        account_principal_id
-    ):
+    dummy_session, auth_failed_delete_account_repositories, account_principal_id
+):
     usecase = DeleteAccountUsecase(session=dummy_session, repositories=auth_failed_delete_account_repositories)
     with pytest.raises(UnauthorizedError):
         usecase.exec(principal_id=account_principal_id)
