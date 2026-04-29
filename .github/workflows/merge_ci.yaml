@@ -23,7 +23,7 @@ jobs:
         run: uv run ruff check
       - name: run format
         shell: bash
-        run: uv run ruff format
+        run: uv run ruff format --check
       - name: run test
         shell: bash
         run: |-
