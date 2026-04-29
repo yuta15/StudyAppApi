@@ -15,11 +15,11 @@ class Textbook:
     title: TitleString
     author_ids: list[UUID]
     chapter_ids: list[UUID]
+    is_public: bool = True
 
     @classmethod
     def new(cls, title: TitleString, author_id: UUID) -> Self:
         """新しい教材を作成する。"""
-
         validate_value_type(value=title, valid_type=TitleString)
         validate_value_type(value=author_id, valid_type=UUID)
         return cls(
@@ -31,13 +31,20 @@ class Textbook:
 
     def set_title(self, title: TitleString) -> None:
         """教材タイトルを変更する。"""
-
         validate_value_type(value=title, valid_type=TitleString)
         self.title = title
 
+    def set_is_public(self, is_public: bool) -> None:
+        """教材の公開状態を変更する。"""
+        validate_value_type(value=is_public, valid_type=bool)
+        self.is_public = is_public
+
+    def delete(self) -> None:
+        """教材を削除状態にする。"""
+        self.is_public = False
+
     def add_author(self, author_id: UUID) -> None:
         """著者を追加する。"""
-
         validate_value_type(value=author_id, valid_type=UUID)
         if author_id in self.author_ids:
             raise DomainError("Author is already registered")
@@ -45,7 +52,6 @@ class Textbook:
 
     def remove_author(self, author_id: UUID) -> None:
         """著者を削除する。"""
-
         validate_value_type(value=author_id, valid_type=UUID)
         if author_id not in self.author_ids:
             raise DomainError("Author is not registered")
@@ -55,7 +61,6 @@ class Textbook:
 
     def set_chapters(self, chapter_ids: list[UUID]) -> None:
         """教材に紐づく章 ID の並びを設定する。"""
-
         validate_value_type(value=chapter_ids, valid_type=list)
         for chapter_id in chapter_ids:
             validate_value_type(value=chapter_id, valid_type=UUID)

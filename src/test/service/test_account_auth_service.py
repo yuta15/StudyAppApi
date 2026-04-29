@@ -1,6 +1,6 @@
 import pytest
 
-from src.app.service.authorization_service.account_auth_service import AccountAuthService
+from src.app.service.authorization_service.account.account_auth_service import AccountAuthService
 from src.app.core.exceptions import UnauthorizedError
 
 

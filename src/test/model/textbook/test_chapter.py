@@ -9,59 +9,21 @@ INVALID_TITLE_TYPE_IDS = ["none", "integer", "string"]
 INVALID_CONTENT_TYPE_IDS = ["none", "integer", "list"]
 
 
-def test_new_success_creates_chapter(chapter_title, chapter_content):
-    """新規作成時にID、タイトル、本文が設定されること。"""
-
+def test_new_success_creates_empty_chapter():
+    """新規作成時にIDだけが設定され、タイトルと本文は未入力状態になること。"""
     # Act
-    chapter = Chapter.new(title=chapter_title, content=chapter_content)
+    chapter = Chapter.new()
 
     # Assert
     assert isinstance(chapter.chapter_id, UUID)
-    assert chapter.title == chapter_title
-    assert chapter.content == chapter_content
+    assert chapter.title is None
+    assert chapter.content is None
 
 
-def test_new_success_accepts_empty_content(chapter_title):
-    """本文が空文字でも作成できること。"""
-
-    # Act
-    chapter = Chapter.new(title=chapter_title, content="")
-
-    # Assert
-    assert chapter.content == ""
-
-
-@pytest.mark.parametrize(
-    "title",
-    [None, 1, "Python"],
-    ids=INVALID_TITLE_TYPE_IDS,
-)
-def test_new_failure_invalid_title_type(title, chapter_content):
-    """TitleString以外のタイトルでは作成できないこと。"""
-
-    # Assert
-    with pytest.raises(ValueError):
-        Chapter.new(title=title, content=chapter_content)
-
-
-@pytest.mark.parametrize(
-    "content",
-    [None, 1, []],
-    ids=INVALID_CONTENT_TYPE_IDS,
-)
-def test_new_failure_invalid_content_type(chapter_title, content):
-    """文字列以外の本文では作成できないこと。"""
-
-    # Assert
-    with pytest.raises(ValueError):
-        Chapter.new(title=chapter_title, content=content)
-
-
-def test_set_title_success_updates_title(chapter_title, chapter_content):
+def test_set_title_success_updates_title():
     """タイトルを更新できること。"""
-
     # Arrange
-    chapter = Chapter.new(title=chapter_title, content=chapter_content)
+    chapter = Chapter.new()
     new_title = TitleString("Advanced Python")
 
     # Act
@@ -69,7 +31,7 @@ def test_set_title_success_updates_title(chapter_title, chapter_content):
 
     # Assert
     assert chapter.title == new_title
-    assert chapter.content == chapter_content
+    assert chapter.content is None
 
 
 @pytest.mark.parametrize(
@@ -77,36 +39,33 @@ def test_set_title_success_updates_title(chapter_title, chapter_content):
     [None, 1, "Python"],
     ids=INVALID_TITLE_TYPE_IDS,
 )
-def test_set_title_failure_invalid_title_type(chapter_title, chapter_content, title):
+def test_set_title_failure_invalid_title_type(title):
     """TitleString以外のタイトルでは更新できないこと。"""
-
     # Arrange
-    chapter = Chapter.new(title=chapter_title, content=chapter_content)
+    chapter = Chapter.new()
 
     # Assert
     with pytest.raises(ValueError):
         chapter.set_title(title=title)
 
 
-def test_set_content_success_updates_content(chapter_title, chapter_content):
+def test_set_content_success_updates_content(chapter_content):
     """Markdown形式の本文に更新できること。"""
-
     # Arrange
-    chapter = Chapter.new(title=chapter_title, content="")
+    chapter = Chapter.new()
 
     # Act
     chapter.set_content(content=chapter_content)
 
     # Assert
     assert chapter.content == chapter_content
-    assert chapter.title == chapter_title
+    assert chapter.title is None
 
 
-def test_set_content_success_accepts_empty_content(chapter_title, chapter_content):
+def test_set_content_success_accepts_empty_content():
     """本文を空文字に更新できること。"""
-
     # Arrange
-    chapter = Chapter.new(title=chapter_title, content=chapter_content)
+    chapter = Chapter.new()
 
     # Act
     chapter.set_content(content="")
@@ -120,11 +79,10 @@ def test_set_content_success_accepts_empty_content(chapter_title, chapter_conten
     [None, 1, []],
     ids=INVALID_CONTENT_TYPE_IDS,
 )
-def test_set_content_failure_invalid_content_type(chapter_title, chapter_content, content):
+def test_set_content_failure_invalid_content_type(content):
     """文字列以外の本文では更新できないこと。"""
-
     # Arrange
-    chapter = Chapter.new(title=chapter_title, content=chapter_content)
+    chapter = Chapter.new()
 
     # Assert
     with pytest.raises(ValueError):

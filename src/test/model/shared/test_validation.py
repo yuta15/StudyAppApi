@@ -5,7 +5,6 @@ from src.app.model.shared.validation import validate_value_type
 
 def test_validate_value_type_success_accepts_valid_type():
     """指定した型の値は許可されること。"""
-
     # Assert
     validate_value_type(value="title", valid_type=str)
 
@@ -21,7 +20,6 @@ def test_validate_value_type_success_accepts_valid_type():
 )
 def test_validate_value_type_failure_invalid_type(value, valid_type):
     """指定した型ではない値は許可されないこと。"""
-
     # Assert
     with pytest.raises(ValueError):
         validate_value_type(value=value, valid_type=valid_type)

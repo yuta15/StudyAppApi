@@ -11,29 +11,20 @@ class Chapter:
     """教材の章タイトルとMarkdown形式の本文を管理する。"""
 
     chapter_id: UUID
-    title: TitleString
-    content: str
+    title: TitleString | None = None
+    content: str | None = None
 
     @classmethod
-    def new(cls, title: TitleString, content: str) -> Self:
+    def new(cls) -> Self:
         """新しい章を作成する。"""
-
-        validate_value_type(value=title, valid_type=TitleString)
-        validate_value_type(value=content, valid_type=str)
-        return cls(
-            chapter_id=uuid4(),
-            title=title,
-            content=content,
-        )
+        return cls(chapter_id=uuid4())
 
     def set_title(self, title: TitleString) -> None:
         """章タイトルを変更する。"""
-
         validate_value_type(value=title, valid_type=TitleString)
         self.title = title
 
     def set_content(self, content: str) -> None:
         """章本文を変更する。"""
-
         validate_value_type(value=content, valid_type=str)
         self.content = content

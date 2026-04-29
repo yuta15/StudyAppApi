@@ -12,3 +12,5 @@ wheels/
 .coverage
 htmlcov
 .env
+skills
+.ruff_check
