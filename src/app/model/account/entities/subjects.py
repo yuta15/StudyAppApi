@@ -3,8 +3,8 @@ from enum import Enum
 from typing import Self
 from uuid import UUID
 
-from src.app.model.account.entities.validation import validate_value_type
 from src.app.model.account.entities.value_object import EmailStrings
+from src.app.model.shared.validation import validate_value_type
 
 
 class AccountSubjectTypes(Enum):
@@ -24,13 +24,13 @@ class AllowedIdentityProvider(Enum):
 
 @dataclass
 class AccountProfile:
-    principal_id:UUID
-    display_name:str
-    email:EmailStrings
-    country:Country = Country.NOT_SET
+    principal_id: UUID
+    display_name: str
+    email: EmailStrings
+    country: Country = Country.NOT_SET
 
     @classmethod
-    def new(cls, principal_id:UUID, display_name:str, email:EmailStrings, **kwargs) -> Self:
+    def new(cls, principal_id: UUID, display_name: str, email: EmailStrings, **kwargs) -> Self:
         validate_value_type(value=principal_id, valid_type=UUID)
         validate_value_type(value=display_name, valid_type=str)
         validate_value_type(value=email, valid_type=EmailStrings)
@@ -45,26 +45,26 @@ class AccountProfile:
         self.display_name = MASK_VALUE
         self.email = EmailStrings(f"{MASK_VALUE}@{MASK_VALUE}")
 
-    def set_display_name(self, display_name:str) -> None:
+    def set_display_name(self, display_name: str) -> None:
         validate_value_type(value=display_name, valid_type=str)
         self.display_name = display_name
 
-    def set_email(self, email:EmailStrings) -> None:
+    def set_email(self, email: EmailStrings) -> None:
         validate_value_type(value=email, valid_type=EmailStrings)
         self.email = email
-    
-    def set_country(self, country:Country) -> None:
+
+    def set_country(self, country: Country) -> None:
         validate_value_type(value=country, valid_type=Country)
         self.country = country
 
 
 @dataclass
 class AccountBasicSettings:
-    principal_id:UUID
-    is_public:bool = True
+    principal_id: UUID
+    is_public: bool = True
 
     @classmethod
-    def new(cls, principal_id:UUID, **kwargs) -> Self:
+    def new(cls, principal_id: UUID, **kwargs) -> Self:
         validate_value_type(value=principal_id, valid_type=UUID)
         return AccountBasicSettings(
             principal_id=principal_id,
@@ -73,30 +73,26 @@ class AccountBasicSettings:
     def delete(self):
         self.is_public = False
 
-    def set_is_public(self, is_public:bool) -> None:
+    def set_is_public(self, is_public: bool) -> None:
         validate_value_type(value=is_public, valid_type=bool)
         self.is_public = is_public
 
 
 @dataclass
 class AccountIdentity:
-    principal_id:UUID
-    subject:str
-    provider:AllowedIdentityProvider
+    principal_id: UUID
+    subject: str
+    provider: AllowedIdentityProvider
 
     @classmethod
-    def new(cls, principal_id:UUID, subject:str, provider:AllowedIdentityProvider) -> Self:
+    def new(cls, principal_id: UUID, subject: str, provider: AllowedIdentityProvider) -> Self:
         validate_value_type(value=principal_id, valid_type=UUID)
         validate_value_type(value=subject, valid_type=str)
         validate_value_type(value=provider, valid_type=AllowedIdentityProvider)
         if subject in ["", " "]:
             raise ValueError("invalid value")
 
-        return cls(
-            principal_id=principal_id,
-            subject=subject,
-            provider=provider
-        )
+        return cls(principal_id=principal_id, subject=subject, provider=provider)
 
     def delete(self) -> None:
         MASK_VALUE = "XXXXXXXXXX"

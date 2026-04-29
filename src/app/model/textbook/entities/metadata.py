@@ -8,20 +8,20 @@ from uuid import uuid4, UUID
 class TextbookMetadata:
     """Textbookに紐づく作成・更新・削除状態のメタデータを管理する。"""
 
-    textbook_id:UUID
-    metadata_id:UUID
-    created_at:datetime
-    updated_at:datetime
-    deleted_at:datetime|None = None
+    textbook_id: UUID
+    metadata_id: UUID
+    created_at: datetime
+    updated_at: datetime
+    deleted_at: datetime | None = None
 
     @classmethod
-    def new(cls, textbook_id:UUID) -> Self:
+    def new(cls, textbook_id: UUID) -> Self:
         utc_now = datetime.now(timezone.utc)
         return TextbookMetadata(
             textbook_id=textbook_id,
             metadata_id=uuid4(),
             created_at=utc_now,
-            updated_at=utc_now
+            updated_at=utc_now,
         )
 
     def update(self) -> None:

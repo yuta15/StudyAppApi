@@ -12,7 +12,7 @@ from src.app.usecase.account.repository import (
     CreateAccountRepositories,
     DeleteAccountRepositories,
     ModifyAccountRepositories,
-    )
+)
 from src.test.usecase.account.repositories import (
     TestAccountAuthReadInterface,
     TestAccountRepositoryInterface,
@@ -64,7 +64,7 @@ def create_account_dto(account_name, display_name, email, identity_subject):
         display_name=display_name,
         email=email,
         subject=identity_subject,
-        provider=AllowedIdentityProvider.FIREBASE
+        provider=AllowedIdentityProvider.FIREBASE,
     )
 
 
@@ -104,7 +104,8 @@ def positive_delete_account_repositories(
         metadata=TestAccountMetadataInterface(return_account_metadata=metadata_generator()),
         profile=TestAccountProfileInterface(return_account_profile=profile_generator()),
         basic_settings=TestAccountBasicSettingsInterface(return_account_basic_settings=basic_settings_generator()),
-        identity=TestAccountIdentityInterface(return_principal_identity=identity_generator()))
+        identity=TestAccountIdentityInterface(return_principal_identity=identity_generator()),
+    )
 
 
 @pytest.fixture
@@ -121,7 +122,8 @@ def negative_delete_account_repositories(
         metadata=TestAccountMetadataInterface(return_account_metadata=metadata_generator()),
         profile=TestAccountProfileInterface(return_account_profile=profile_generator()),
         basic_settings=TestAccountBasicSettingsInterface(return_account_basic_settings=basic_settings_generator()),
-        identity=TestAccountIdentityInterface(return_principal_identity=identity_generator()))
+        identity=TestAccountIdentityInterface(return_principal_identity=identity_generator()),
+    )
 
 
 @pytest.fixture
@@ -138,7 +140,8 @@ def auth_failed_delete_account_repositories(
         metadata=TestAccountMetadataInterface(return_account_metadata=metadata_generator()),
         profile=TestAccountProfileInterface(return_account_profile=profile_generator()),
         basic_settings=TestAccountBasicSettingsInterface(return_account_basic_settings=basic_settings_generator()),
-        identity=TestAccountIdentityInterface(return_principal_identity=identity_generator()))
+        identity=TestAccountIdentityInterface(return_principal_identity=identity_generator()),
+    )
 
 
 @pytest.fixture
@@ -153,7 +156,7 @@ def positive_modify_account_repository(
         account=TestAccountRepositoryInterface(return_account=account_generator()),
         metadata=TestAccountMetadataInterface(return_account_metadata=metadata_generator()),
         profile=TestAccountProfileInterface(return_account_profile=profile_generator()),
-        basic_settings=TestAccountBasicSettingsInterface(return_account_basic_settings=basic_settings_generator())
+        basic_settings=TestAccountBasicSettingsInterface(return_account_basic_settings=basic_settings_generator()),
     )
 
 
@@ -169,7 +172,7 @@ def auth_failed_modify_account_repository(
         account=TestAccountRepositoryInterface(return_account=account_generator()),
         metadata=TestAccountMetadataInterface(return_account_metadata=metadata_generator()),
         profile=TestAccountProfileInterface(return_account_profile=profile_generator()),
-        basic_settings=TestAccountBasicSettingsInterface(return_account_basic_settings=basic_settings_generator())
+        basic_settings=TestAccountBasicSettingsInterface(return_account_basic_settings=basic_settings_generator()),
     )
 
 
@@ -185,7 +188,7 @@ def get_failed_modify_account_repository(
         account=TestAccountRepositoryInterface(return_account=account_generator(), is_negative=True),
         metadata=TestAccountMetadataInterface(return_account_metadata=metadata_generator()),
         profile=TestAccountProfileInterface(return_account_profile=profile_generator()),
-        basic_settings=TestAccountBasicSettingsInterface(return_account_basic_settings=basic_settings_generator())
+        basic_settings=TestAccountBasicSettingsInterface(return_account_basic_settings=basic_settings_generator()),
     )
 
 
@@ -201,5 +204,5 @@ def save_failed_modify_account_repository(
         account=TestAccountRepositoryInterface(return_account=account_generator()),
         metadata=TestAccountMetadataInterface(return_account_metadata=metadata_generator(), is_negative=True),
         profile=TestAccountProfileInterface(return_account_profile=profile_generator()),
-        basic_settings=TestAccountBasicSettingsInterface(return_account_basic_settings=basic_settings_generator())
+        basic_settings=TestAccountBasicSettingsInterface(return_account_basic_settings=basic_settings_generator()),
     )

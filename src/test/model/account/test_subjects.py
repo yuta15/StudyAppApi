@@ -6,7 +6,7 @@ from src.app.model.account.entities.subjects import (
     AllowedIdentityProvider,
     AccountProfile,
     AccountBasicSettings,
-    AccountIdentity
+    AccountIdentity,
 )
 
 
@@ -17,11 +17,13 @@ def test_profile_new(account_principal_id, display_name, email):
     assert profile.email == email
     assert profile.country == Country.NOT_SET
 
+
 def test_profile_set_display_name_success(profile_generator):
     profile = profile_generator()
     new_display_name = "new_display_name"
     profile.set_display_name(display_name=new_display_name)
     assert profile.display_name == new_display_name
+
 
 def test_profile_set_display_name_failure(profile_generator):
     profile = profile_generator()
@@ -29,11 +31,13 @@ def test_profile_set_display_name_failure(profile_generator):
     with pytest.raises(Exception):
         profile.set_display_name(display_name=new_display_name)
 
+
 def test_profile_set_email_success(profile_generator):
     profile = profile_generator()
     email = EmailStrings("new_email@example.com")
     profile.set_email(email=email)
     assert profile.email == email
+
 
 def test_profile_set_email_failure(profile_generator):
     profile = profile_generator()
@@ -41,16 +45,19 @@ def test_profile_set_email_failure(profile_generator):
     with pytest.raises(Exception):
         profile.set_email(email=email)
 
+
 def test_profile_set_country_success(profile_generator):
     profile = profile_generator()
     profile.set_country(Country.JP)
     assert profile.country == Country.JP
+
 
 def test_profile_set_country_failure(profile_generator):
     profile = profile_generator()
     country = "JP"
     with pytest.raises(Exception):
         profile.set_country(country=country)
+
 
 def test_profile_delete(profile_generator):
     profile = profile_generator()
@@ -65,15 +72,18 @@ def test_basic_settings_new(account_principal_id):
     assert basic_settings.principal_id == account_principal_id
     assert basic_settings.is_public
 
+
 def test_basic_settings_is_public_success(basic_settings_generator):
     basic_settings = basic_settings_generator()
     basic_settings.set_is_public(is_public=False)
     assert not basic_settings.is_public
 
+
 def test_basic_settings_is_public_failure(basic_settings_generator):
     basic_settings = basic_settings_generator()
     with pytest.raises(Exception):
         basic_settings.set_is_public(is_public=1)
+
 
 def test_basic_settings_delete(basic_settings_generator):
     basic_settings = basic_settings_generator()
@@ -82,11 +92,11 @@ def test_basic_settings_delete(basic_settings_generator):
 
 
 @pytest.mark.parametrize(
-        ["provider", "subject"],
-        [
-            [AllowedIdentityProvider.FIREBASE, "test_user"],
-            [AllowedIdentityProvider.FIREBASE, "d6c90ea7-c7bd-4963-9d1b-8766c2f41d92"]
-        ]
+    ["provider", "subject"],
+    [
+        [AllowedIdentityProvider.FIREBASE, "test_user"],
+        [AllowedIdentityProvider.FIREBASE, "d6c90ea7-c7bd-4963-9d1b-8766c2f41d92"],
+    ],
 )
 def test_identity_new(account_principal_id, provider, subject):
     identity = AccountIdentity.new(principal_id=account_principal_id, subject=subject, provider=provider)
@@ -94,21 +104,22 @@ def test_identity_new(account_principal_id, provider, subject):
     assert identity.provider == provider
     assert identity.subject == subject
 
-@pytest.mark.parametrize(
-        ["provider", "subject"],
-        [
-            [None, None],
-            ["AllowedIdentityProvider.FIREBASE", "test_user"],
-            [AllowedIdentityProvider.FIREBASE, None],
-            [AllowedIdentityProvider.FIREBASE, 1],
-            [AllowedIdentityProvider.FIREBASE, ""],
-            [AllowedIdentityProvider.FIREBASE, " "],
 
-        ]
+@pytest.mark.parametrize(
+    ["provider", "subject"],
+    [
+        [None, None],
+        ["AllowedIdentityProvider.FIREBASE", "test_user"],
+        [AllowedIdentityProvider.FIREBASE, None],
+        [AllowedIdentityProvider.FIREBASE, 1],
+        [AllowedIdentityProvider.FIREBASE, ""],
+        [AllowedIdentityProvider.FIREBASE, " "],
+    ],
 )
 def test_identity_new_failure(account_principal_id, provider, subject):
     with pytest.raises(Exception):
         AccountIdentity.new(principal_id=account_principal_id, subject=subject, provider=provider)
+
 
 def test_indeity_delete(identity_generator):
     identity = identity_generator()

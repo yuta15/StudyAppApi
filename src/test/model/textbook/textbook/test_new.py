@@ -4,18 +4,7 @@ import pytest
 
 from src.app.model.textbook.entities.subjects import Textbook
 
-INVALID_TITLE_IDS = [
-    "none",
-    "integer",
-    "empty",
-    "space",
-    "spaces",
-    "tab",
-    "newline",
-    "leading_space",
-    "trailing_space",
-    "surrounding_space",
-]
+INVALID_TITLE_TYPE_IDS = ["none", "integer", "string"]
 INVALID_UUID_IDS = ["none", "integer", "string"]
 
 
@@ -34,11 +23,11 @@ def test_new_success_creates_textbook(textbook_title, account_principal_id):
 
 @pytest.mark.parametrize(
     "title",
-    [None, 1, "", " ", "   ", "\t", "\n", " Python", "Python ", " Python "],
-    ids=INVALID_TITLE_IDS,
+    [None, 1, "Python"],
+    ids=INVALID_TITLE_TYPE_IDS,
 )
-def test_new_failure_invalid_title(title, account_principal_id):
-    """不正なタイトルでは作成できないこと。"""
+def test_new_failure_invalid_title_type(title, account_principal_id):
+    """TitleString以外のタイトルでは作成できないこと。"""
 
     # Assert
     with pytest.raises(ValueError):

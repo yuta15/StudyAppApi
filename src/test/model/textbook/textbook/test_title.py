@@ -1,17 +1,8 @@
 import pytest
 
-INVALID_TITLE_IDS = [
-    "none",
-    "integer",
-    "empty",
-    "space",
-    "spaces",
-    "tab",
-    "newline",
-    "leading_space",
-    "trailing_space",
-    "surrounding_space",
-]
+from src.app.model.textbook.entities.value_object import TitleString
+
+INVALID_TITLE_TYPE_IDS = ["none", "integer", "string"]
 
 
 def test_set_title_success_updates_title(textbook_generator):
@@ -19,7 +10,7 @@ def test_set_title_success_updates_title(textbook_generator):
 
     # Arrange
     textbook = textbook_generator()
-    new_title = "New Python Textbook"
+    new_title = TitleString("New Python Textbook")
 
     # Act
     textbook.set_title(title=new_title)
@@ -46,11 +37,11 @@ def test_set_title_success_accepts_special_characters(
 
 @pytest.mark.parametrize(
     "title",
-    [None, 1, "", " ", "   ", "\t", "\n", " Python", "Python ", " Python "],
-    ids=INVALID_TITLE_IDS,
+    [None, 1, "Python"],
+    ids=INVALID_TITLE_TYPE_IDS,
 )
-def test_set_title_failure_invalid_value(textbook_generator, title):
-    """不正なタイトルでは更新できないこと。"""
+def test_set_title_failure_invalid_title_type(textbook_generator, title):
+    """TitleString以外のタイトルでは更新できないこと。"""
 
     # Arrange
     textbook = textbook_generator()

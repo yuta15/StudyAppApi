@@ -4,6 +4,7 @@ from uuid import UUID
 import pytest
 
 from src.app.model.textbook.entities.metadata import TextbookMetadata
+from src.app.model.textbook.entities.value_object import TitleString
 from src.app.model.textbook.entities.subjects import Textbook
 from src.test import const
 
@@ -59,6 +60,16 @@ def new_chapter_ids(new_chapter_id):
 
 
 @pytest.fixture
+def chapter_title():
+    return TitleString(const.textbook_chapter_title)
+
+
+@pytest.fixture
+def chapter_content():
+    return const.textbook_chapter_content
+
+
+@pytest.fixture
 def textbook_metadata_generator(textbook_id, textbook_metadata_id):
     def generator():
         utc_now = datetime.now(timezone.utc)
@@ -74,12 +85,14 @@ def textbook_metadata_generator(textbook_id, textbook_metadata_id):
 
 @pytest.fixture
 def textbook_title():
-    return 'Python & AI <Basics> "DDD" O\'Reilly #1: A/B'
+    return TitleString('Python & AI <Basics> "DDD" O\'Reilly #1: A/B')
 
 
 @pytest.fixture
 def textbook_generator(account_principal_id):
-    def generator(title="Python Textbook"):
+    def generator(title=None):
+        if title is None:
+            title = TitleString("Python Textbook")
         return Textbook.new(title=title, author_id=account_principal_id)
 
     return generator

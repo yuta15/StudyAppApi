@@ -9,7 +9,7 @@ from src.app.model.account.entities.value_object import AccountNameStrings, Emai
 from src.app.model.account.entities.subjects import (
     AccountProfile,
     AccountBasicSettings,
-    AccountIdentity
+    AccountIdentity,
 )
 from src.test import const
 from src.test.dummy_session import DummySession
@@ -61,6 +61,7 @@ def account_generator(account_name, account_principal_id):
         account = Account.new(account_name=account_name)
         account.principal_id = account_principal_id
         return account
+
     return generator
 
 
@@ -68,6 +69,7 @@ def account_generator(account_name, account_principal_id):
 def profile_generator(account_principal_id, display_name, email):
     def generator():
         return AccountProfile.new(principal_id=account_principal_id, display_name=display_name, email=email)
+
     return generator
 
 
@@ -75,6 +77,7 @@ def profile_generator(account_principal_id, display_name, email):
 def basic_settings_generator(account_principal_id):
     def generator():
         return AccountBasicSettings.new(principal_id=account_principal_id)
+
     return generator
 
 
@@ -84,11 +87,17 @@ def metadata_generator(account_principal_id, metadata_id):
         metadata = AccountMetadata.new(account_principal_id)
         metadata.metadata_id = metadata_id
         return metadata
+
     return generator
 
 
 @pytest.fixture
 def identity_generator(account_principal_id, identity_provider, identity_subject):
     def generator():
-        return AccountIdentity.new(principal_id=account_principal_id, provider=identity_provider, subject=identity_subject)
+        return AccountIdentity.new(
+            principal_id=account_principal_id,
+            provider=identity_provider,
+            subject=identity_subject,
+        )
+
     return generator

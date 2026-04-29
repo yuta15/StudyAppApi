@@ -6,13 +6,13 @@ from enum import Enum
 
 
 class PrincipalTypes(Enum):
-    ACCOUNT="ACCOUNT"
+    ACCOUNT = "ACCOUNT"
 
 
 @dataclass
 class Principal(ABC):
-    principal_id:UUID
+    principal_id: UUID
 
     @classmethod
     @abstractmethod
-    def new(cls, **kwargs) -> Self:...
+    def new(cls, **kwargs) -> Self: ...

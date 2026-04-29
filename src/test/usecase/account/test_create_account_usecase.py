@@ -31,5 +31,8 @@ def test_usecase(dummy_session, positive_create_account_repositories, create_acc
 
 def test_usecase_raise_save(dummy_session, account_negative_create_account_repositories, create_account_dto):
     with pytest.raises(TestException):
-        usecase = CreateAccountUsecase(session=dummy_session, repositories=account_negative_create_account_repositories)
+        usecase = CreateAccountUsecase(
+            session=dummy_session,
+            repositories=account_negative_create_account_repositories,
+        )
         usecase.exec(create_account_dto=create_account_dto)

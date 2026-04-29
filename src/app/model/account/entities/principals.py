@@ -5,8 +5,8 @@ from uuid import uuid4
 
 from src.app.model.shared.entities import Principal
 from src.app.model.account.entities.value_object import AccountNameStrings
-from src.app.model.account.entities.validation import validate_value_type
 from src.app.core.exceptions import DomainError
+from src.app.model.shared.validation import validate_value_type
 
 
 class AccountStatus(Enum):
@@ -22,17 +22,14 @@ class AccountAuthorizations(Enum):
 @dataclass
 class Account(Principal):
     """権限を割り当てられる対象"""
-    account_name:AccountNameStrings
-    status:AccountStatus
+
+    account_name: AccountNameStrings
+    status: AccountStatus
 
     @classmethod
-    def new(cls, account_name:AccountNameStrings, **kwargs) -> Self:
+    def new(cls, account_name: AccountNameStrings, **kwargs) -> Self:
         validate_value_type(value=account_name, valid_type=AccountNameStrings)
-        return Account(
-            principal_id=uuid4(),
-            account_name=account_name,
-            status=AccountStatus.ACTIVE
-        )
+        return Account(principal_id=uuid4(), account_name=account_name, status=AccountStatus.ACTIVE)
 
     def to_delete(self) -> None:
         if self.status == AccountStatus.DELETED:
@@ -48,4 +45,3 @@ class Account(Principal):
         if self.status == AccountStatus.DELETED:
             raise DomainError("Already deleted")
         self.status = AccountStatus.ACTIVE
-
