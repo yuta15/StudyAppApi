@@ -43,7 +43,7 @@ def test_update_profile_success(profile_generator, metadata_generator, values):
         elif p == "country":
             assert profile_data.country == v
     assert metadata_data.updated_at != metadata_data.created_at
-    assert is_changed == True
+    assert is_changed
 
 
 def test_update_profile_no_change(profile_generator, metadata_generator):
@@ -57,7 +57,7 @@ def test_update_profile_no_change(profile_generator, metadata_generator):
     email = profile_data.email
     country = profile_data.country
     is_changed = UpdateSubjectsDomainService.update_profile(target_profile=profile_data, metadata=metadata_data)
-    assert is_changed == False
+    assert not is_changed
     assert profile_data.display_name == display_name
     assert profile_data.email == email
     assert profile_data.country == country
@@ -85,7 +85,7 @@ def test_update_basic_settings_success(basic_settings_generator, metadata_genera
     for k, v in values.items():
         if k == "is_public":
             assert basic_settings_data.is_public == v
-    assert is_changed == True
+    assert is_changed
     assert metadata_data.updated_at != updated_at
 
 
@@ -94,6 +94,6 @@ def test_update_basic_settings_no_change(basic_settings_generator, metadata_gene
     metadata_data = metadata_generator()
     is_public = basic_settings_data.is_public
     is_changed = UpdateSubjectsDomainService.update_basic_settings(target_basic_settings=basic_settings_data, metadata=metadata_data)
-    assert is_changed == False
+    assert not is_changed
     assert basic_settings_data.is_public == is_public
     assert metadata_data.updated_at == metadata_data.created_at

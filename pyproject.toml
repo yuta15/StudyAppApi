@@ -10,18 +10,12 @@ dependencies = [
     "fastapi[standard]>=0.135.1",
     "pre-commit>=4.5.1",
     "psycopg>=3.3.3",
+    "pyaml>=26.2.1",
     "pydantic>=2.12.5",
     "pydantic-settings>=2.13.1",
+    "pytest>=9.0.2",
     "pytest-cov>=7.1.0",
     "pytest-mock>=3.15.1",
     "ruff>=0.15.9",
     "sqlmodel>=0.0.37",
-]
-
-[dependency-groups]
-dev = [
-    "pytest>=9.0.2",
-]
-docs = [
-    "mkdocs>=1.6.1",
 ]

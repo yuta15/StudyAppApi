@@ -63,12 +63,12 @@ def test_profile_delete(profile_generator):
 def test_basic_settings_new(account_principal_id):
     basic_settings = AccountBasicSettings.new(principal_id=account_principal_id)
     assert basic_settings.principal_id == account_principal_id
-    assert basic_settings.is_public == True
+    assert basic_settings.is_public
 
 def test_basic_settings_is_public_success(basic_settings_generator):
     basic_settings = basic_settings_generator()
     basic_settings.set_is_public(is_public=False)
-    assert basic_settings.is_public == False
+    assert not basic_settings.is_public
 
 def test_basic_settings_is_public_failure(basic_settings_generator):
     basic_settings = basic_settings_generator()
@@ -78,7 +78,7 @@ def test_basic_settings_is_public_failure(basic_settings_generator):
 def test_basic_settings_delete(basic_settings_generator):
     basic_settings = basic_settings_generator()
     basic_settings.delete()
-    assert basic_settings.is_public == False
+    assert not basic_settings.is_public
 
 
 @pytest.mark.parametrize(
