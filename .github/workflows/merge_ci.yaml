@@ -1,0 +1,31 @@
+name: before merge ci
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v6
+      - name: install uv
+        uses: astral-sh/setup-uv@v8
+      - name: install dependencies
+        shell: bash
+        run: |-
+          set -euo pipefail
+          uv sync --locked
+      - name: run lint
+        shell: bash
+        run: uv run ruff check
+      - name: run format
+        shell: bash
+        run: uv run ruff format
+      - name: run test
+        shell: bash
+        run: |-
+          uv run pytest -svv
+      
