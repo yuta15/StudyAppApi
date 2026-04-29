@@ -1,7 +1,7 @@
 from uuid import UUID
 
-from src.app.service.authorization_service.auth_service_base import AuthServiceBase
-from src.app.service.authorization_service.account_auth_read_interface import (
+from src.app.service.authorization_service.account.auth_service_base import AuthServiceBase
+from src.app.service.authorization_service.account.account_auth_read_interface import (
     AccountAuthReadInterface,
 )
 from src.app.core.exceptions import UnauthorizedError
