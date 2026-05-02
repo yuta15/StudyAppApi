@@ -1,6 +1,6 @@
 from dataclasses import dataclass
-from src.app.model.account.entities.principals import Account, AccountStatus
-from src.app.model.account.entities.metadata import AccountMetadata
+
+from src.app.model.account import Account, AccountMetadata, AccountStatus
 
 
 @dataclass

@@ -1,7 +1,6 @@
 import pytest
 
-from src.app.model.account.entities.subjects import AllowedIdentityProvider, Country
-from src.app.model.account.entities.value_object import EmailStrings
+from src.app.model.account import AllowedIdentityProvider, Country, EmailStrings
 from src.app.usecase.account.dto import (
     CreateAccountDTO,
     ModifyAccountDTO,

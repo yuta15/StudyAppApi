@@ -1,7 +1,6 @@
 import pytest
 
-from src.app.model.textbook.entities.value_object import TitleString
-from src.app.model.textbook.service.modify_chapter_domain_service import ModifyChapterDomainService
+from src.app.model.textbook import ModifyChapterDomainService, TitleString
 
 
 @pytest.mark.parametrize(

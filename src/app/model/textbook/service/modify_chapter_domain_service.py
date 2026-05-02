@@ -1,7 +1,5 @@
+from src.app.model.textbook import Chapter, TextbookMetadata, TitleString
 from src.app.model.shared.validation import validate_value_type
-from src.app.model.textbook.entities.metadata import TextbookMetadata
-from src.app.model.textbook.entities.subjects import Chapter
-from src.app.model.textbook.entities.value_object import TitleString
 
 
 class ModifyChapterDomainService:
@@ -15,10 +13,7 @@ class ModifyChapterDomainService:
         content: str | None = None,
     ) -> bool:
         """Chapterに実際の変更がある場合だけ更新し、変更有無を返す。"""
-        ModifyChapterDomainService._validate_values(
-            title=title,
-            content=content,
-        )
+        ModifyChapterDomainService._validate_values(title=title, content=content)
 
         changed = False
 

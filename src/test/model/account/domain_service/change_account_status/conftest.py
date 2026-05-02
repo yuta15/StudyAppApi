@@ -1,7 +1,6 @@
 import pytest
 
-from src.app.model.account.entities.principals import AccountStatus
-from src.app.model.account.service.change_account_status_domain_service import ChangeStatusData
+from src.app.model.account import AccountStatus, ChangeStatusData
 
 
 @pytest.fixture

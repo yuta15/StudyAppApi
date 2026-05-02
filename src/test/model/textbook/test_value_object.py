@@ -1,6 +1,6 @@
 import pytest
 
-from src.app.model.textbook.entities.value_object import TitleString
+from src.app.model.textbook import TitleString
 
 
 INVALID_TITLE_IDS = [

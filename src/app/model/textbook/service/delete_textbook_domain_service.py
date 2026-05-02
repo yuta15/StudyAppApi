@@ -1,7 +1,6 @@
 from dataclasses import dataclass
 
-from src.app.model.textbook.entities.metadata import TextbookMetadata
-from src.app.model.textbook.entities.subjects import Textbook
+from src.app.model.textbook import Textbook, TextbookMetadata
 
 
 @dataclass

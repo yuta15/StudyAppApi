@@ -1,6 +1,6 @@
 import pytest
 
-from src.app.model.account.service.create_account_domain_service import CreateAccountInput
+from src.app.model.account import CreateAccountInput
 
 
 @pytest.fixture

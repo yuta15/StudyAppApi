@@ -1,7 +1,7 @@
 from datetime import datetime
 from uuid import UUID
 
-from src.app.model.account.entities.metadata import AccountMetadata
+from src.app.model.account import AccountMetadata
 
 
 def test_account_metadata_new(account_principal_id):

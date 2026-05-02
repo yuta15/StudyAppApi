@@ -1,4 +1,4 @@
-from src.app.model.textbook.service.create_textbook_domain_service import CreateTextbookDomainService
+from src.app.model.textbook import CreateTextbookDomainService
 
 
 def test_exec_success_creates_textbook_and_metadata(create_textbook_input):

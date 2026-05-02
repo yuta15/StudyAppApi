@@ -2,9 +2,7 @@ from datetime import datetime
 
 import pytest
 
-from src.app.model.account.entities.value_object import EmailStrings
-from src.app.model.account.entities.principals import AccountStatus
-from src.app.model.account.service.delete_account_domain_service import DeleteAccountDomainService
+from src.app.model.account import AccountStatus, DeleteAccountDomainService, EmailStrings
 
 
 def test_from_active_success(active_account_data):

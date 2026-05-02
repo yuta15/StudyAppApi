@@ -2,9 +2,7 @@ from datetime import datetime
 from uuid import UUID
 from dataclasses import dataclass
 
-from src.app.model.account.entities.value_object import EmailStrings, AccountNameStrings
-from src.app.model.account.entities.subjects import Country
-from src.app.model.account.entities.principals import AccountStatus
+from src.app.model.account import AccountNameStrings, AccountStatus, Country, EmailStrings
 
 
 @dataclass

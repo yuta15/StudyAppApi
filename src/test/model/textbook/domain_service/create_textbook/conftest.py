@@ -1,6 +1,6 @@
 import pytest
 
-from src.app.model.textbook.service.create_textbook_domain_service import CreateTextbookInput
+from src.app.model.textbook import CreateTextbookInput
 
 
 @pytest.fixture

@@ -1,10 +1,4 @@
-from src.app.model.account.entities.value_object import EmailStrings
-from src.app.model.account.entities.metadata import AccountMetadata
-from src.app.model.account.entities.subjects import (
-    Country,
-    AccountProfile,
-    AccountBasicSettings,
-)
+from src.app.model.account import AccountBasicSettings, AccountMetadata, AccountProfile, Country, EmailStrings
 
 
 class UpdateSubjectsDomainService:

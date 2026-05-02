@@ -2,8 +2,8 @@ from uuid import UUID
 
 import pytest
 
-from src.app.model.account.entities.principals import Account, AccountStatus
 from src.app.core.exceptions import DomainError
+from src.app.model.account import Account, AccountStatus
 
 
 def test_account_new(account_name):

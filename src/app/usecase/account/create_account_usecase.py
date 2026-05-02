@@ -1,12 +1,9 @@
 from uuid import UUID
 
 from sqlmodel import Session
+from src.app.model.account import CreateAccountDomainService, CreateAccountInput
 from src.app.usecase.account.dto import CreateAccountDTO
 from src.app.usecase.account.repository import CreateAccountRepositories
-from src.app.model.account.service.create_account_domain_service import (
-    CreateAccountDomainService,
-    CreateAccountInput,
-)
 
 
 class CreateAccountUsecase:

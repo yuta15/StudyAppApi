@@ -1,13 +1,12 @@
 from uuid import UUID
 
-from src.app.service.authorization_service.account.auth_service_base import AuthServiceBase
 from src.app.service.authorization_service.account.account_auth_read_interface import (
     AccountAuthReadInterface,
 )
 from src.app.core.exceptions import UnauthorizedError
 
 
-class AccountAuthService(AuthServiceBase):
+class AccountAuthService:
     def __init__(self, repository: AccountAuthReadInterface):
         self.repository = repository
 

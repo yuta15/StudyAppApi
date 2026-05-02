@@ -1,13 +1,12 @@
-from uuid import UUID
 from abc import ABC, abstractmethod
+from uuid import UUID
 
-
-from src.app.model.account.entities.metadata import AccountMetadata
-from src.app.model.account.entities.principals import Account
-from src.app.model.account.entities.subjects import (
-    AccountProfile,
+from src.app.model.account import (
+    Account,
     AccountBasicSettings,
     AccountIdentity,
+    AccountMetadata,
+    AccountProfile,
 )
 
 
