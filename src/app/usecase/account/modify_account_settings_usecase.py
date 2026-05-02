@@ -1,7 +1,7 @@
 from sqlmodel import Session
 
 from src.app.model.account import UpdateSubjectsDomainService
-from src.app.service.authorization_service.account.account_auth_service import AccountAuthService
+from src.app.service.authorization_service.account import AccountAuthService
 from src.app.usecase.account.repository import ModifyAccountRepositories
 from src.app.usecase.account.dto import ModifyAccountDTO
 from src.app.usecase.account.read_model import (

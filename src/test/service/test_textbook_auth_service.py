@@ -1,7 +1,7 @@
 import pytest
 
 from src.app.core.exceptions import UnauthorizedError
-from src.app.service.authorization_service.textbook import textbook_auth_service
+from src.app.service.authorization_service.textbook import TextbookAuthService
 from src.test.service.dummy_textbook_auth_dependencies import DummyAccountAuthService, DummyTextbookAuthReader
 
 
@@ -10,9 +10,7 @@ def test_auth_success_authorized_author(account_principal_id, textbook_id):
     # Arrange
     account_auth_service = DummyAccountAuthService(is_authorized=True)
     textbook_auth_reader = DummyTextbookAuthReader(result=True)
-    service = textbook_auth_service.TextbookAuthService(
-        account_auth_service=account_auth_service, repository=textbook_auth_reader
-    )
+    service = TextbookAuthService(account_auth_service=account_auth_service, repository=textbook_auth_reader)
 
     # Act
     result = service.auth(principal_id=account_principal_id, textbook_id=textbook_id)
@@ -29,9 +27,7 @@ def test_auth_failure_account_unauthorized(account_principal_id, textbook_id):
     # Arrange
     account_auth_service = DummyAccountAuthService(is_authorized=False)
     textbook_auth_reader = DummyTextbookAuthReader(result=True)
-    service = textbook_auth_service.TextbookAuthService(
-        account_auth_service=account_auth_service, repository=textbook_auth_reader
-    )
+    service = TextbookAuthService(account_auth_service=account_auth_service, repository=textbook_auth_reader)
 
     # Assert
     with pytest.raises(UnauthorizedError):
@@ -52,9 +48,7 @@ def test_auth_failure_principal_is_not_textbook_author(
     # Arrange
     account_auth_service = DummyAccountAuthService(is_authorized=True)
     textbook_auth_reader = DummyTextbookAuthReader(result=False)
-    service = textbook_auth_service.TextbookAuthService(
-        account_auth_service=account_auth_service, repository=textbook_auth_reader
-    )
+    service = TextbookAuthService(account_auth_service=account_auth_service, repository=textbook_auth_reader)
 
     # Assert
     with pytest.raises(UnauthorizedError) as error:

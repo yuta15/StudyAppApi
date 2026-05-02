@@ -1,4 +1,4 @@
-from src.app.service.authorization_service.account.account_auth_read_interface import AccountAuthReadInterface
+from src.app.service.authorization_service.account import AccountAuthReadInterface
 
 
 class TestAccountAuthReaderException(Exception):

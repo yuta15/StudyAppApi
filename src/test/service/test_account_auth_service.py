@@ -1,7 +1,7 @@
 import pytest
 
-from src.app.service.authorization_service.account.account_auth_service import AccountAuthService
 from src.app.core.exceptions import UnauthorizedError
+from src.app.service.authorization_service.account import AccountAuthService
 
 
 def test_found_account_auth_service(found_account_auth_reader, account_principal_id):
