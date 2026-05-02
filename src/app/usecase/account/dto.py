@@ -1,8 +1,7 @@
 from dataclasses import dataclass
 from uuid import UUID
 
-from src.app.model.account.entities.value_object import AccountNameStrings, EmailStrings
-from src.app.model.account.entities.subjects import AllowedIdentityProvider, Country
+from src.app.model.account import AccountNameStrings, AllowedIdentityProvider, Country, EmailStrings
 
 
 @dataclass

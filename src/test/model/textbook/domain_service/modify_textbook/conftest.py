@@ -2,8 +2,7 @@ from datetime import datetime, timezone
 
 import pytest
 
-from src.app.model.textbook.entities.metadata import TextbookMetadata
-from src.app.model.textbook.entities.subjects import Textbook
+from src.app.model.textbook import Textbook, TextbookMetadata
 
 
 @pytest.fixture

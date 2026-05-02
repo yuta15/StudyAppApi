@@ -1,8 +1,6 @@
 import pytest
 
-from src.app.model.account.service.delete_account_domain_service import (
-    DeleteAccountData,
-)
+from src.app.model.account import DeleteAccountData
 
 
 @pytest.fixture

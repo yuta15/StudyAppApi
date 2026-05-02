@@ -1,7 +1,7 @@
 import string
 import pytest
 
-from src.app.model.account.entities.value_object import AccountNameStrings, EmailStrings
+from src.app.model.account import AccountNameStrings, EmailStrings
 
 
 invalid_char_names = []

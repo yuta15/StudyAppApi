@@ -1,10 +1,8 @@
 from uuid import UUID
 
 from src.app.core.exceptions import DomainError
+from src.app.model.textbook import Chapter, Textbook, TextbookMetadata, TitleString
 from src.app.model.shared.validation import validate_value_type
-from src.app.model.textbook.entities.metadata import TextbookMetadata
-from src.app.model.textbook.entities.subjects import Chapter, Textbook
-from src.app.model.textbook.entities.value_object import TitleString
 
 
 class ModifyTextbookDomainService:
@@ -56,8 +54,10 @@ class ModifyTextbookDomainService:
         if chapter_id not in textbook.chapter_ids:
             raise DomainError("Chapter is not registered")
 
-        textbook.set_chapters(
-            chapter_ids=[registered_id for registered_id in textbook.chapter_ids if registered_id != chapter_id],
-        )
+        chapter_ids = []
+        for registered_id in textbook.chapter_ids:
+            if registered_id != chapter_id:
+                chapter_ids.append(registered_id)
+        textbook.set_chapters(chapter_ids=chapter_ids)
         metadata.update()
         return True

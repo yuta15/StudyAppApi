@@ -2,7 +2,7 @@ from uuid import UUID
 
 import pytest
 
-from src.app.model.textbook.entities.subjects import Textbook
+from src.app.model.textbook import Textbook
 
 INVALID_TITLE_TYPE_IDS = ["none", "integer", "string"]
 INVALID_UUID_IDS = ["none", "integer", "string"]

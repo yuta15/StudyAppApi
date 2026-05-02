@@ -1,7 +1,7 @@
 from datetime import datetime
 from uuid import UUID, uuid4
 
-from src.app.model.textbook.entities.metadata import TextbookMetadata
+from src.app.model.textbook import TextbookMetadata
 
 
 def test_textbook_metadata_new():

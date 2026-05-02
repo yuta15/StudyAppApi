@@ -1,4 +1,4 @@
-from src.app.model.account.service.create_account_domain_service import CreateAccountDomainService
+from src.app.model.account import CreateAccountDomainService
 
 
 def test_success(create_account_input):

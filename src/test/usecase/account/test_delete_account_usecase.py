@@ -2,7 +2,7 @@ from datetime import datetime
 
 import pytest
 
-from src.app.model.account.entities.principals import AccountStatus
+from src.app.model.account import AccountStatus
 from src.app.usecase.account.delete_account_usecase import DeleteAccountUsecase
 from src.app.core.exceptions import UnauthorizedError
 from src.test.usecase.account.repositories import TestException

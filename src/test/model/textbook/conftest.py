@@ -3,9 +3,7 @@ from uuid import UUID
 
 import pytest
 
-from src.app.model.textbook.entities.metadata import TextbookMetadata
-from src.app.model.textbook.entities.value_object import TitleString
-from src.app.model.textbook.entities.subjects import Textbook
+from src.app.model.textbook import Textbook, TextbookMetadata, TitleString
 from src.test import const
 
 

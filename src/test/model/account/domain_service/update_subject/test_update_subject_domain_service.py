@@ -1,8 +1,6 @@
 import pytest
 
-from src.app.model.account.entities.value_object import EmailStrings
-from src.app.model.account.entities.subjects import Country
-from src.app.model.account.service.update_subjects_domain_service import UpdateSubjectsDomainService
+from src.app.model.account import Country, EmailStrings, UpdateSubjectsDomainService
 
 
 @pytest.mark.parametrize(

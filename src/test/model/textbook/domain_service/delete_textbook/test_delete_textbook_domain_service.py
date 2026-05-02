@@ -1,4 +1,4 @@
-from src.app.model.textbook.service.delete_textbook_domain_service import DeleteTextbookDomainService
+from src.app.model.textbook import DeleteTextbookDomainService
 
 
 def test_exec_success_deletes_textbook_and_metadata(textbook_data):

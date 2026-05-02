@@ -1,12 +1,12 @@
 import pytest
 
-from src.app.model.account.entities.value_object import EmailStrings
-from src.app.model.account.entities.subjects import (
-    Country,
-    AllowedIdentityProvider,
-    AccountProfile,
+from src.app.model.account import (
     AccountBasicSettings,
     AccountIdentity,
+    AccountProfile,
+    AllowedIdentityProvider,
+    Country,
+    EmailStrings,
 )
 
 

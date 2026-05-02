@@ -1,9 +1,7 @@
 import pytest
 
 from src.app.core.exceptions import DomainError
-from src.app.model.textbook.entities.subjects import Chapter
-from src.app.model.textbook.entities.value_object import TitleString
-from src.app.model.textbook.service.modify_textbook_domain_service import ModifyTextbookDomainService
+from src.app.model.textbook import Chapter, ModifyTextbookDomainService, TitleString
 
 
 @pytest.mark.parametrize(

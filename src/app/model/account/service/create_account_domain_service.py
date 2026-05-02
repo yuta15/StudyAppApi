@@ -1,13 +1,14 @@
 from dataclasses import dataclass
 
-from src.app.model.account.entities.value_object import EmailStrings, AccountNameStrings
-from src.app.model.account.entities.principals import Account
-from src.app.model.account.entities.metadata import AccountMetadata
-from src.app.model.account.entities.subjects import (
-    AccountProfile,
+from src.app.model.account import (
+    Account,
     AccountBasicSettings,
     AccountIdentity,
+    AccountMetadata,
+    AccountNameStrings,
+    AccountProfile,
     AllowedIdentityProvider,
+    EmailStrings,
 )
 
 

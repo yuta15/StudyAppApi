@@ -2,8 +2,7 @@ from uuid import UUID
 
 import pytest
 
-from src.app.model.textbook.entities.value_object import TitleString
-from src.app.model.textbook.entities.subjects import Chapter
+from src.app.model.textbook import Chapter, TitleString
 
 INVALID_TITLE_TYPE_IDS = ["none", "integer", "string"]
 INVALID_CONTENT_TYPE_IDS = ["none", "integer", "list"]

@@ -1,9 +1,6 @@
 import pytest
 
-from src.app.model.account.entities.principals import AccountStatus
-from src.app.model.account.service.change_account_status_domain_service import (
-    ChangeAccountStatusDomainService,
-)
+from src.app.model.account import AccountStatus, ChangeAccountStatusDomainService
 
 
 def test_active_to_suspend_success(active_to_suspend):
