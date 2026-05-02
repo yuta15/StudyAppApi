@@ -14,7 +14,7 @@ repos:
 
       - id: ruff-format
         name: ruff format
-        entry: uv run ruff format
+        entry: uv run ruff format --check
         language: system
         stages: [pre-commit]
         types_or: [python, pyi]
