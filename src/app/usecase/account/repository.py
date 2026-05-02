@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 
-from src.app.service.authorization_service.account.account_auth_read_interface import AccountAuthReadInterface
+from src.app.service.authorization_service.account import AccountAuthReadInterface
 from src.app.model.account.interface.account_repository_interfaces import (
     AccountRepositoryInterface,
     AccountMetadataRepositoryInterface,

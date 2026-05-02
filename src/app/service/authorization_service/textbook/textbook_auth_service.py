@@ -1,7 +1,7 @@
 from uuid import UUID
 
 from src.app.core.exceptions import UnauthorizedError
-from src.app.service.authorization_service.account.account_auth_service import AccountAuthService
+from src.app.service.authorization_service.account import AccountAuthService
 from src.app.service.authorization_service.textbook.textbook_auth_read_interface import (
     TextbookAuthReadInterface,
 )

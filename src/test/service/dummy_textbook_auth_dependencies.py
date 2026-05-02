@@ -1,7 +1,5 @@
 from src.app.core.exceptions import UnauthorizedError
-from src.app.service.authorization_service.textbook.textbook_auth_read_interface import (
-    TextbookAuthReadInterface,
-)
+from src.app.service.authorization_service.textbook import TextbookAuthReadInterface
 
 
 class DummyAccountAuthService:
