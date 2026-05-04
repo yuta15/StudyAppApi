@@ -36,9 +36,9 @@ class ModifyTextbookDomainService:
         return changed
 
     @staticmethod
-    def add_chapter(textbook: Textbook, metadata: TextbookMetadata) -> Chapter:
-        """未入力状態の章を作成し、Textbookの章ID一覧の末尾へ追加する。"""
-        chapter = Chapter.new()
+    def add_chapter(textbook: Textbook, metadata: TextbookMetadata, title: TitleString) -> Chapter:
+        """章を作成し、Textbookの章ID一覧の末尾へ追加する。"""
+        chapter = Chapter.new(title=title)
         textbook.set_chapters(chapter_ids=[*textbook.chapter_ids, chapter.chapter_id])
         metadata.update()
         return chapter

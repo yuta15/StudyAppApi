@@ -33,7 +33,7 @@ Textbook本体の編集
 例: title
 必要ならis_public
 Chapter追加
-Chapter.new()でChapterを作成
+Chapter.new(title)でChapterを作成
 Textbook.chapter_idsへ追加
 作成したChapterを返す
 Chapter削除

@@ -122,8 +122,8 @@ def test_update_textbook_failure_invalid_value_propagates_from_entity(textbook, 
     assert textbook_metadata.updated_at == updated_at
 
 
-def test_add_chapter_success_creates_empty_chapter_and_appends_id(textbook, textbook_metadata):
-    """未入力状態のChapterを作成し、chapter_idがTextbookの末尾に追加されること。"""
+def test_add_chapter_success_creates_chapter_and_appends_id(textbook, textbook_metadata, chapter_title):
+    """タイトル付きのChapterを作成し、chapter_idがTextbookの末尾に追加されること。"""
     # Arrange
     chapter_ids = list(textbook.chapter_ids)
     updated_at = textbook_metadata.updated_at
@@ -132,17 +132,18 @@ def test_add_chapter_success_creates_empty_chapter_and_appends_id(textbook, text
     chapter = ModifyTextbookDomainService.add_chapter(
         textbook=textbook,
         metadata=textbook_metadata,
+        title=chapter_title,
     )
 
     # Assert
     assert isinstance(chapter, Chapter)
-    assert chapter.title is None
-    assert chapter.content is None
+    assert chapter.title == chapter_title
+    assert chapter.content == ""
     assert textbook.chapter_ids == [*chapter_ids, chapter.chapter_id]
     assert textbook_metadata.updated_at != updated_at
 
 
-def test_add_chapter_failure_chapter_creation_error(textbook, textbook_metadata, mocker):
+def test_add_chapter_failure_chapter_creation_error(textbook, textbook_metadata, chapter_title, mocker):
     """Chapter作成に失敗した場合、例外が伝播しTextbookとmetadataが更新されないこと。"""
     # Arrange
     chapter_ids = list(textbook.chapter_ids)
@@ -154,6 +155,7 @@ def test_add_chapter_failure_chapter_creation_error(textbook, textbook_metadata,
         ModifyTextbookDomainService.add_chapter(
             textbook=textbook,
             metadata=textbook_metadata,
+            title=chapter_title,
         )
     assert textbook.chapter_ids == chapter_ids
     assert textbook_metadata.updated_at == updated_at
