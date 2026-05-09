@@ -37,3 +37,10 @@ class OutputTextbookModified:
     title: TitleString
     status: TextbookStatus
     metadata: OutputTextbookMetadata
+
+
+@dataclass
+class AuthorTextbookDTO:
+    principal_id: UUID
+    textbook_id: UUID
+    author_id: UUID

@@ -5,8 +5,8 @@ import pytest
 
 from src.app.model.account import AccountNameStrings
 from src.app.model.textbook import Textbook, TextbookMetadata, TextbookSettings, TextbookStatus, TitleString
-from src.app.service.domain_read_service.interface.account import ReadMinimalAccount
-from src.app.service.domain_read_service.interface.textbook import (
+from src.app.service.interface.account import ReadMinimalAccount
+from src.app.service.interface.textbook import (
     MinimalReadChapter,
     MinimalReadTextbookMetadata,
     TextbookReadModel,
@@ -17,7 +17,7 @@ from src.app.usecase.textbook.dependencies import (
     GetTextbookDependencies,
     ModifyTextbookDependencies,
 )
-from src.app.usecase.textbook.dto import CreateTextbookDTO, ModifyTextbookDTO, TextbookDTO
+from src.app.usecase.textbook.dto import AuthorTextbookDTO, CreateTextbookDTO, ModifyTextbookDTO, TextbookDTO
 from src.test import const
 from src.test.usecase.textbook.repositories import (
     DummyAccountAuthRead,
@@ -126,6 +126,15 @@ def no_change_modify_textbook_dto(account_principal_id, textbook_id):
 
 
 @pytest.fixture
+def author_textbook_dto(account_principal_id, textbook_id, second_author_id):
+    return AuthorTextbookDTO(
+        principal_id=account_principal_id,
+        textbook_id=textbook_id,
+        author_id=second_author_id,
+    )
+
+
+@pytest.fixture
 def read_textbook_model(textbook_id, textbook_title, account_principal_id, second_author_id, chapter_id, chapter_title):
     utc_now = datetime(2026, 1, 1, tzinfo=timezone.utc)
     return TextbookReadModel(
@@ -227,6 +236,16 @@ def auth_failed_modify_textbook_dependencies(textbook, textbook_metadata):
     return ModifyTextbookDependencies(
         account_auth_read=DummyAccountAuthRead(auth_result=True),
         textbook_auth_read=DummyTextbookAuthRead(auth_result=False),
+        textbook=DummyTextbookRepository(return_textbook=textbook),
+        metadata=DummyTextbookMetadataRepository(return_metadata=textbook_metadata),
+    )
+
+
+@pytest.fixture
+def inactive_author_modify_textbook_dependencies(textbook, textbook_metadata):
+    return ModifyTextbookDependencies(
+        account_auth_read=DummyAccountAuthRead(auth_result=True, auth_results=[True, False]),
+        textbook_auth_read=DummyTextbookAuthRead(auth_result=True),
         textbook=DummyTextbookRepository(return_textbook=textbook),
         metadata=DummyTextbookMetadataRepository(return_metadata=textbook_metadata),
     )

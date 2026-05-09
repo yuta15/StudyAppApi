@@ -6,12 +6,12 @@ from src.app.model.textbook.interface import (
     TextbookRepositoryInterface,
     TextbookSettingsRepositoryInterface,
 )
-from src.app.service.domain_read_service.interface.account import (
+from src.app.service.interface.account import (
     AccountAuthReadInterface,
     AccountReadInterface,
     ReadMinimalAccount,
 )
-from src.app.service.domain_read_service.interface.textbook import (
+from src.app.service.interface.textbook import (
     TextbookAuthReadInterface,
     TextbookReadInterface,
     TextbookReadModel,
@@ -24,15 +24,20 @@ class TextbookUsecaseTestException(Exception):
 
 
 class DummyAccountAuthRead(AccountAuthReadInterface):
-    def __init__(self, auth_result: bool, is_negative: bool = False):
+    def __init__(self, auth_result: bool, is_negative: bool = False, auth_results: list[bool] | None = None):
         self.auth_result = auth_result
+        self.auth_results = list(auth_results) if auth_results is not None else None
         self.is_negative = is_negative
         self.input_principal_id = None
+        self.input_principal_ids = []
 
     def has_specified_active_user(self, principal_id: UUID) -> bool:
         self.input_principal_id = principal_id
+        self.input_principal_ids.append(principal_id)
         if self.is_negative:
             raise TextbookUsecaseTestException()
+        if self.auth_results:
+            return self.auth_results.pop(0)
         return self.auth_result
 
 

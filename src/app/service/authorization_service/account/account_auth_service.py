@@ -1,6 +1,6 @@
 from uuid import UUID
 
-from src.app.service.domain_read_service.interface.account.account_auth_read_interface import (
+from src.app.service.interface.account.account_auth_read_interface import (
     AccountAuthReadInterface,
 )
 from src.app.core.exceptions import UnauthorizedError

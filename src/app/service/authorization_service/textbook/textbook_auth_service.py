@@ -3,7 +3,7 @@ from uuid import UUID
 from src.app.core.exceptions import UnauthorizedError
 from src.app.service.authorization_service.account import AccountAuthService
 from src.app.model.textbook import TextbookStatus
-from src.app.service.domain_read_service.interface.textbook.textbook_auth_read_interface import (
+from src.app.service.interface.textbook.textbook_auth_read_interface import (
     TextbookAuthReadInterface,
 )
 

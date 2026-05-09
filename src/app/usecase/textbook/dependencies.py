@@ -5,8 +5,8 @@ from src.app.model.textbook.interface import (
     TextbookMetadataRepositoryInterface,
     TextbookSettingsRepositoryInterface,
 )
-from src.app.service.domain_read_service.interface.account import AccountAuthReadInterface, AccountReadInterface
-from src.app.service.domain_read_service.interface.textbook import TextbookAuthReadInterface, TextbookReadInterface
+from src.app.service.interface.account import AccountAuthReadInterface, AccountReadInterface
+from src.app.service.interface.textbook import TextbookAuthReadInterface, TextbookReadInterface
 
 
 @dataclass

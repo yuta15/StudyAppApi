@@ -1,7 +1,7 @@
 from uuid import UUID
 from abc import ABC, abstractmethod
 
-from src.app.service.domain_read_service.interface.account.read_model import ReadMinimalAccount
+from src.app.service.interface.account.read_model import ReadMinimalAccount
 
 
 class AccountReadInterface(ABC):

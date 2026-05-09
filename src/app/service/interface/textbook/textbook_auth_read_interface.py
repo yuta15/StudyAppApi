@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 from uuid import UUID
 
-from src.app.service.domain_read_service.interface.textbook.textbook_read_model import TextbookVisibility
+from src.app.service.interface.textbook.textbook_read_model import TextbookVisibility
 
 
 class TextbookAuthReadInterface(ABC):

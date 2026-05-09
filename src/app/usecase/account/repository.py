@@ -7,7 +7,7 @@ from src.app.model.account.interface.account_repository_interfaces import (
     AccountBasicSettingsRepositoryInterface,
     AccountIdentityRepositoryInterface,
 )
-from src.app.service.domain_read_service.interface.account import AccountAuthReadInterface
+from src.app.service.interface.account import AccountAuthReadInterface
 
 
 @dataclass

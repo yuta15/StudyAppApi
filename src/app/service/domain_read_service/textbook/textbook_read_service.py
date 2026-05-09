@@ -1,7 +1,7 @@
 from uuid import UUID
 
-from src.app.service.domain_read_service.interface.account import AccountReadInterface
-from src.app.service.domain_read_service.interface.textbook import TextbookReadInterface
+from src.app.service.interface.account import AccountReadInterface
+from src.app.service.interface.textbook import TextbookReadInterface
 from src.app.service.domain_read_service.textbook.models import ReadTextbookDetailsModel
 
 

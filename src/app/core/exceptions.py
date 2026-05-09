@@ -13,3 +13,7 @@ class UnauthorizedError(UserOperationError):
 
 class DomainError(Exception):
     """ドメイン系のエラー"""
+
+
+class NotFoundError(DomainError):
+    """存在しない場合のエラー"""

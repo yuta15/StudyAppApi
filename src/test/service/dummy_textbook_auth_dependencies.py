@@ -1,7 +1,7 @@
 from src.app.core.exceptions import UnauthorizedError
 from src.app.model.textbook import TextbookStatus
 from src.app.service.authorization_service.textbook import TextbookAuthReadInterface
-from src.app.service.domain_read_service.interface.textbook import TextbookVisibility
+from src.app.service.interface.textbook import TextbookVisibility
 
 
 class DummyAccountAuthService:
