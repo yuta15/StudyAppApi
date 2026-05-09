@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 from uuid import UUID
 
-from src.app.model.textbook import Textbook, TextbookMetadata, TitleString
+from src.app.model.textbook import Textbook, TextbookMetadata, TextbookSettings, TitleString
 
 
 @dataclass
@@ -13,6 +13,7 @@ class CreateTextbookInput:
 @dataclass
 class CreateTextbookOutput:
     textbook: Textbook
+    settings: TextbookSettings
     metadata: TextbookMetadata
 
 
@@ -20,4 +21,10 @@ class CreateTextbookDomainService:
     @staticmethod
     def exec(create_textbook_input: CreateTextbookInput) -> CreateTextbookOutput:
         textbook = Textbook.new(title=create_textbook_input.title, author_id=create_textbook_input.author_id)
-        return CreateTextbookOutput(textbook=textbook, metadata=TextbookMetadata.new(textbook_id=textbook.textbook_id))
+        settings = TextbookSettings.new(textbook_id=textbook.textbook_id)
+        metadata = TextbookMetadata.new(textbook_id=textbook.textbook_id)
+        return CreateTextbookOutput(
+            textbook=textbook,
+            settings=settings,
+            metadata=metadata,
+        )

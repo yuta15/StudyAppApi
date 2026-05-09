@@ -4,7 +4,7 @@ from uuid import UUID, uuid4
 
 from src.app.core.exceptions import DomainError
 from src.app.model.shared.validation import validate_value_type
-from src.app.model.textbook.entities.value_object import TitleString
+from src.app.model.textbook.entities.value_object import TextbookStatus, TitleString
 
 
 @dataclass
@@ -15,7 +15,7 @@ class Textbook:
     title: TitleString
     author_ids: list[UUID]
     chapter_ids: list[UUID]
-    is_public: bool = True
+    status: TextbookStatus = TextbookStatus.DRAFT
 
     @classmethod
     def new(cls, title: TitleString, author_id: UUID) -> Self:
@@ -27,6 +27,7 @@ class Textbook:
             title=title,
             author_ids=[author_id],
             chapter_ids=[],
+            status=TextbookStatus.DRAFT,
         )
 
     def set_title(self, title: TitleString) -> None:
@@ -34,14 +35,10 @@ class Textbook:
         validate_value_type(value=title, valid_type=TitleString)
         self.title = title
 
-    def set_is_public(self, is_public: bool) -> None:
-        """教材の公開状態を変更する。"""
-        validate_value_type(value=is_public, valid_type=bool)
-        self.is_public = is_public
-
-    def delete(self) -> None:
-        """教材を削除状態にする。"""
-        self.is_public = False
+    def set_status(self, status: TextbookStatus) -> None:
+        """教材本体のワークフロー状態を変更する。"""
+        validate_value_type(value=status, valid_type=TextbookStatus)
+        self.status = status
 
     def add_author(self, author_id: UUID) -> None:
         """著者を追加する。"""

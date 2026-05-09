@@ -1,17 +1,17 @@
 from dataclasses import dataclass
 
-from src.app.model.textbook import Textbook, TextbookMetadata
+from src.app.model.textbook import TextbookMetadata, TextbookSettings
 
 
 @dataclass
 class DeleteTextbookData:
-    textbook: Textbook
+    settings: TextbookSettings
     metadata: TextbookMetadata
 
 
 class DeleteTextbookDomainService:
     @staticmethod
     def exec(delete_textbook_data: DeleteTextbookData) -> None:
-        delete_textbook_data.textbook.delete()
+        delete_textbook_data.settings.delete()
         delete_textbook_data.metadata.delete()
         return

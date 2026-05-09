@@ -1,6 +1,16 @@
 from dataclasses import dataclass
+from enum import Enum
 
 from src.app.model.shared.validation import validate_value_type
+
+
+class TextbookStatus(Enum):
+    """教材本体のワークフロー状態を表す。"""
+
+    DRAFT = "DRAFT"
+    IN_REVIEW = "IN_REVIEW"
+    PUBLISHED = "PUBLISHED"
+    ARCHIVED = "ARCHIVED"
 
 
 @dataclass(frozen=True)

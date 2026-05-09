@@ -3,7 +3,7 @@ from uuid import UUID
 
 import pytest
 
-from src.app.model.textbook import Textbook, TextbookMetadata, TitleString
+from src.app.model.textbook import Textbook, TextbookMetadata, TextbookSettings, TitleString
 from src.test import const
 
 
@@ -15,6 +15,11 @@ def textbook_id():
 @pytest.fixture
 def textbook_metadata_id():
     return UUID(const.textbook_metadata_id)
+
+
+@pytest.fixture
+def textbook_settings_id():
+    return UUID(const.textbook_settings_id)
 
 
 @pytest.fixture
@@ -70,7 +75,7 @@ def chapter_content():
 @pytest.fixture
 def textbook_metadata_generator(textbook_id, textbook_metadata_id):
     def generator():
-        utc_now = datetime.now(timezone.utc)
+        utc_now = datetime(2026, 1, 1, tzinfo=timezone.utc)
         return TextbookMetadata(
             textbook_id=textbook_id,
             metadata_id=textbook_metadata_id,
@@ -79,6 +84,19 @@ def textbook_metadata_generator(textbook_id, textbook_metadata_id):
         )
 
     return generator
+
+
+@pytest.fixture
+def textbook_metadata(textbook_metadata_generator):
+    return textbook_metadata_generator()
+
+
+@pytest.fixture
+def textbook_settings(textbook_id, textbook_settings_id):
+    return TextbookSettings(
+        textbook_id=textbook_id,
+        textbook_settings_id=textbook_settings_id,
+    )
 
 
 @pytest.fixture
@@ -91,6 +109,9 @@ def textbook_generator(account_principal_id):
     def generator(title=None):
         if title is None:
             title = TitleString("Python Textbook")
-        return Textbook.new(title=title, author_id=account_principal_id)
+        return Textbook.new(
+            title=title,
+            author_id=account_principal_id,
+        )
 
     return generator

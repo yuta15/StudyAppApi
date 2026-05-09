@@ -1,37 +1,77 @@
 import pytest
 
 from src.app.core.exceptions import DomainError
-from src.app.model.textbook import Chapter, ModifyTextbookDomainService, TitleString
+from src.app.model.textbook import Chapter, ModifyTextbookDomainService, TextbookStatus, TitleString
 
 
 @pytest.mark.parametrize(
-    ("title", "is_public"),
+    "title",
     [
-        (TitleString("Advanced Python"), None),
-        (None, False),
-        (TitleString("Advanced Python"), False),
+        TitleString("Advanced Python"),
     ],
-    ids=["title", "is_public", "title_and_is_public"],
 )
-def test_update_textbook_success_updates_changed_values(textbook, textbook_metadata, title, is_public):
-    """教材のタイトル・公開状態に変更がある場合、対象項目とmetadataが更新されること。"""
+def test_update_textbook_success_updates_changed_title(textbook, textbook_metadata, title):
+    """教材のタイトルに変更がある場合、タイトルとmetadataが更新されること。"""
     # Arrange
     updated_at = textbook_metadata.updated_at
-    expected_title = textbook.title if title is None else title
-    expected_is_public = textbook.is_public if is_public is None else is_public
+    expected_textbook_id = textbook.textbook_id
+    expected_status = textbook.status
 
     # Act
     is_changed = ModifyTextbookDomainService.update_textbook(
         textbook=textbook,
         metadata=textbook_metadata,
         title=title,
-        is_public=is_public,
+    )
+
+    # Assert
+    assert is_changed
+    assert textbook.title == title
+    assert textbook.status == expected_status
+    assert textbook.textbook_id == expected_textbook_id
+    assert textbook_metadata.updated_at != updated_at
+
+
+def test_update_textbook_success_updates_changed_status(textbook, textbook_metadata):
+    """教材ステータスに変更がある場合、ステータスとmetadataが更新されること。"""
+    # Arrange
+    updated_at = textbook_metadata.updated_at
+    expected_title = textbook.title
+    expected_status = TextbookStatus.IN_REVIEW
+
+    # Act
+    is_changed = ModifyTextbookDomainService.update_textbook(
+        textbook=textbook,
+        metadata=textbook_metadata,
+        status=expected_status,
     )
 
     # Assert
     assert is_changed
     assert textbook.title == expected_title
-    assert textbook.is_public == expected_is_public
+    assert textbook.status == expected_status
+    assert textbook_metadata.updated_at != updated_at
+
+
+def test_update_textbook_success_updates_changed_title_and_status(textbook, textbook_metadata):
+    """教材のタイトルとステータスに変更がある場合、両方とmetadataが更新されること。"""
+    # Arrange
+    updated_at = textbook_metadata.updated_at
+    expected_title = TitleString("Advanced Python")
+    expected_status = TextbookStatus.IN_REVIEW
+
+    # Act
+    is_changed = ModifyTextbookDomainService.update_textbook(
+        textbook=textbook,
+        metadata=textbook_metadata,
+        title=expected_title,
+        status=expected_status,
+    )
+
+    # Assert
+    assert is_changed
+    assert textbook.title == expected_title
+    assert textbook.status == expected_status
     assert textbook_metadata.updated_at != updated_at
 
 
@@ -40,8 +80,7 @@ def test_update_textbook_success_updates_changed_values(textbook, textbook_metad
     [
         "no_values",
         "same_title",
-        "same_is_public",
-        "same_title_and_is_public",
+        "same_status",
     ],
 )
 def test_update_textbook_success_no_change(textbook, textbook_metadata, case):
@@ -50,14 +89,11 @@ def test_update_textbook_success_no_change(textbook, textbook_metadata, case):
     values = {
         "no_values": {},
         "same_title": {"title": textbook.title},
-        "same_is_public": {"is_public": textbook.is_public},
-        "same_title_and_is_public": {
-            "title": textbook.title,
-            "is_public": textbook.is_public,
-        },
+        "same_status": {"status": textbook.status},
     }[case]
     title = textbook.title
-    is_public = textbook.is_public
+    status = textbook.status
+    expected_textbook_id = textbook.textbook_id
     updated_at = textbook_metadata.updated_at
 
     # Act
@@ -70,44 +106,25 @@ def test_update_textbook_success_no_change(textbook, textbook_metadata, case):
     # Assert
     assert not is_changed
     assert textbook.title == title
-    assert textbook.is_public == is_public
+    assert textbook.status == status
+    assert textbook.textbook_id == expected_textbook_id
     assert textbook_metadata.updated_at == updated_at
-
-
-def test_update_textbook_success_updates_only_different_field(textbook, textbook_metadata):
-    """同じタイトルと変更された公開状態を渡した場合、変更された公開状態だけ更新されること。"""
-    # Arrange
-    title = textbook.title
-    updated_at = textbook_metadata.updated_at
-
-    # Act
-    is_changed = ModifyTextbookDomainService.update_textbook(
-        textbook=textbook,
-        metadata=textbook_metadata,
-        title=title,
-        is_public=False,
-    )
-
-    # Assert
-    assert is_changed
-    assert textbook.title == title
-    assert not textbook.is_public
-    assert textbook_metadata.updated_at != updated_at
 
 
 @pytest.mark.parametrize(
     "values",
     [
         {"title": "Advanced Python"},
-        {"is_public": "false"},
+        {"status": "PUBLISHED"},
     ],
-    ids=["title", "is_public"],
+    ids=["title", "status"],
 )
 def test_update_textbook_failure_invalid_value_propagates_from_entity(textbook, textbook_metadata, values):
     """型不正の場合、Entityの検証例外が伝播しmetadataが更新されないこと。"""
     # Arrange
     title = textbook.title
-    is_public = textbook.is_public
+    status = textbook.status
+    expected_textbook_id = textbook.textbook_id
     updated_at = textbook_metadata.updated_at
 
     # Assert
@@ -118,7 +135,8 @@ def test_update_textbook_failure_invalid_value_propagates_from_entity(textbook, 
             **values,
         )
     assert textbook.title == title
-    assert textbook.is_public == is_public
+    assert textbook.status == status
+    assert textbook.textbook_id == expected_textbook_id
     assert textbook_metadata.updated_at == updated_at
 
 

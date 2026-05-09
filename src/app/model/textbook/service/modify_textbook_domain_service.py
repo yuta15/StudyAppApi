@@ -1,7 +1,7 @@
 from uuid import UUID
 
 from src.app.core.exceptions import DomainError
-from src.app.model.textbook import Chapter, Textbook, TextbookMetadata, TitleString
+from src.app.model.textbook import Chapter, Textbook, TextbookMetadata, TextbookStatus, TitleString
 from src.app.model.shared.validation import validate_value_type
 
 
@@ -13,21 +13,21 @@ class ModifyTextbookDomainService:
         textbook: Textbook,
         metadata: TextbookMetadata,
         title: TitleString | None = None,
-        is_public: bool | None = None,
+        status: TextbookStatus | None = None,
     ) -> bool:
         """教材本体の値を変更し、実際に変更があった場合のみmetadataを更新する。"""
         if title is not None:
             validate_value_type(value=title, valid_type=TitleString)
-        if is_public is not None:
-            validate_value_type(value=is_public, valid_type=bool)
+        if status is not None:
+            validate_value_type(value=status, valid_type=TextbookStatus)
 
         changed = False
 
         if title is not None and title != textbook.title:
             textbook.set_title(title=title)
             changed = True
-        if is_public is not None and is_public != textbook.is_public:
-            textbook.set_is_public(is_public=is_public)
+        if status is not None and status != textbook.status:
+            textbook.set_status(status=status)
             changed = True
 
         if changed:
