@@ -15,8 +15,9 @@ from src.app.usecase.textbook.dependencies import (
     CreateTextbookDependencies,
     DeleteTextbookDependencies,
     GetTextbookDependencies,
+    ModifyTextbookDependencies,
 )
-from src.app.usecase.textbook.dto import CreateTextbookDTO, TextbookDTO
+from src.app.usecase.textbook.dto import CreateTextbookDTO, ModifyTextbookDTO, TextbookDTO
 from src.test import const
 from src.test.usecase.textbook.repositories import (
     DummyAccountAuthRead,
@@ -108,6 +109,23 @@ def textbook_dto(account_principal_id, textbook_id):
 
 
 @pytest.fixture
+def modify_textbook_dto(account_principal_id, textbook_id):
+    return ModifyTextbookDTO(
+        principal_id=account_principal_id,
+        textbook_id=textbook_id,
+        status=TextbookStatus.PUBLISHED,
+    )
+
+
+@pytest.fixture
+def no_change_modify_textbook_dto(account_principal_id, textbook_id):
+    return ModifyTextbookDTO(
+        principal_id=account_principal_id,
+        textbook_id=textbook_id,
+    )
+
+
+@pytest.fixture
 def read_textbook_model(textbook_id, textbook_title, account_principal_id, second_author_id, chapter_id, chapter_title):
     utc_now = datetime(2026, 1, 1, tzinfo=timezone.utc)
     return TextbookReadModel(
@@ -191,6 +209,36 @@ def get_failed_delete_textbook_dependencies(textbook_metadata, textbook_settings
         textbook_auth_read=DummyTextbookAuthRead(auth_result=True),
         metadata=DummyTextbookMetadataRepository(return_metadata=textbook_metadata, raise_on_get=True),
         settings=DummyTextbookSettingsRepository(return_settings=textbook_settings),
+    )
+
+
+@pytest.fixture
+def positive_modify_textbook_dependencies(textbook, textbook_metadata):
+    return ModifyTextbookDependencies(
+        account_auth_read=DummyAccountAuthRead(auth_result=True),
+        textbook_auth_read=DummyTextbookAuthRead(auth_result=True),
+        textbook=DummyTextbookRepository(return_textbook=textbook),
+        metadata=DummyTextbookMetadataRepository(return_metadata=textbook_metadata),
+    )
+
+
+@pytest.fixture
+def auth_failed_modify_textbook_dependencies(textbook, textbook_metadata):
+    return ModifyTextbookDependencies(
+        account_auth_read=DummyAccountAuthRead(auth_result=True),
+        textbook_auth_read=DummyTextbookAuthRead(auth_result=False),
+        textbook=DummyTextbookRepository(return_textbook=textbook),
+        metadata=DummyTextbookMetadataRepository(return_metadata=textbook_metadata),
+    )
+
+
+@pytest.fixture
+def save_failed_modify_textbook_dependencies(textbook, textbook_metadata):
+    return ModifyTextbookDependencies(
+        account_auth_read=DummyAccountAuthRead(auth_result=True),
+        textbook_auth_read=DummyTextbookAuthRead(auth_result=True),
+        textbook=DummyTextbookRepository(return_textbook=textbook, raise_on_save=True),
+        metadata=DummyTextbookMetadataRepository(return_metadata=textbook_metadata),
     )
 
 

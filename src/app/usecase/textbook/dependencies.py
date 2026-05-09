@@ -29,6 +29,12 @@ class DeleteTextbookDependencies(TextbookAuthDependencies):
 
 
 @dataclass
+class ModifyTextbookDependencies(TextbookAuthDependencies):
+    textbook: TextbookRepositoryInterface
+    metadata: TextbookMetadataRepositoryInterface
+
+
+@dataclass
 class GetTextbookDependencies(TextbookAuthDependencies):
     account_read: AccountReadInterface
     textbook_read: TextbookReadInterface
