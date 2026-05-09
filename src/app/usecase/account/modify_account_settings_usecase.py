@@ -3,12 +3,12 @@ from sqlmodel import Session
 from src.app.model.account import UpdateSubjectsDomainService
 from src.app.service.authorization_service.account import AccountAuthService
 from src.app.usecase.account.repository import ModifyAccountRepositories
-from src.app.usecase.account.dto import ModifyAccountDTO
-from src.app.service.read_service.account.read_model import (
-    ReadAccount,
-    ReadMetadata,
-    ReadProfile,
-    ReadSettings,
+from src.app.usecase.account.dto import (
+    ModifyAccountDTO,
+    AccountOutputDTO,
+    OutputProfile,
+    OutputMetadata,
+    OutputSettings,
 )
 
 
@@ -17,7 +17,7 @@ class ModifyAccountSettingsUsecase:
         self.session = session
         self.repositories = repositories
 
-    def exec(self, modify_account_dto: ModifyAccountDTO) -> ReadAccount:
+    def exec(self, modify_account_dto: ModifyAccountDTO) -> AccountOutputDTO:
         with self.session.begin():
             # Auth
             auth_service = AccountAuthService(repository=self.repositories.account_auth_read)
@@ -51,15 +51,15 @@ class ModifyAccountSettingsUsecase:
                 self.repositories.metadata.save(metadata=metadata)
 
             # ReadAccountの形に整形する。
-            return ReadAccount(
+            return AccountOutputDTO(
                 principal_id=account.principal_id,
                 account_name=account.account_name,
                 status=account.status,
-                metadata=ReadMetadata(created_at=metadata.created_at, last_update=metadata.updated_at),
-                profile=ReadProfile(
+                metadata=OutputMetadata(created_at=metadata.created_at, last_update=metadata.updated_at),
+                profile=OutputProfile(
                     display_name=profile.display_name,
                     email=profile.email,
                     country=profile.country,
                 ),
-                settings=ReadSettings(is_public=basic_settings.is_public),
+                settings=OutputSettings(is_public=basic_settings.is_public),
             )
