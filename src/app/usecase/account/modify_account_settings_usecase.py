@@ -4,7 +4,7 @@ from src.app.model.account import UpdateSubjectsDomainService
 from src.app.service.authorization_service.account import AccountAuthService
 from src.app.usecase.account.repository import ModifyAccountRepositories
 from src.app.usecase.account.dto import ModifyAccountDTO
-from src.app.usecase.account.read_model import (
+from src.app.service.read_service.account.read_model import (
     ReadAccount,
     ReadMetadata,
     ReadProfile,

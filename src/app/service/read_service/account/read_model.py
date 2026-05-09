@@ -1,6 +1,6 @@
+from dataclasses import dataclass
 from datetime import datetime
 from uuid import UUID
-from dataclasses import dataclass
 
 from src.app.model.account import AccountNameStrings, AccountStatus, Country, EmailStrings
 
@@ -31,3 +31,9 @@ class ReadAccount:
     metadata: ReadMetadata
     profile: ReadProfile
     settings: ReadSettings
+
+
+@dataclass
+class ReadMinimalAccount:
+    principal_id: UUID
+    account_name: AccountNameStrings

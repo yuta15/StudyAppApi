@@ -244,3 +244,186 @@ def test_remove_chapter_failure_not_registered_chapter_id(
         )
     assert textbook.chapter_ids == chapter_ids
     assert textbook_metadata.updated_at == updated_at
+
+
+def test_reorder_chapters_success_updates_order(
+    textbook,
+    textbook_metadata,
+    chapter_id,
+    another_chapter_id,
+):
+    """登録済みchapter_idの集合を変えずに順序だけ変更でき、metadataが更新されること。"""
+    # Arrange
+    updated_at = textbook_metadata.updated_at
+    expected_title = textbook.title
+    expected_status = textbook.status
+    expected_author_ids = list(textbook.author_ids)
+    reordered_chapter_ids = [another_chapter_id, chapter_id]
+
+    # Act
+    is_changed = ModifyTextbookDomainService.reorder_chapters(
+        textbook=textbook,
+        metadata=textbook_metadata,
+        chapter_ids=reordered_chapter_ids,
+    )
+
+    # Assert
+    assert is_changed
+    assert textbook.chapter_ids == reordered_chapter_ids
+    assert textbook.title == expected_title
+    assert textbook.status == expected_status
+    assert textbook.author_ids == expected_author_ids
+    assert textbook_metadata.updated_at != updated_at
+
+
+def test_reorder_chapters_success_no_change(textbook, textbook_metadata):
+    """現在と同じchapter_id順を指定した場合、metadataが更新されずFalseが返ること。"""
+    # Arrange
+    chapter_ids = list(textbook.chapter_ids)
+    updated_at = textbook_metadata.updated_at
+
+    # Act
+    is_changed = ModifyTextbookDomainService.reorder_chapters(
+        textbook=textbook,
+        metadata=textbook_metadata,
+        chapter_ids=chapter_ids,
+    )
+
+    # Assert
+    assert not is_changed
+    assert textbook.chapter_ids == chapter_ids
+    assert textbook_metadata.updated_at == updated_at
+
+
+@pytest.mark.parametrize(
+    "case",
+    [
+        "unregistered_chapter_id",
+        "missing_chapter_id",
+        "duplicated_chapter_id",
+    ],
+)
+def test_reorder_chapters_failure_invalid_chapter_ids(
+    textbook,
+    textbook_metadata,
+    chapter_id,
+    new_chapter_id,
+    case,
+):
+    """登録済みchapter_idと集合が一致しない場合、DomainErrorになりmetadataが更新されないこと。"""
+    # Arrange
+    values = {
+        "unregistered_chapter_id": [chapter_id, new_chapter_id],
+        "missing_chapter_id": [chapter_id],
+        "duplicated_chapter_id": [chapter_id, chapter_id],
+    }
+    chapter_ids = list(textbook.chapter_ids)
+    updated_at = textbook_metadata.updated_at
+
+    # Assert
+    with pytest.raises(DomainError):
+        ModifyTextbookDomainService.reorder_chapters(
+            textbook=textbook,
+            metadata=textbook_metadata,
+            chapter_ids=values[case],
+        )
+    assert textbook.chapter_ids == chapter_ids
+    assert textbook_metadata.updated_at == updated_at
+
+
+def test_add_author_success_adds_unregistered_author(textbook, textbook_metadata, second_author_id):
+    """未登録author_idを追加でき、metadataが更新されること。"""
+    # Arrange
+    author_ids = list(textbook.author_ids)
+    expected_chapter_ids = list(textbook.chapter_ids)
+    updated_at = textbook_metadata.updated_at
+
+    # Act
+    is_changed = ModifyTextbookDomainService.add_author(
+        textbook=textbook,
+        metadata=textbook_metadata,
+        author_id=second_author_id,
+    )
+
+    # Assert
+    assert is_changed
+    assert textbook.author_ids == [*author_ids, second_author_id]
+    assert textbook.chapter_ids == expected_chapter_ids
+    assert textbook_metadata.updated_at != updated_at
+
+
+def test_add_author_failure_registered_author_id(textbook, textbook_metadata, account_principal_id):
+    """登録済みauthor_idを追加しようとした場合、DomainErrorになりmetadataが更新されないこと。"""
+    # Arrange
+    author_ids = list(textbook.author_ids)
+    updated_at = textbook_metadata.updated_at
+
+    # Assert
+    with pytest.raises(DomainError):
+        ModifyTextbookDomainService.add_author(
+            textbook=textbook,
+            metadata=textbook_metadata,
+            author_id=account_principal_id,
+        )
+    assert textbook.author_ids == author_ids
+    assert textbook_metadata.updated_at == updated_at
+
+
+def test_remove_author_success_removes_registered_author(
+    textbook,
+    textbook_metadata,
+    account_principal_id,
+    second_author_id,
+):
+    """登録済みauthor_idを削除でき、metadataが更新されること。"""
+    # Arrange
+    textbook.add_author(second_author_id)
+    expected_chapter_ids = list(textbook.chapter_ids)
+    updated_at = textbook_metadata.updated_at
+
+    # Act
+    is_changed = ModifyTextbookDomainService.remove_author(
+        textbook=textbook,
+        metadata=textbook_metadata,
+        author_id=second_author_id,
+    )
+
+    # Assert
+    assert is_changed
+    assert textbook.author_ids == [account_principal_id]
+    assert textbook.chapter_ids == expected_chapter_ids
+    assert textbook_metadata.updated_at != updated_at
+
+
+@pytest.mark.parametrize(
+    "case",
+    [
+        "unregistered_author_id",
+        "last_author_id",
+    ],
+)
+def test_remove_author_failure_invalid_author_id(
+    textbook,
+    textbook_metadata,
+    account_principal_id,
+    unregistered_author_id,
+    case,
+):
+    """未登録author_idまたは最後のauthor_idを削除しようとした場合、DomainErrorになりmetadataが更新されないこと。"""
+    # Arrange
+    values = {
+        "unregistered_author_id": unregistered_author_id,
+        "last_author_id": account_principal_id,
+    }
+    author_ids = list(textbook.author_ids)
+    updated_at = textbook_metadata.updated_at
+
+    # Assert
+    with pytest.raises(DomainError):
+        ModifyTextbookDomainService.remove_author(
+            textbook=textbook,
+            metadata=textbook_metadata,
+            author_id=values[case],
+        )
+    assert textbook.author_ids == author_ids
+    assert textbook_metadata.updated_at == updated_at

@@ -61,3 +61,37 @@ class ModifyTextbookDomainService:
         textbook.set_chapters(chapter_ids=chapter_ids)
         metadata.update()
         return True
+
+    @staticmethod
+    def reorder_chapters(
+        textbook: Textbook,
+        metadata: TextbookMetadata,
+        chapter_ids: list[UUID],
+    ) -> bool:
+        """登録済みの章ID集合を維持したまま、章の順序だけを変更する。"""
+        validate_value_type(value=chapter_ids, valid_type=list)
+        for chapter_id in chapter_ids:
+            validate_value_type(value=chapter_id, valid_type=UUID)
+
+        if len(chapter_ids) != len(textbook.chapter_ids) or set(chapter_ids) != set(textbook.chapter_ids):
+            raise DomainError("Chapter ids must match registered chapters")
+        if chapter_ids == textbook.chapter_ids:
+            return False
+
+        textbook.set_chapters(chapter_ids=chapter_ids)
+        metadata.update()
+        return True
+
+    @staticmethod
+    def add_author(textbook: Textbook, metadata: TextbookMetadata, author_id: UUID) -> bool:
+        """著者を追加し、追加できた場合のみmetadataを更新する。"""
+        textbook.add_author(author_id=author_id)
+        metadata.update()
+        return True
+
+    @staticmethod
+    def remove_author(textbook: Textbook, metadata: TextbookMetadata, author_id: UUID) -> bool:
+        """著者を削除し、削除できた場合のみmetadataを更新する。"""
+        textbook.remove_author(author_id=author_id)
+        metadata.update()
+        return True

@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 
-from src.app.usecase.account.read_model import ReadAccount
+from src.app.service.read_service.account.read_model import ReadAccount
 
 
 class AccountReadRepository(ABC):
