@@ -12,15 +12,17 @@ class DeleteTextbookUsecase:
     def __init__(self, session: Session, dependencies: DeleteTextbookDependencies):
         self._session = session
         self._dependencies = dependencies
+        self._textbook_auth = TextbookAuthService(
+            account_auth_service=AccountAuthService(repository=dependencies.account_auth_read),
+            repository=dependencies.textbook_auth_read,
+        )
 
     def exec(self, textbook_dto: TextbookDTO) -> None:
         with self._session.begin():
             # 認可
-            auth_service = TextbookAuthService(
-                account_auth_service=AccountAuthService(repository=self._dependencies.account_auth_read),
-                repository=self._dependencies.textbook_auth_read,
+            self._textbook_auth.auth_manage(
+                principal_id=textbook_dto.principal_id, textbook_id=textbook_dto.textbook_id
             )
-            auth_service.auth(principal_id=textbook_dto.principal_id, textbook_id=textbook_dto.textbook_id)
             # 現在の値の取得
             metadata = self._dependencies.metadata.get(textbook_id=textbook_dto.textbook_id)
             settings = self._dependencies.settings.get(textbook_id=textbook_dto.textbook_id)

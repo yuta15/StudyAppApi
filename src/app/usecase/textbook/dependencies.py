@@ -10,25 +10,25 @@ from src.app.service.domain_read_service.interface.textbook import TextbookAuthR
 
 
 @dataclass
-class CreateTextbookDependencies:
+class TextbookAuthDependencies:
     account_auth_read: AccountAuthReadInterface
+    textbook_auth_read: TextbookAuthReadInterface
+
+
+@dataclass
+class CreateTextbookDependencies(TextbookAuthDependencies):
     textbook: TextbookRepositoryInterface
     metadata: TextbookMetadataRepositoryInterface
     settings: TextbookSettingsRepositoryInterface
 
 
 @dataclass
-class DeleteTextbookDependencies:
-    account_auth_read: AccountAuthReadInterface
-    textbook_auth_read: TextbookAuthReadInterface
-    textbook: TextbookRepositoryInterface
+class DeleteTextbookDependencies(TextbookAuthDependencies):
     metadata: TextbookMetadataRepositoryInterface
     settings: TextbookSettingsRepositoryInterface
 
 
 @dataclass
-class GetTextbookDependencies:
-    account_auth_read: AccountAuthReadInterface
-    textbook_auth_read: TextbookAuthReadInterface
+class GetTextbookDependencies(TextbookAuthDependencies):
     account_read: AccountReadInterface
     textbook_read: TextbookReadInterface

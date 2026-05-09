@@ -20,6 +20,5 @@ class TextbookReadService:
             status=textbook.status,
             authors=authors,
             chapters=textbook.chapters,
-            settings=textbook.settings,
             metadata=textbook.metadata,
         )

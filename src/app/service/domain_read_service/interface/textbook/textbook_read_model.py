@@ -29,5 +29,11 @@ class TextbookReadModel:
     status: TextbookStatus
     author_ids: list[UUID]
     chapters: list[MinimalReadChapter]
-    settings: MinimalReadTextbookSettings
     metadata: MinimalReadTextbookMetadata
+
+
+@dataclass
+class TextbookVisibility:
+    textbook_id: UUID
+    status: TextbookStatus
+    is_public: bool

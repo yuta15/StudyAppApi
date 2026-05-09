@@ -20,5 +20,5 @@ class GetTextbookUsecase:
 
     def exec(self, textbook_dto: TextbookDTO) -> ReadTextbookDetailsModel:
         with self._session.begin():
-            self._auth.auth(principal_id=textbook_dto.principal_id, textbook_id=textbook_dto.textbook_id)
+            self._auth.auth_read(principal_id=textbook_dto.principal_id, textbook_id=textbook_dto.textbook_id)
             return self._read.get_textbook_details(textbook_id=textbook_dto.textbook_id)

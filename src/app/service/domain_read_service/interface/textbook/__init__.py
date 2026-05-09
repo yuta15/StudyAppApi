@@ -7,6 +7,7 @@ from src.app.service.domain_read_service.interface.textbook.textbook_read_model 
     MinimalReadTextbookMetadata,
     MinimalReadTextbookSettings,
     MinimalReadChapter,
+    TextbookVisibility,
 )
 
 
@@ -17,4 +18,5 @@ __all__ = [
     "MinimalReadTextbookMetadata",
     "MinimalReadTextbookSettings",
     "MinimalReadChapter",
+    "TextbookVisibility",
 ]
