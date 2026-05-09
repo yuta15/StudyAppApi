@@ -12,12 +12,13 @@ class Chapter:
 
     chapter_id: UUID
     title: TitleString | None = None
-    content: str | None = None
+    content: str = ""
 
     @classmethod
-    def new(cls) -> Self:
+    def new(cls, title: TitleString) -> Self:
         """新しい章を作成する。"""
-        return cls(chapter_id=uuid4())
+        validate_value_type(value=title, valid_type=TitleString)
+        return cls(chapter_id=uuid4(), title=title)
 
     def set_title(self, title: TitleString) -> None:
         """章タイトルを変更する。"""

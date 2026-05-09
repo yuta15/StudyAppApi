@@ -54,9 +54,10 @@ def test_update_chapter_success_updates_unset_values(
     title,
     content,
 ):
-    """未設定のタイトル・本文に値を渡した場合、対象項目とmetadataが更新されること。"""
+    """未設定のタイトルまたは初期本文に値を渡した場合、対象項目とmetadataが更新されること。"""
     # Arrange
     updated_at = textbook_metadata.updated_at
+    expected_content = empty_chapter.content if content is None else content
 
     # Act
     is_changed = ModifyChapterDomainService.update_chapter(
@@ -69,7 +70,7 @@ def test_update_chapter_success_updates_unset_values(
     # Assert
     assert is_changed
     assert empty_chapter.title == title
-    assert empty_chapter.content == content
+    assert empty_chapter.content == expected_content
     assert textbook_metadata.updated_at != updated_at
 
 
@@ -79,55 +80,42 @@ def test_update_chapter_success_updates_unset_values(
         "no_values",
         "same_title",
         "same_content",
+        "same_empty_content",
         "same_title_and_content",
     ],
 )
-def test_update_chapter_success_no_change(chapter, textbook_metadata, case):
+def test_update_chapter_success_no_change(chapter, empty_chapter, textbook_metadata, case):
     """Chapterに実際の変更がない場合、metadataが更新されずFalseが返ること。"""
     # Arrange
-    values = {
-        "no_values": {},
-        "same_title": {"title": chapter.title},
-        "same_content": {"content": chapter.content},
-        "same_title_and_content": {
-            "title": chapter.title,
-            "content": chapter.content,
-        },
+    target_chapter, values = {
+        "no_values": (chapter, {}),
+        "same_title": (chapter, {"title": chapter.title}),
+        "same_content": (chapter, {"content": chapter.content}),
+        "same_empty_content": (empty_chapter, {"content": ""}),
+        "same_title_and_content": (
+            chapter,
+            {
+                "title": chapter.title,
+                "content": chapter.content,
+            },
+        ),
     }[case]
-    title = chapter.title
-    content = chapter.content
+    title = target_chapter.title
+    content = target_chapter.content
     updated_at = textbook_metadata.updated_at
 
     # Act
     is_changed = ModifyChapterDomainService.update_chapter(
-        chapter=chapter,
+        chapter=target_chapter,
         metadata=textbook_metadata,
         **values,
     )
 
     # Assert
     assert not is_changed
-    assert chapter.title == title
-    assert chapter.content == content
+    assert target_chapter.title == title
+    assert target_chapter.content == content
     assert textbook_metadata.updated_at == updated_at
-
-
-def test_update_chapter_success_updates_content_to_empty_string(empty_chapter, textbook_metadata):
-    """本文が未設定のChapterでも、空文字を有効な本文として更新できること。"""
-    # Arrange
-    updated_at = textbook_metadata.updated_at
-
-    # Act
-    is_changed = ModifyChapterDomainService.update_chapter(
-        chapter=empty_chapter,
-        metadata=textbook_metadata,
-        content="",
-    )
-
-    # Assert
-    assert is_changed
-    assert empty_chapter.content == ""
-    assert textbook_metadata.updated_at != updated_at
 
 
 def test_update_chapter_failure_invalid_content_does_not_update_chapter_or_metadata(chapter, textbook_metadata):

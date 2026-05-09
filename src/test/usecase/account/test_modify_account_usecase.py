@@ -1,6 +1,7 @@
 import pytest
 
 from src.app.core.exceptions import UnauthorizedError
+from src.app.usecase.account.dto import AccountOutputDTO
 from src.app.usecase.account.modify_account_settings_usecase import ModifyAccountSettingsUsecase
 from src.test.usecase.account.repositories import TestException
 
@@ -40,10 +41,16 @@ def test_modify_account_settings_usecase_update_profile(
     assert metadata.input_metadata.updated_at != metadata.input_metadata.created_at
     assert basic_settings.input_basic_settings is None
 
+    assert isinstance(result, AccountOutputDTO)
     assert result.principal_id == principal_id
+    assert result.account_name == account.return_account.account_name
+    assert result.status == account.return_account.status
+    assert result.metadata.created_at == metadata.input_metadata.created_at
+    assert result.metadata.last_update == metadata.input_metadata.updated_at
     assert result.profile.display_name == profile_dto.display_name
     assert result.profile.email == profile_dto.email
     assert result.profile.country == profile_dto.country
+    assert result.settings.is_public == basic_settings.return_account_basic_settings.is_public
 
 
 def test_modify_account_settings_usecase_update_basic_settings(
@@ -79,7 +86,15 @@ def test_modify_account_settings_usecase_update_basic_settings(
     assert metadata.input_metadata.updated_at != metadata.input_metadata.created_at
     assert profile.input_profile is None
 
+    assert isinstance(result, AccountOutputDTO)
     assert result.principal_id == principal_id
+    assert result.account_name == account.return_account.account_name
+    assert result.status == account.return_account.status
+    assert result.metadata.created_at == metadata.input_metadata.created_at
+    assert result.metadata.last_update == metadata.input_metadata.updated_at
+    assert result.profile.display_name == profile.return_account_profile.display_name
+    assert result.profile.email == profile.return_account_profile.email
+    assert result.profile.country == profile.return_account_profile.country
     assert result.settings.is_public == basic_settings_dto.is_public
 
 

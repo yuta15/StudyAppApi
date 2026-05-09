@@ -1,6 +1,7 @@
 from uuid import UUID
 
 from sqlmodel import Session
+
 from src.app.model.account import DeleteAccountData, DeleteAccountDomainService
 from src.app.usecase.account.repository import DeleteAccountRepositories
 from src.app.service.authorization_service.account import AccountAuthService

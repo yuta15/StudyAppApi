@@ -1,6 +1,6 @@
 from uuid import UUID
 
-from src.app.service.authorization_service.account import AccountAuthReadInterface
+from src.app.service.interface.account import AccountAuthReadInterface
 
 
 class AccountAuthReadRepository(AccountAuthReadInterface):
