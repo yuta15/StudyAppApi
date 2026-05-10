@@ -1,22 +1,16 @@
 from sqlmodel import Session
 
-from src.app.usecase.textbook.dto import AuthorTextbookDTO
-from src.app.usecase.textbook.dependencies import ModifyTextbookDependencies
 from src.app.model.textbook.service import ModifyTextbookDomainService
-from src.app.service.authorization_service.textbook import TextbookAuthService
-from src.app.service.authorization_service.account import AccountAuthService
 from src.app.service.author_check_service import AuthorCheckService
+from src.app.usecase.textbook.dependencies import ModifyTextbookDependencies
+from src.app.usecase.textbook.dto import AuthorTextbookDTO
+from src.app.usecase.textbook.textbook_usecase_base import TextbookUsecaseBase
 
 
-class AddAuthorUsecase:
+class AddAuthorUsecase(TextbookUsecaseBase[ModifyTextbookDependencies]):
     def __init__(self, session: Session, dependencies: ModifyTextbookDependencies):
-        self._session = session
-        self._dependencies = dependencies
+        super().__init__(session=session, dependencies=dependencies)
         self._check = AuthorCheckService(repository=dependencies.account_auth_read)
-        self._textbook_auth = TextbookAuthService(
-            account_auth_service=AccountAuthService(repository=dependencies.account_auth_read),
-            repository=dependencies.textbook_auth_read,
-        )
 
     def exec(self, author_textbook_dto: AuthorTextbookDTO) -> None:
         with self._session.begin():

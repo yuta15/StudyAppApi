@@ -1,23 +1,12 @@
 from uuid import UUID
 
-from sqlmodel import Session
-
 from src.app.model.textbook.service import ModifyTextbookDomainService
-from src.app.service.authorization_service.account import AccountAuthService
-from src.app.service.authorization_service.textbook import TextbookAuthService
 from src.app.usecase.textbook.dependencies import AddChapterDependencies
 from src.app.usecase.textbook.dto import AddChapterDTO
+from src.app.usecase.textbook.textbook_usecase_base import TextbookUsecaseBase
 
 
-class AddChapterUsecase:
-    def __init__(self, session: Session, dependencies: AddChapterDependencies):
-        self._session = session
-        self._dependencies = dependencies
-        self._textbook_auth = TextbookAuthService(
-            account_auth_service=AccountAuthService(repository=dependencies.account_auth_read),
-            repository=dependencies.textbook_auth_read,
-        )
-
+class AddChapterUsecase(TextbookUsecaseBase[AddChapterDependencies]):
     def exec(self, add_chapter_dto: AddChapterDTO) -> UUID:
         with self._session.begin():
             self._textbook_auth.auth_manage(

@@ -24,6 +24,7 @@ from src.app.usecase.textbook.dto import (
     CreateTextbookDTO,
     ModifyTextbookDTO,
     RemoveChapterDTO,
+    ReorderChaptersDTO,
     TextbookDTO,
 )
 from src.test import const
@@ -62,6 +63,11 @@ def second_author_id():
 @pytest.fixture
 def chapter_id():
     return UUID(const.textbook_chapter_id)
+
+
+@pytest.fixture
+def another_chapter_id():
+    return UUID(const.textbook_another_chapter_id)
 
 
 @pytest.fixture
@@ -163,6 +169,15 @@ def remove_chapter_dto(account_principal_id, textbook_id, chapter_id):
         principal_id=account_principal_id,
         textbook_id=textbook_id,
         chapter_id=chapter_id,
+    )
+
+
+@pytest.fixture
+def reorder_chapters_dto(account_principal_id, textbook_id, chapter_id):
+    return ReorderChaptersDTO(
+        principal_id=account_principal_id,
+        textbook_id=textbook_id,
+        chapter_ids=[chapter_id],
     )
 
 

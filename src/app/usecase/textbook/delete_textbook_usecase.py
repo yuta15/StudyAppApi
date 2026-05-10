@@ -1,22 +1,10 @@
-from sqlmodel import Session
-
-from src.app.usecase.textbook.dto import TextbookDTO
-from src.app.service.authorization_service.textbook import TextbookAuthService
-from src.app.service.authorization_service.account import AccountAuthService
-
-from src.app.usecase.textbook.dependencies import DeleteTextbookDependencies
 from src.app.model.textbook.service import DeleteTextbookData, DeleteTextbookDomainService
+from src.app.usecase.textbook.dependencies import DeleteTextbookDependencies
+from src.app.usecase.textbook.dto import TextbookDTO
+from src.app.usecase.textbook.textbook_usecase_base import TextbookUsecaseBase
 
 
-class DeleteTextbookUsecase:
-    def __init__(self, session: Session, dependencies: DeleteTextbookDependencies):
-        self._session = session
-        self._dependencies = dependencies
-        self._textbook_auth = TextbookAuthService(
-            account_auth_service=AccountAuthService(repository=dependencies.account_auth_read),
-            repository=dependencies.textbook_auth_read,
-        )
-
+class DeleteTextbookUsecase(TextbookUsecaseBase[DeleteTextbookDependencies]):
     def exec(self, textbook_dto: TextbookDTO) -> None:
         with self._session.begin():
             # 認可

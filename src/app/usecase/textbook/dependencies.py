@@ -44,3 +44,9 @@ class AddChapterDependencies(ModifyTextbookDependencies):
 class GetTextbookDependencies(TextbookAuthDependencies):
     account_read: AccountReadInterface
     textbook_read: TextbookReadInterface
+
+
+@dataclass
+class GetChapterDependencies(TextbookAuthDependencies):
+    textbook: TextbookRepositoryInterface
+    chapter: ChapterRepositoryInterface
