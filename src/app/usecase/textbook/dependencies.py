@@ -50,3 +50,21 @@ class GetTextbookDependencies(TextbookAuthDependencies):
 class GetChapterDependencies(TextbookAuthDependencies):
     textbook: TextbookRepositoryInterface
     chapter: ChapterRepositoryInterface
+
+
+@dataclass
+class ModifyChapterDependencies(TextbookAuthDependencies):
+    textbook: TextbookRepositoryInterface
+    metadata: TextbookMetadataRepositoryInterface
+    chapter: ChapterRepositoryInterface
+
+
+@dataclass
+class GetTextbookSettingsDependencies(TextbookAuthDependencies):
+    settings: TextbookSettingsRepositoryInterface
+
+
+@dataclass
+class ModifyTextbookSettingsDependencies(TextbookAuthDependencies):
+    metadata: TextbookMetadataRepositoryInterface
+    settings: TextbookSettingsRepositoryInterface

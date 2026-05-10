@@ -79,3 +79,30 @@ class ReorderChaptersDTO:
     principal_id: UUID
     textbook_id: UUID
     chapter_ids: list[UUID]
+
+
+@dataclass
+class ModifyChapterDTO:
+    principal_id: UUID
+    textbook_id: UUID
+    chapter_id: UUID
+    title: TitleString | None = None
+    content: str | None = None
+
+
+@dataclass
+class TextbookSettingsDTO:
+    is_public: bool
+
+
+@dataclass
+class GetTextbookSettingsOutputDTO:
+    textbook_id: UUID
+    settings: TextbookSettingsDTO
+
+
+@dataclass
+class ModifyTextbookSettingsDTO:
+    principal_id: UUID
+    textbook_id: UUID
+    is_public: bool | None = None
