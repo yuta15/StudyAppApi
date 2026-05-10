@@ -1,7 +1,8 @@
 from uuid import UUID
 
-from src.app.model.textbook import Textbook, TextbookMetadata, TextbookSettings, TextbookStatus
+from src.app.model.textbook import Chapter, Textbook, TextbookMetadata, TextbookSettings, TextbookStatus
 from src.app.model.textbook.interface import (
+    ChapterRepositoryInterface,
     TextbookMetadataRepositoryInterface,
     TextbookRepositoryInterface,
     TextbookSettingsRepositoryInterface,
@@ -127,6 +128,33 @@ class DummyTextbookMetadataRepository(TextbookMetadataRepositoryInterface):
             raise TextbookUsecaseTestException()
         self.return_metadata.textbook_id = textbook_id
         return self.return_metadata
+
+
+class DummyChapterRepository(ChapterRepositoryInterface):
+    def __init__(
+        self,
+        return_chapter: Chapter | None = None,
+        raise_on_get: bool = False,
+        raise_on_save: bool = False,
+    ):
+        self.return_chapter = return_chapter
+        self.raise_on_get = raise_on_get
+        self.raise_on_save = raise_on_save
+        self.input_chapter = None
+        self.input_chapter_id = None
+
+    def save(self, chapter: Chapter) -> Chapter:
+        self.input_chapter = chapter
+        if self.raise_on_save:
+            raise TextbookUsecaseTestException()
+        return chapter
+
+    def get(self, chapter_id: UUID) -> Chapter:
+        self.input_chapter_id = chapter_id
+        if self.raise_on_get or self.return_chapter is None:
+            raise TextbookUsecaseTestException()
+        self.return_chapter.chapter_id = chapter_id
+        return self.return_chapter
 
 
 class DummyTextbookSettingsRepository(TextbookSettingsRepositoryInterface):

@@ -1,6 +1,7 @@
 from dataclasses import dataclass
 
 from src.app.model.textbook.interface import (
+    ChapterRepositoryInterface,
     TextbookRepositoryInterface,
     TextbookMetadataRepositoryInterface,
     TextbookSettingsRepositoryInterface,
@@ -32,6 +33,11 @@ class DeleteTextbookDependencies(TextbookAuthDependencies):
 class ModifyTextbookDependencies(TextbookAuthDependencies):
     textbook: TextbookRepositoryInterface
     metadata: TextbookMetadataRepositoryInterface
+
+
+@dataclass
+class AddChapterDependencies(ModifyTextbookDependencies):
+    chapter: ChapterRepositoryInterface
 
 
 @dataclass

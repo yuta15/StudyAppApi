@@ -12,16 +12,25 @@ from src.app.service.interface.textbook import (
     TextbookReadModel,
 )
 from src.app.usecase.textbook.dependencies import (
+    AddChapterDependencies,
     CreateTextbookDependencies,
     DeleteTextbookDependencies,
     GetTextbookDependencies,
     ModifyTextbookDependencies,
 )
-from src.app.usecase.textbook.dto import AuthorTextbookDTO, CreateTextbookDTO, ModifyTextbookDTO, TextbookDTO
+from src.app.usecase.textbook.dto import (
+    AddChapterDTO,
+    AuthorTextbookDTO,
+    CreateTextbookDTO,
+    ModifyTextbookDTO,
+    RemoveChapterDTO,
+    TextbookDTO,
+)
 from src.test import const
 from src.test.usecase.textbook.repositories import (
     DummyAccountAuthRead,
     DummyAccountRead,
+    DummyChapterRepository,
     DummyTextbookAuthRead,
     DummyTextbookMetadataRepository,
     DummyTextbookRead,
@@ -53,6 +62,11 @@ def second_author_id():
 @pytest.fixture
 def chapter_id():
     return UUID(const.textbook_chapter_id)
+
+
+@pytest.fixture
+def new_chapter_id():
+    return UUID(const.textbook_new_chapter_id)
 
 
 @pytest.fixture
@@ -131,6 +145,24 @@ def author_textbook_dto(account_principal_id, textbook_id, second_author_id):
         principal_id=account_principal_id,
         textbook_id=textbook_id,
         author_id=second_author_id,
+    )
+
+
+@pytest.fixture
+def add_chapter_dto(account_principal_id, textbook_id, chapter_title):
+    return AddChapterDTO(
+        principal_id=account_principal_id,
+        textbook_id=textbook_id,
+        chapter_title=chapter_title,
+    )
+
+
+@pytest.fixture
+def remove_chapter_dto(account_principal_id, textbook_id, chapter_id):
+    return RemoveChapterDTO(
+        principal_id=account_principal_id,
+        textbook_id=textbook_id,
+        chapter_id=chapter_id,
     )
 
 
@@ -258,6 +290,39 @@ def save_failed_modify_textbook_dependencies(textbook, textbook_metadata):
         textbook_auth_read=DummyTextbookAuthRead(auth_result=True),
         textbook=DummyTextbookRepository(return_textbook=textbook, raise_on_save=True),
         metadata=DummyTextbookMetadataRepository(return_metadata=textbook_metadata),
+    )
+
+
+@pytest.fixture
+def positive_add_chapter_dependencies(textbook, textbook_metadata):
+    return AddChapterDependencies(
+        account_auth_read=DummyAccountAuthRead(auth_result=True),
+        textbook_auth_read=DummyTextbookAuthRead(auth_result=True),
+        textbook=DummyTextbookRepository(return_textbook=textbook),
+        metadata=DummyTextbookMetadataRepository(return_metadata=textbook_metadata),
+        chapter=DummyChapterRepository(),
+    )
+
+
+@pytest.fixture
+def auth_failed_add_chapter_dependencies(textbook, textbook_metadata):
+    return AddChapterDependencies(
+        account_auth_read=DummyAccountAuthRead(auth_result=True),
+        textbook_auth_read=DummyTextbookAuthRead(auth_result=False),
+        textbook=DummyTextbookRepository(return_textbook=textbook),
+        metadata=DummyTextbookMetadataRepository(return_metadata=textbook_metadata),
+        chapter=DummyChapterRepository(),
+    )
+
+
+@pytest.fixture
+def save_failed_add_chapter_dependencies(textbook, textbook_metadata):
+    return AddChapterDependencies(
+        account_auth_read=DummyAccountAuthRead(auth_result=True),
+        textbook_auth_read=DummyTextbookAuthRead(auth_result=True),
+        textbook=DummyTextbookRepository(return_textbook=textbook, raise_on_save=True),
+        metadata=DummyTextbookMetadataRepository(return_metadata=textbook_metadata),
+        chapter=DummyChapterRepository(),
     )
 
 

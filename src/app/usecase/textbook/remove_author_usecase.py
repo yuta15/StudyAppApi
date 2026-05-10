@@ -25,10 +25,9 @@ class RemoveAuthorUsecase:
             textbook = self._dependencies.textbook.get(textbook_id=author_textbook_dto.textbook_id)
             metadata = self._dependencies.metadata.get(textbook_id=author_textbook_dto.textbook_id)
 
-            is_removed = ModifyTextbookDomainService.remove_author(
+            ModifyTextbookDomainService.remove_author(
                 textbook=textbook, metadata=metadata, author_id=author_textbook_dto.author_id
             )
 
-            if is_removed:
-                self._dependencies.textbook.save(textbook=textbook)
-                self._dependencies.metadata.save(metadata=metadata)
+            self._dependencies.textbook.save(textbook=textbook)
+            self._dependencies.metadata.save(metadata=metadata)

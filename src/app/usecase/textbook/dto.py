@@ -44,3 +44,17 @@ class AuthorTextbookDTO:
     principal_id: UUID
     textbook_id: UUID
     author_id: UUID
+
+
+@dataclass
+class AddChapterDTO:
+    principal_id: UUID
+    textbook_id: UUID
+    chapter_title: TitleString
+
+
+@dataclass
+class RemoveChapterDTO:
+    principal_id: UUID
+    textbook_id: UUID
+    chapter_id: UUID
