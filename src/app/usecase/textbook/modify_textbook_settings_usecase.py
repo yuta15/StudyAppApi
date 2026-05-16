@@ -13,7 +13,7 @@ class GetTextbookSettingsUsecase(TextbookUsecaseBase[ModifyTextbookSettingsDepen
             )
 
             textbook_settings = self._dependencies.settings.get(textbook_id=modify_textbook_settings_dto.principal_id)
-            metadata = self._dependencies.metadata.get(textbook_id=modify_textbook_settings_dto.principal_id)
+            metadata = self._dependencies.metadata.get(textbook_id=modify_textbook_settings_dto.textbook_id)
             is_changed = ModifyTextbookSettingsDomainService.update_settings(
                 settings=textbook_settings, metadata=metadata, is_public=modify_textbook_settings_dto.is_public
             )
