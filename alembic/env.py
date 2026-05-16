@@ -7,6 +7,7 @@ from sqlmodel import SQLModel
 from alembic import context
 
 from src.app.core.migration import MigrationSettings
+import src.app.schemas.db
 
 
 settings = MigrationSettings()
