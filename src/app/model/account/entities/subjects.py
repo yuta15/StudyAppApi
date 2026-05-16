@@ -93,7 +93,3 @@ class AccountIdentity:
             raise ValueError("invalid value")
 
         return cls(principal_id=principal_id, subject=subject, provider=provider)
-
-    def delete(self) -> None:
-        MASK_VALUE = "XXXXXXXXXX"
-        self.subject = MASK_VALUE

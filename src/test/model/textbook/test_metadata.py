@@ -1,15 +1,14 @@
 from datetime import datetime
-from uuid import UUID, uuid4
+from uuid import uuid4
 
 from src.app.model.textbook import TextbookMetadata
 
 
 def test_textbook_metadata_new():
-    """新規作成したTextbookMetadataに必要なIDと日時が設定されることを確認する。"""
+    """新規作成したTextbookMetadataに必要な日時が設定されることを確認する。"""
     textbook_id = uuid4()
     metadata = TextbookMetadata.new(textbook_id=textbook_id)
     assert metadata.textbook_id == textbook_id
-    assert isinstance(metadata.metadata_id, UUID)
     assert isinstance(metadata.created_at, datetime)
     assert isinstance(metadata.updated_at, datetime)
     assert metadata.deleted_at is None

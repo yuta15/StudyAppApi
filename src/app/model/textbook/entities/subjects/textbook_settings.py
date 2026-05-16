@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 from typing import Self
-from uuid import UUID, uuid4
+from uuid import UUID
 
 from src.app.model.shared.validation import validate_value_type
 
@@ -10,7 +10,6 @@ class TextbookSettings:
     """教材の公開設定を管理する。"""
 
     textbook_id: UUID
-    textbook_settings_id: UUID
     is_public: bool = True
 
     @classmethod
@@ -19,7 +18,6 @@ class TextbookSettings:
         validate_value_type(value=textbook_id, valid_type=UUID)
         return cls(
             textbook_id=textbook_id,
-            textbook_settings_id=uuid4(),
         )
 
     def set_is_public(self, is_public: bool) -> None:

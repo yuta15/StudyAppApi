@@ -9,7 +9,6 @@ def test_update_settings_success_updates_changed_is_public(textbook_settings, te
     """公開状態に変更がある場合、設定とmetadataが更新されること。"""
     # Arrange
     updated_at = textbook_metadata.updated_at
-    expected_textbook_settings_id = textbook_settings.textbook_settings_id
     expected_textbook_id = textbook_settings.textbook_id
 
     # Act
@@ -22,7 +21,6 @@ def test_update_settings_success_updates_changed_is_public(textbook_settings, te
     # Assert
     assert is_changed
     assert textbook_settings.is_public is False
-    assert textbook_settings.textbook_settings_id == expected_textbook_settings_id
     assert textbook_settings.textbook_id == expected_textbook_id
     assert textbook_metadata.updated_at != updated_at
 
@@ -43,7 +41,6 @@ def test_update_settings_success_no_change(textbook_settings, textbook_metadata,
     }[case]
     is_public = textbook_settings.is_public
     updated_at = textbook_metadata.updated_at
-    expected_textbook_settings_id = textbook_settings.textbook_settings_id
     expected_textbook_id = textbook_settings.textbook_id
 
     # Act
@@ -56,7 +53,6 @@ def test_update_settings_success_no_change(textbook_settings, textbook_metadata,
     # Assert
     assert not is_changed
     assert textbook_settings.is_public is is_public
-    assert textbook_settings.textbook_settings_id == expected_textbook_settings_id
     assert textbook_settings.textbook_id == expected_textbook_id
     assert textbook_metadata.updated_at == updated_at
 
@@ -71,7 +67,6 @@ def test_update_settings_failure_invalid_is_public_type(textbook_settings, textb
     # Arrange
     current_is_public = textbook_settings.is_public
     updated_at = textbook_metadata.updated_at
-    expected_textbook_settings_id = textbook_settings.textbook_settings_id
     expected_textbook_id = textbook_settings.textbook_id
 
     # Assert
@@ -82,6 +77,5 @@ def test_update_settings_failure_invalid_is_public_type(textbook_settings, textb
             is_public=is_public,
         )
     assert textbook_settings.is_public is current_is_public
-    assert textbook_settings.textbook_settings_id == expected_textbook_settings_id
     assert textbook_settings.textbook_id == expected_textbook_id
     assert textbook_metadata.updated_at == updated_at

@@ -11,7 +11,7 @@ class Chapter:
     """教材の章タイトルとMarkdown形式の本文を管理する。"""
 
     chapter_id: UUID
-    title: TitleString | None = None
+    title: TitleString
     content: str = ""
 
     @classmethod

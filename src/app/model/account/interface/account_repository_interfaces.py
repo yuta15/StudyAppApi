@@ -48,3 +48,6 @@ class AccountIdentityRepositoryInterface(ABC):
 
     @abstractmethod
     def get(self, principal_id: UUID) -> AccountIdentity: ...
+
+    @abstractmethod
+    def delete(self, principal_id: UUID) -> None: ...

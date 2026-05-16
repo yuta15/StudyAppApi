@@ -13,7 +13,6 @@ def test_from_active_success(active_account_data):
     assert active_account_data.profile.email == EmailStrings(f"{MASK_VALUE}@{MASK_VALUE}")
     assert active_account_data.profile.display_name == MASK_VALUE
     assert not active_account_data.basic_settings.is_public
-    assert active_account_data.identity.subject == MASK_VALUE
 
 
 def test_from_suspended_success(suspended_account_data):
@@ -24,7 +23,6 @@ def test_from_suspended_success(suspended_account_data):
     assert suspended_account_data.profile.email == EmailStrings(f"{MASK_VALUE}@{MASK_VALUE}")
     assert suspended_account_data.profile.display_name == MASK_VALUE
     assert not suspended_account_data.basic_settings.is_public
-    assert suspended_account_data.identity.subject == MASK_VALUE
 
 
 def test_from_deleted_failure(deleted_account_data):

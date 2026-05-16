@@ -27,11 +27,6 @@ def account_principal_id():
 
 
 @pytest.fixture
-def metadata_id():
-    return UUID(const.metadata_id)
-
-
-@pytest.fixture
 def identity_provider():
     return AllowedIdentityProvider.FIREBASE
 
@@ -83,11 +78,9 @@ def basic_settings_generator(account_principal_id):
 
 
 @pytest.fixture
-def metadata_generator(account_principal_id, metadata_id):
+def metadata_generator(account_principal_id):
     def generator():
-        metadata = AccountMetadata.new(account_principal_id)
-        metadata.metadata_id = metadata_id
-        return metadata
+        return AccountMetadata.new(account_principal_id)
 
     return generator
 

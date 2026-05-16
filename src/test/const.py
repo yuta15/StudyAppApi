@@ -1,6 +1,5 @@
 # Account
 account_principal_id = "58729a25-71fb-4aee-af0f-6b901220c989"
-metadata_id = "d51b2dfd-207f-48e7-91b8-897314725d04"
 account_name = "test_account_name"
 display_name = "test_display_name"
 name = "test_name"
@@ -10,8 +9,6 @@ identity_subject = "f14f286d-ccbc-4da7-a5bd-c647e8e03e26"
 # textbook
 textbook_id = "9c284de8-f1d8-487b-96c9-3e338e94a4d9"
 textbook_title = 'Python & AI <Basics> "DDD" O\'Reilly #1: A/B'
-textbook_settings_id = "7870db94-2b1b-4fb5-81cd-74fe2979009d"
-textbook_metadata_id = "54d15551-206f-46c9-994e-eb25f781d72b"
 textbook_second_author_id = "63f0ce9a-c86f-4e77-94b6-c6c49e4332ff"
 textbook_second_author_account_name = "second_author"
 textbook_third_author_id = "bc2ed47a-a507-43e8-abfe-7b54cc0134bc"
