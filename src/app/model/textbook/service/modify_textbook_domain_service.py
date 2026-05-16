@@ -48,8 +48,8 @@ class ModifyTextbookDomainService:
         textbook: Textbook,
         metadata: TextbookMetadata,
         chapter_id: UUID,
-    ) -> bool:
-        """Textbookから登録済みの章IDを削除し、削除できた場合のみmetadataを更新する。"""
+    ) -> None:
+        """Textbookから登録済みの章IDを削除し、metadataを更新する。"""
         validate_value_type(value=chapter_id, valid_type=UUID)
         if chapter_id not in textbook.chapter_ids:
             raise DomainError("Chapter is not registered")
@@ -60,7 +60,6 @@ class ModifyTextbookDomainService:
                 chapter_ids.append(registered_id)
         textbook.set_chapters(chapter_ids=chapter_ids)
         metadata.update()
-        return True
 
     @staticmethod
     def reorder_chapters(
@@ -83,15 +82,13 @@ class ModifyTextbookDomainService:
         return True
 
     @staticmethod
-    def add_author(textbook: Textbook, metadata: TextbookMetadata, author_id: UUID) -> bool:
-        """著者を追加し、追加できた場合のみmetadataを更新する。"""
+    def add_author(textbook: Textbook, metadata: TextbookMetadata, author_id: UUID) -> None:
+        """著者を追加し、metadataを更新する。"""
         textbook.add_author(author_id=author_id)
         metadata.update()
-        return True
 
     @staticmethod
-    def remove_author(textbook: Textbook, metadata: TextbookMetadata, author_id: UUID) -> bool:
-        """著者を削除し、削除できた場合のみmetadataを更新する。"""
+    def remove_author(textbook: Textbook, metadata: TextbookMetadata, author_id: UUID) -> None:
+        """著者を削除し、metadataを更新する。"""
         textbook.remove_author(author_id=author_id)
         metadata.update()
-        return True

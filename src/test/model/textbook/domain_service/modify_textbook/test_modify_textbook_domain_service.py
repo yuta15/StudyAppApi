@@ -190,14 +190,13 @@ def test_remove_chapter_success_removes_existing_chapter_id(
     updated_at = textbook_metadata.updated_at
 
     # Act
-    is_removed = ModifyTextbookDomainService.remove_chapter(
+    ModifyTextbookDomainService.remove_chapter(
         textbook=textbook,
         metadata=textbook_metadata,
         chapter_id=chapter_id,
     )
 
     # Assert
-    assert is_removed
     assert textbook.chapter_ids == [another_chapter_id]
     assert textbook_metadata.updated_at != updated_at
 
@@ -213,14 +212,13 @@ def test_remove_chapter_success_allows_removing_last_chapter(
     updated_at = textbook_metadata.updated_at
 
     # Act
-    is_removed = ModifyTextbookDomainService.remove_chapter(
+    ModifyTextbookDomainService.remove_chapter(
         textbook=textbook,
         metadata=textbook_metadata,
         chapter_id=chapter_id,
     )
 
     # Assert
-    assert is_removed
     assert textbook.chapter_ids == []
     assert textbook_metadata.updated_at != updated_at
 
@@ -339,14 +337,13 @@ def test_add_author_success_adds_unregistered_author(textbook, textbook_metadata
     updated_at = textbook_metadata.updated_at
 
     # Act
-    is_changed = ModifyTextbookDomainService.add_author(
+    ModifyTextbookDomainService.add_author(
         textbook=textbook,
         metadata=textbook_metadata,
         author_id=second_author_id,
     )
 
     # Assert
-    assert is_changed
     assert textbook.author_ids == [*author_ids, second_author_id]
     assert textbook.chapter_ids == expected_chapter_ids
     assert textbook_metadata.updated_at != updated_at
@@ -382,14 +379,13 @@ def test_remove_author_success_removes_registered_author(
     updated_at = textbook_metadata.updated_at
 
     # Act
-    is_changed = ModifyTextbookDomainService.remove_author(
+    ModifyTextbookDomainService.remove_author(
         textbook=textbook,
         metadata=textbook_metadata,
         author_id=second_author_id,
     )
 
     # Assert
-    assert is_changed
     assert textbook.author_ids == [account_principal_id]
     assert textbook.chapter_ids == expected_chapter_ids
     assert textbook_metadata.updated_at != updated_at

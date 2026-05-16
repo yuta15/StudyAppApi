@@ -1,22 +1,10 @@
-from sqlmodel import Session
-
-from src.app.usecase.textbook.dto import ModifyTextbookDTO, OutputTextbookModified, OutputTextbookMetadata
-from src.app.service.authorization_service.textbook import TextbookAuthService
-from src.app.service.authorization_service.account import AccountAuthService
-
-from src.app.usecase.textbook.dependencies import ModifyTextbookDependencies
 from src.app.model.textbook.service import ModifyTextbookDomainService
+from src.app.usecase.textbook.dependencies import ModifyTextbookDependencies
+from src.app.usecase.textbook.dto import ModifyTextbookDTO, OutputTextbookModified, OutputTextbookMetadata
+from src.app.usecase.textbook.textbook_usecase_base import TextbookUsecaseBase
 
 
-class ModifyTextbookUsecase:
-    def __init__(self, session: Session, dependencies: ModifyTextbookDependencies):
-        self._session = session
-        self._dependencies = dependencies
-        self._textbook_auth = TextbookAuthService(
-            account_auth_service=AccountAuthService(repository=dependencies.account_auth_read),
-            repository=dependencies.textbook_auth_read,
-        )
-
+class ModifyTextbookUsecase(TextbookUsecaseBase[ModifyTextbookDependencies]):
     def exec(self, modify_textbook_dto: ModifyTextbookDTO) -> OutputTextbookModified:
         with self._session.begin():
             self._textbook_auth.auth_manage(
