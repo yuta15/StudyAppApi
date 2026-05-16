@@ -9,7 +9,7 @@ dependencies = [
     "argon2-cffi>=25.1.0",
     "fastapi[standard]>=0.135.1",
     "pre-commit>=4.5.1",
-    "psycopg>=3.3.3",
+    "psycopg[binary]>=3.3.3",
     "pyaml>=26.2.1",
     "pydantic>=2.12.5",
     "pydantic-settings>=2.13.1",
@@ -27,6 +27,9 @@ include = [
     "src/app/**/*.py",
     "src/test/**/*.py",
 ]
+extend-exclude = [
+    "alembic",
+]
 force-exclude = true
 
 [tool.ruff.lint]
@@ -36,4 +39,3 @@ select = [
     "E9",
     "F",
 ]
-ignore = []
