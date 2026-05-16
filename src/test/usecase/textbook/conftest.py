@@ -36,16 +36,6 @@ def textbook_id():
 
 
 @pytest.fixture
-def textbook_metadata_id():
-    return UUID(const.textbook_metadata_id)
-
-
-@pytest.fixture
-def textbook_settings_id():
-    return UUID(const.textbook_settings_id)
-
-
-@pytest.fixture
 def second_author_id():
     return UUID(const.textbook_second_author_id)
 
@@ -74,21 +64,19 @@ def textbook(account_principal_id, textbook_id, textbook_title, chapter_id):
 
 
 @pytest.fixture
-def textbook_metadata(textbook_id, textbook_metadata_id):
+def textbook_metadata(textbook_id):
     utc_now = datetime(2026, 1, 1, tzinfo=timezone.utc)
     return TextbookMetadata(
         textbook_id=textbook_id,
-        metadata_id=textbook_metadata_id,
         created_at=utc_now,
         updated_at=utc_now,
     )
 
 
 @pytest.fixture
-def textbook_settings(textbook_id, textbook_settings_id):
+def textbook_settings(textbook_id):
     return TextbookSettings(
         textbook_id=textbook_id,
-        textbook_settings_id=textbook_settings_id,
     )
 
 

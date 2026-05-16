@@ -17,9 +17,13 @@ class TextbookStatus(Enum):
 class TitleString:
     """教材ドメインで利用するタイトル文字列を表す。"""
 
+    MAX_LENGTH = 128
+
     value: str
 
     def __post_init__(self) -> None:
         validate_value_type(value=self.value, valid_type=str)
         if self.value == "" or self.value != self.value.strip():
             raise ValueError("title must not be blank or contain surrounding whitespace")
+        if len(self.value) > self.MAX_LENGTH:
+            raise ValueError(f"title must be {self.MAX_LENGTH} characters or fewer")

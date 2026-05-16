@@ -14,6 +14,7 @@ INVALID_TITLE_IDS = [
     "leading_space",
     "trailing_space",
     "surrounding_space",
+    "too_long",
 ]
 
 
@@ -22,8 +23,9 @@ INVALID_TITLE_IDS = [
     [
         "Python Textbook",
         'Python & AI <Basics> "DDD" O\'Reilly #1: A/B',
+        "a" * 128,
     ],
-    ids=["plain", "special_characters"],
+    ids=["plain", "special_characters", "max_length"],
 )
 def test_title_string_success_creates_value(title):
     """有効な文字列からタイトル値を作成できること。"""
@@ -36,7 +38,7 @@ def test_title_string_success_creates_value(title):
 
 @pytest.mark.parametrize(
     "title",
-    [None, 1, "", " ", "   ", "\t", "\n", " Python", "Python ", " Python "],
+    [None, 1, "", " ", "   ", "\t", "\n", " Python", "Python ", " Python ", "a" * 129],
     ids=INVALID_TITLE_IDS,
 )
 def test_title_string_failure_invalid_value(title):

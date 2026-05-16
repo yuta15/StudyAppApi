@@ -13,5 +13,5 @@ def chapter(chapter_id, chapter_title, chapter_content):
 
 
 @pytest.fixture
-def empty_chapter(chapter_id):
-    return Chapter(chapter_id=chapter_id)
+def empty_content_chapter(chapter_id, chapter_title):
+    return Chapter(chapter_id=chapter_id, title=chapter_title)

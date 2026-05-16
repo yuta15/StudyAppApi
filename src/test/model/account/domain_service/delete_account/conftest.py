@@ -9,14 +9,12 @@ def active_account_data(
     metadata_generator,
     profile_generator,
     basic_settings_generator,
-    identity_generator,
 ):
     return DeleteAccountData(
         account=account_generator(),
         metadata=metadata_generator(),
         profile=profile_generator(),
         basic_settings=basic_settings_generator(),
-        identity=identity_generator(),
     )
 
 
@@ -26,14 +24,12 @@ def suspended_account_data(
     updated_metadata,
     profile_generator,
     basic_settings_generator,
-    identity_generator,
 ):
     return DeleteAccountData(
         account=suspend_account,
         metadata=updated_metadata,
         profile=profile_generator(),
         basic_settings=basic_settings_generator(),
-        identity=identity_generator(),
     )
 
 
@@ -43,12 +39,10 @@ def deleted_account_data(
     deleted_metadata,
     profile_generator,
     basic_settings_generator,
-    identity_generator,
 ):
     return DeleteAccountData(
         account=deleted_account,
         metadata=deleted_metadata,
         profile=profile_generator(),
         basic_settings=basic_settings_generator(),
-        identity=identity_generator(),
     )

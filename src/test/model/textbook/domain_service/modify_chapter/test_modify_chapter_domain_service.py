@@ -39,38 +39,27 @@ def test_update_chapter_success_updates_changed_values(
     assert textbook_metadata.updated_at != updated_at
 
 
-@pytest.mark.parametrize(
-    ("title", "content"),
-    [
-        (TitleString("Advanced Python"), None),
-        (None, "# Advanced\n\n- Python typing"),
-        (TitleString("Advanced Python"), "# Advanced\n\n- Python typing"),
-    ],
-    ids=["title", "content", "title_and_content"],
-)
-def test_update_chapter_success_updates_unset_values(
-    empty_chapter,
+def test_update_chapter_success_updates_empty_content(
+    empty_content_chapter,
     textbook_metadata,
-    title,
-    content,
 ):
-    """未設定のタイトルまたは初期本文に値を渡した場合、対象項目とmetadataが更新されること。"""
+    """本文が空のChapterに本文を設定した場合、本文とmetadataが更新されること。"""
     # Arrange
+    content = "# Advanced\n\n- Python typing"
+    title = empty_content_chapter.title
     updated_at = textbook_metadata.updated_at
-    expected_content = empty_chapter.content if content is None else content
 
     # Act
     is_changed = ModifyChapterDomainService.update_chapter(
-        chapter=empty_chapter,
+        chapter=empty_content_chapter,
         metadata=textbook_metadata,
-        title=title,
         content=content,
     )
 
     # Assert
     assert is_changed
-    assert empty_chapter.title == title
-    assert empty_chapter.content == expected_content
+    assert empty_content_chapter.title == title
+    assert empty_content_chapter.content == content
     assert textbook_metadata.updated_at != updated_at
 
 
@@ -84,14 +73,14 @@ def test_update_chapter_success_updates_unset_values(
         "same_title_and_content",
     ],
 )
-def test_update_chapter_success_no_change(chapter, empty_chapter, textbook_metadata, case):
+def test_update_chapter_success_no_change(chapter, empty_content_chapter, textbook_metadata, case):
     """Chapterに実際の変更がない場合、metadataが更新されずFalseが返ること。"""
     # Arrange
     target_chapter, values = {
         "no_values": (chapter, {}),
         "same_title": (chapter, {"title": chapter.title}),
         "same_content": (chapter, {"content": chapter.content}),
-        "same_empty_content": (empty_chapter, {"content": ""}),
+        "same_empty_content": (empty_content_chapter, {"content": ""}),
         "same_title_and_content": (
             chapter,
             {

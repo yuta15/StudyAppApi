@@ -119,9 +119,3 @@ def test_identity_new(account_principal_id, provider, subject):
 def test_identity_new_failure(account_principal_id, provider, subject):
     with pytest.raises(Exception):
         AccountIdentity.new(principal_id=account_principal_id, subject=subject, provider=provider)
-
-
-def test_indeity_delete(identity_generator):
-    identity = identity_generator()
-    identity.delete()
-    assert identity.subject == "XXXXXXXXXX"

@@ -28,4 +28,7 @@ jobs:
         shell: bash
         run: |-
           uv run pytest -svv
-      
+
+# Docker Imageをビルドする
+# Docker Imageからコンテナを起動
+# Docker Imageの簡単なテストをする。

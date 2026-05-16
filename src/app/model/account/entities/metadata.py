@@ -1,13 +1,12 @@
 from datetime import datetime, timezone
 from dataclasses import dataclass
 from typing import Self
-from uuid import uuid4, UUID
+from uuid import UUID
 
 
 @dataclass
 class AccountMetadata:
     principal_id: UUID
-    metadata_id: UUID
     created_at: datetime
     updated_at: datetime
     deleted_at: datetime | None = None
@@ -17,7 +16,6 @@ class AccountMetadata:
         utc_now = datetime.now(timezone.utc)
         return AccountMetadata(
             principal_id=principal_id,
-            metadata_id=uuid4(),
             created_at=utc_now,
             updated_at=utc_now,
         )

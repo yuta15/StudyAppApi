@@ -115,6 +115,7 @@ class TestAccountIdentityInterface(AccountIdentityRepositoryInterface):
         self.return_principal_identity = return_principal_identity
         self.input_identity = None
         self.input_principal_id = None
+        self.input_delete_principal_id = None
 
     def save(self, identity: AccountIdentity) -> AccountIdentity:
         self.input_identity = identity
@@ -128,6 +129,11 @@ class TestAccountIdentityInterface(AccountIdentityRepositoryInterface):
         if self.is_negative:
             raise TestException()
         return self.return_principal_identity
+
+    def delete(self, principal_id: UUID) -> None:
+        self.input_delete_principal_id = principal_id
+        if self.is_negative:
+            raise TestException()
 
 
 class TestAccountAuthReadInterface(AccountAuthReadInterface):

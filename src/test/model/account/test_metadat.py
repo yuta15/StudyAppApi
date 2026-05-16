@@ -1,5 +1,4 @@
 from datetime import datetime
-from uuid import UUID
 
 from src.app.model.account import AccountMetadata
 
@@ -7,7 +6,6 @@ from src.app.model.account import AccountMetadata
 def test_account_metadata_new(account_principal_id):
     metadata = AccountMetadata.new(principal_id=account_principal_id)
     assert metadata.principal_id == account_principal_id
-    assert isinstance(metadata.metadata_id, UUID)
     assert isinstance(metadata.created_at, datetime)
     assert isinstance(metadata.updated_at, datetime)
     assert metadata.deleted_at is None
