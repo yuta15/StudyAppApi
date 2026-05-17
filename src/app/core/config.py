@@ -9,6 +9,8 @@ class Config(BaseSettings):
     DB_HOST: str
     DB_PORT: int
     DB_NAME: str
+    FIREBASE_AUTH_EMULATOR_HOST: str | None
+    FIREBASE_PROJECT_ID: str
 
     @property
     def DB_URL(self) -> str:

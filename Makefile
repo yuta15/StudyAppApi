@@ -1,9 +1,9 @@
 COMPOSE_DEV = docker compose --env-file .env -f infra/compose.dev.yaml
 
-db-up:
+container-up:
 	$(COMPOSE_DEV) up -d
 
-db-down:
+container-down:
 	$(COMPOSE_DEV) down
 
 db-ps:
@@ -46,3 +46,7 @@ unit-test:
 
 integration-test:
 	$(PYTEST) -svv src/test/integration
+
+
+dev:
+	uv run --env-file .env fastapi dev src/app/main.py

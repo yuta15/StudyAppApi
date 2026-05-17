@@ -13,13 +13,13 @@ class CreateTextbookDTO:
 
 @dataclass
 class TextbookDTO:
-    principal_id: UUID
+    principal_id: UUID | None
     textbook_id: UUID
 
 
 @dataclass
 class GetChapterDTO:
-    principal_id: UUID
+    principal_id: UUID | None
     textbook_id: UUID
     chapter_id: UUID
 
