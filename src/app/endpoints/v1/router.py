@@ -6,7 +6,7 @@ from src.app.endpoints.v1.textbook.textbook_settings import textbook_settings_ro
 from src.app.endpoints.v1.textbook.chapter import chapter_router
 
 
-v1_router = APIRouter()
+v1_router = APIRouter(prefix="/v1")
 
 v1_router.include_router(account_router)
 v1_router.include_router(textbook_router)
