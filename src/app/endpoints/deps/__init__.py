@@ -14,6 +14,7 @@ from src.app.endpoints.deps.textbook import (
     get_modify_chapter_dependencies,
     get_modify_textbook_dependencies,
     get_modify_textbook_settings_dependencies,
+    get_get_chapter_dependencies,
 )
 
 __all__ = [
@@ -30,5 +31,6 @@ __all__ = [
     "get_modify_textbook_dependencies",
     "get_modify_textbook_settings_dependencies",
     "get_optional_principal_id",
+    "get_get_chapter_dependencies",
     "get_session",
 ]

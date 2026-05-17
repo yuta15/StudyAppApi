@@ -9,10 +9,14 @@ from src.app.endpoints.deps import (
     get_modify_textbook_settings_dependencies,
     get_session,
 )
-from src.app.schemas.api.textbook import ModifyTextbookSettingsInput
-from src.app.usecase.textbook import ModifyTextbookSettingsUsecase
+from src.app.schemas.api.textbook import (
+    ModifyTextbookSettingsInput,
+    TextbookSettingsOutput,
+    TextbookSettingsValueOutput,
+)
+from src.app.usecase.textbook import ModifyTextbookSettingsUsecase, GetTextbookSettingsUsecase
 from src.app.usecase.textbook.dependencies import ModifyTextbookSettingsDependencies
-from src.app.usecase.textbook.dto import ModifyTextbookSettingsDTO
+from src.app.usecase.textbook.dto import ModifyTextbookSettingsDTO, TextbookDTO
 
 
 textbook_settings_router = APIRouter(prefix="/textbook/{textbook_id}/settings", tags=["textbook-settings"])
@@ -44,3 +48,31 @@ def modify_textbook_settings(
         raise HTTPException(status_code=status.HTTP_503_SERVICE_UNAVAILABLE, detail="Database unavailable.") from e
     except DatabaseError as e:
         raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Database error.") from e
+
+
+@textbook_settings_router.get("")
+def get_textbook_settings(
+    textbook_id: UUID,
+    principal_id: UUID = Depends(get_current_principal_id),
+    session: Session = Depends(get_session),
+    dependencies: ModifyTextbookSettingsDependencies = Depends(get_modify_textbook_settings_dependencies),
+) -> TextbookSettingsOutput:
+    try:
+        usecase = GetTextbookSettingsUsecase(session=session, dependencies=dependencies)
+        dto = TextbookDTO(principal_id=principal_id, textbook_id=textbook_id)
+        textbook_settings = usecase.exec(textbook_dto=dto)
+    except UnauthorizedError as e:
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Unauthorized.") from e
+    except DataNotFoundError as e:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Textbook settings not found.") from e
+    except InvalidDataError as e:
+        raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="Invalid textbook settings data.") from e
+    except NetworkError as e:
+        raise HTTPException(status_code=status.HTTP_503_SERVICE_UNAVAILABLE, detail="Database unavailable.") from e
+    except DatabaseError as e:
+        raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Database error.") from e
+
+    return TextbookSettingsOutput(
+        textbook_id=textbook_settings.textbook_id,
+        settings=TextbookSettingsValueOutput(is_public=textbook_settings.settings.is_public),
+    )

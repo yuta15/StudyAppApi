@@ -17,6 +17,7 @@ from src.app.endpoints.deps import (
     get_current_principal_id,
     get_modify_chapter_dependencies,
     get_modify_textbook_dependencies,
+    get_get_chapter_dependencies,
     get_session,
 )
 from src.app.model.textbook import TitleString
@@ -25,23 +26,27 @@ from src.app.schemas.api.textbook import (
     AddChapterOutput,
     ModifyChapterInput,
     ReorderChaptersInput,
+    ChapterOutput,
 )
 from src.app.usecase.textbook import (
     AddChapterUsecase,
     ModifyChapterUsecase,
     RemoveChapterUsecase,
     ReorderChaptersUsecase,
+    GetChapterUsecase,
 )
 from src.app.usecase.textbook.dependencies import (
     AddChapterDependencies,
     ModifyChapterDependencies,
     ModifyTextbookDependencies,
+    GetChapterDependencies,
 )
 from src.app.usecase.textbook.dto import (
     AddChapterDTO,
     ModifyChapterDTO,
     RemoveChapterDTO,
     ReorderChaptersDTO,
+    GetChapterDTO,
 )
 
 
@@ -89,11 +94,7 @@ def reorder_chapters(
     dependencies: ModifyTextbookDependencies = Depends(get_modify_textbook_dependencies),
 ) -> None:
     try:
-        dto = ReorderChaptersDTO(
-            principal_id=principal_id,
-            textbook_id=textbook_id,
-            chapter_ids=input.chapter_ids,
-        )
+        dto = ReorderChaptersDTO(principal_id=principal_id, textbook_id=textbook_id, chapter_ids=input.chapter_ids)
         usecase = ReorderChaptersUsecase(session=session, dependencies=dependencies)
         usecase.exec(reorder_chapters_dto=dto)
     except DomainError as e:
@@ -171,3 +172,32 @@ def remove_chapter(
         raise HTTPException(status_code=status.HTTP_503_SERVICE_UNAVAILABLE, detail="Database unavailable.") from e
     except DatabaseError as e:
         raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Database error.") from e
+
+
+@chapter_router.get("/{chapter_id}")
+def get_chapter(
+    textbook_id: UUID,
+    chapter_id: UUID,
+    principal_id: UUID = Depends(get_current_principal_id),
+    session: Session = Depends(get_session),
+    dependencies: GetChapterDependencies = Depends(get_get_chapter_dependencies),
+) -> ChapterOutput:
+    try:
+        dto = GetChapterDTO(principal_id=principal_id, textbook_id=textbook_id, chapter_id=chapter_id)
+        usecase = GetChapterUsecase(session=session, dependencies=dependencies)
+        chapter = usecase.exec(remove_chapter_dto=dto)
+
+    except DomainError as e:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(e)) from e
+    except UnauthorizedError as e:
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Unauthorized.") from e
+    except DataNotFoundError as e:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Textbook not found.") from e
+    except InvalidDataError as e:
+        raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="Invalid chapter data.") from e
+    except NetworkError as e:
+        raise HTTPException(status_code=status.HTTP_503_SERVICE_UNAVAILABLE, detail="Database unavailable.") from e
+    except DatabaseError as e:
+        raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Database error.") from e
+
+    return ChapterOutput(chapter_id=chapter.chapter_id, title=chapter.title, content=chapter.content)

@@ -162,24 +162,30 @@ def delete_textbook(
 
 
 def _to_textbook_output(output: ReadTextbookDetailsModel) -> TextbookOutput:
-    return TextbookOutput(
-        textbook_id=output.textbook_id,
-        title=output.title.value,
-        status=output.status,
-        authors=[
+    authors = []
+    for author in output.authors:
+        authors.append(
             MinimalAccountOutput(
                 principal_id=author.principal_id,
                 account_name=author.account_name.value,
             )
-            for author in output.authors
-        ],
-        chapters=[
+        )
+
+    chapters = []
+    for chapter in output.chapters:
+        chapters.append(
             MinimalChapterOutput(
                 chapter_id=chapter.chapter_id,
                 title=chapter.title.value,
             )
-            for chapter in output.chapters
-        ],
+        )
+
+    return TextbookOutput(
+        textbook_id=output.textbook_id,
+        title=output.title.value,
+        status=output.status,
+        authors=authors,
+        chapters=chapters,
         metadata=TextbookMetadataOutput(
             created_at=output.metadata.created_at,
             updated_at=output.metadata.updated_at,
