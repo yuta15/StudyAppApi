@@ -15,6 +15,12 @@ from src.app.model.textbook.service.modify_textbook_settings_domain_service impo
     ModifyTextbookSettingsDomainService,
 )
 from src.app.model.textbook.service.modify_textbook_domain_service import ModifyTextbookDomainService
+from src.app.model.textbook.interface.textbook_repository_interfaces import (
+    ChapterRepositoryInterface,
+    TextbookRepositoryInterface,
+    TextbookMetadataRepositoryInterface,
+    TextbookSettingsRepositoryInterface,
+)
 
 
 __all__ = [
@@ -32,4 +38,8 @@ __all__ = [
     "ModifyChapterDomainService",
     "ModifyTextbookSettingsDomainService",
     "ModifyTextbookDomainService",
+    "ChapterRepositoryInterface",
+    "TextbookRepositoryInterface",
+    "TextbookMetadataRepositoryInterface",
+    "TextbookSettingsRepositoryInterface",
 ]

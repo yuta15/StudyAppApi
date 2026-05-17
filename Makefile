@@ -39,3 +39,10 @@ migration-current:
 migration-history:
 	$(ALEMBIC_DEV) history
 
+
+PYTEST = uv run pytest --env-file .env 
+unit-test:
+	$(PYTEST) -svv
+
+integration-test:
+	$(PYTEST) -svv src/test/integration

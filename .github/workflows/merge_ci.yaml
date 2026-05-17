@@ -5,30 +5,164 @@ on:
     branches:
       - main
 
-jobs:
-  ci:
-    runs-on: ubuntu-latest
+env:
+  DB_ADMIN_USER: ${{ secrets.DEV_DB_ADMIN_USER }}
+  DB_ADMIN_PASSWORD: ${{ secrets.DEV_DB_ADMIN_PASSWORD }}
+  DB_NAME: ${{ secrets.DEV_DB_NAME }}
+  DB_MIGRATION_USER: ${{ secrets.DEV_DB_MIGRATION_USER }}
+  DB_MIGRATION_PASSWORD: ${{ secrets.DEV_DB_MIGRATION_PASSWORD }}
+  DB_APP_USER: ${{ secrets.DEV_DB_APP_USER }}
+  DB_APP_PASSWORD: ${{ secrets.DEV_DB_APP_PASSWORD}}
+  DB_HOST: "localhost"
+  DB_PORT: 5432
 
+jobs:
+  lint:
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
+
       - name: install uv
         uses: astral-sh/setup-uv@v8.1.0
+
       - name: install dependencies
         shell: bash
         run: |-
           set -euo pipefail
           uv sync --locked
+
       - name: run lint
         shell: bash
         run: uv run ruff check
+
       - name: run format
         shell: bash
         run: uv run ruff format --check
-      - name: run test
+
+
+  unit_test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: install uv
+        uses: astral-sh/setup-uv@v8.1.0
+
+      - name: install dependencies
+        shell: bash
+        run: |-
+          set -euo pipefail
+          uv sync --locked
+
+      - name: run unit test
         shell: bash
         run: |-
           uv run pytest -svv
 
-# Docker Imageをビルドする
-# Docker Imageからコンテナを起動
-# Docker Imageの簡単なテストをする。
+
+  migration_test:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:17
+        # Provide the password for postgres
+        env:
+          POSTGRES_USER: ${{ env.DB_ADMIN_USER }}
+          POSTGRES_PASSWORD: ${{ env.DB_ADMIN_PASSWORD }}
+          POSTGRES_DB: ${{ env.DB_NAME }}
+          DB_MIGRATION_USER: ${{ env.DB_MIGRATION_USER }}
+          DB_MIGRATION_PASSWORD: ${{ env.DB_MIGRATION_PASSWORD }}
+          DB_APP_USER: ${{ env.DB_APP_USER }}
+          DB_APP_PASSWORD: ${{ env.DB_APP_PASSWORD }}
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          # Maps tcp port 5432 on service container to the host
+          - 5432:5432
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: install uv
+        uses: astral-sh/setup-uv@v8.1.0
+
+      - name: run db initialize
+        shell: bash
+        run: |-
+          export PGPASSWORD="${{ env.DB_ADMIN_PASSWORD }}"
+          psql \
+            -v ON_ERROR_STOP=1 \
+            -v POSTGRES_DB="$DB_NAME" \
+            -v DB_MIGRATION_USER="$DB_MIGRATION_USER" \
+            -v DB_MIGRATION_PASSWORD="$DB_MIGRATION_PASSWORD" \
+            -v DB_APP_USER="$DB_APP_USER" \
+            -v DB_APP_PASSWORD="$DB_APP_PASSWORD" \
+            -h "$DB_HOST" \
+            -p "$DB_PORT" \
+            -U "$DB_ADMIN_USER" \
+            -d "$DB_NAME" \
+            -f infra/db/init/sql/initialize.sql
+
+      - name: run migration
+        shell: bash
+        run: |-
+          uv run alembic upgrade head
+          uv run alembic downgrade -1
+
+
+  integration_test:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:17
+        # Provide the password for postgres
+        env:
+          POSTGRES_USER: ${{ env.DB_ADMIN_USER }}
+          POSTGRES_PASSWORD: ${{ env.DB_ADMIN_PASSWORD }}
+          POSTGRES_DB: ${{ env.DB_NAME }}
+          DB_MIGRATION_USER: ${{ env.DB_MIGRATION_USER }}
+          DB_MIGRATION_PASSWORD: ${{ env.DB_MIGRATION_PASSWORD }}
+          DB_APP_USER: ${{ env.DB_APP_USER }}
+          DB_APP_PASSWORD: ${{ env.DB_APP_PASSWORD }}
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          # Maps tcp port 5432 on service container to the host
+          - 5432:5432
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: install uv
+        uses: astral-sh/setup-uv@v8.1.0
+
+      - name: run db initialize
+        shell: bash
+        run: |-
+          export PGPASSWORD="${{ env.DB_ADMIN_PASSWORD }}"
+          psql \
+            -v ON_ERROR_STOP=1 \
+            -v POSTGRES_DB="$DB_NAME" \
+            -v DB_MIGRATION_USER="$DB_MIGRATION_USER" \
+            -v DB_MIGRATION_PASSWORD="$DB_MIGRATION_PASSWORD" \
+            -v DB_APP_USER="$DB_APP_USER" \
+            -v DB_APP_PASSWORD="$DB_APP_PASSWORD" \
+            -h "$DB_HOST" \
+            -p "$DB_PORT" \
+            -U "$DB_ADMIN_USER" \
+            -d "$DB_NAME" \
+            -f infra/db/init/sql/initialize.sql
+
+      - name: initialize db
+        shell: bash
+        run: |-
+          uv run alembic upgrade head
+
+      - name: test integration
+        shell: bash
+        run: |-
+          uv run pytest src/test/integration
