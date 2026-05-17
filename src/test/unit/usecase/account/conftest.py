@@ -10,6 +10,7 @@ from src.app.usecase.account.dto import (
 from src.app.usecase.account.repository import (
     CreateAccountRepositories,
     DeleteAccountRepositories,
+    GetAccountRepositories,
     ModifyAccountRepositories,
 )
 from src.test.unit.usecase.account.repositories import (
@@ -153,6 +154,54 @@ def positive_modify_account_repository(
     return ModifyAccountRepositories(
         account_auth_read=TestAccountAuthReadInterface(auth_result=True),
         account=TestAccountRepositoryInterface(return_account=account_generator()),
+        metadata=TestAccountMetadataInterface(return_account_metadata=metadata_generator()),
+        profile=TestAccountProfileInterface(return_account_profile=profile_generator()),
+        basic_settings=TestAccountBasicSettingsInterface(return_account_basic_settings=basic_settings_generator()),
+    )
+
+
+@pytest.fixture
+def positive_get_account_repositories(
+    account_generator,
+    metadata_generator,
+    profile_generator,
+    basic_settings_generator,
+):
+    return GetAccountRepositories(
+        account_auth_read=TestAccountAuthReadInterface(auth_result=True),
+        account=TestAccountRepositoryInterface(return_account=account_generator()),
+        metadata=TestAccountMetadataInterface(return_account_metadata=metadata_generator()),
+        profile=TestAccountProfileInterface(return_account_profile=profile_generator()),
+        basic_settings=TestAccountBasicSettingsInterface(return_account_basic_settings=basic_settings_generator()),
+    )
+
+
+@pytest.fixture
+def auth_failed_get_account_repositories(
+    account_generator,
+    metadata_generator,
+    profile_generator,
+    basic_settings_generator,
+):
+    return GetAccountRepositories(
+        account_auth_read=TestAccountAuthReadInterface(auth_result=False),
+        account=TestAccountRepositoryInterface(return_account=account_generator()),
+        metadata=TestAccountMetadataInterface(return_account_metadata=metadata_generator()),
+        profile=TestAccountProfileInterface(return_account_profile=profile_generator()),
+        basic_settings=TestAccountBasicSettingsInterface(return_account_basic_settings=basic_settings_generator()),
+    )
+
+
+@pytest.fixture
+def get_failed_get_account_repositories(
+    account_generator,
+    metadata_generator,
+    profile_generator,
+    basic_settings_generator,
+):
+    return GetAccountRepositories(
+        account_auth_read=TestAccountAuthReadInterface(auth_result=True),
+        account=TestAccountRepositoryInterface(return_account=account_generator(), is_negative=True),
         metadata=TestAccountMetadataInterface(return_account_metadata=metadata_generator()),
         profile=TestAccountProfileInterface(return_account_profile=profile_generator()),
         basic_settings=TestAccountBasicSettingsInterface(return_account_basic_settings=basic_settings_generator()),

@@ -30,9 +30,19 @@ class DeleteAccountRepositories:
 
 
 @dataclass
-class ModifyAccountRepositories:
+class AccountReadRepositories:
     account_auth_read: AccountAuthReadInterface
     account: AccountRepositoryInterface
     metadata: AccountMetadataRepositoryInterface
     profile: AccountProfileRepositoryInterface
     basic_settings: AccountBasicSettingsRepositoryInterface
+
+
+@dataclass
+class ModifyAccountRepositories(AccountReadRepositories):
+    pass
+
+
+@dataclass
+class GetAccountRepositories(AccountReadRepositories):
+    pass
