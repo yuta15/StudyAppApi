@@ -4,7 +4,7 @@ from src.app.endpoints.deps.account import (
     get_get_account_repositories,
     get_modify_account_repositories,
 )
-from src.app.endpoints.deps.auth import get_current_principal_id, get_optional_principal_id
+from src.app.endpoints.deps.auth import get_current_principal_id, get_optional_principal_id, get_account_identity
 from src.app.endpoints.deps.db import get_session
 from src.app.endpoints.deps.textbook import (
     get_add_chapter_dependencies,
@@ -15,6 +15,7 @@ from src.app.endpoints.deps.textbook import (
     get_modify_textbook_dependencies,
     get_modify_textbook_settings_dependencies,
     get_get_chapter_dependencies,
+    get_get_textbook_settings_dependencies,
 )
 
 __all__ = [
@@ -33,4 +34,6 @@ __all__ = [
     "get_optional_principal_id",
     "get_get_chapter_dependencies",
     "get_session",
+    "get_account_identity",
+    "get_get_textbook_settings_dependencies",
 ]

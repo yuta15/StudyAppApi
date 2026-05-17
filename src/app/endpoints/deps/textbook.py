@@ -20,6 +20,7 @@ from src.app.usecase.textbook.dependencies import (
     ModifyTextbookDependencies,
     ModifyTextbookSettingsDependencies,
     GetChapterDependencies,
+    GetTextbookSettingsDependencies,
 )
 
 
@@ -84,7 +85,7 @@ def get_get_chapter_dependencies(session: Session = Depends(get_session)) -> Get
     return GetChapterDependencies(
         account_auth_read=AccountAuthReadRepository(session=session),
         textbook_auth_read=TextbookAuthReadRepository(session=session),
-        textbook=TextbookReadRepository(session=session),
+        textbook=TextbookRepository(session=session),
         chapter=ChapterRepository(session=session),
     )
 
@@ -96,5 +97,15 @@ def get_modify_textbook_settings_dependencies(
         account_auth_read=AccountAuthReadRepository(session=session),
         textbook_auth_read=TextbookAuthReadRepository(session=session),
         metadata=TextbookMetadataRepository(session=session),
+        settings=TextbookSettingsRepository(session=session),
+    )
+
+
+def get_get_textbook_settings_dependencies(
+    session: Session = Depends(get_session),
+) -> GetTextbookSettingsDependencies:
+    return GetTextbookSettingsDependencies(
+        account_auth_read=AccountAuthReadRepository(session=session),
+        textbook_auth_read=TextbookAuthReadRepository(session=session),
         settings=TextbookSettingsRepository(session=session),
     )

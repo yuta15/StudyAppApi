@@ -19,7 +19,7 @@ class TextbookDTO:
 
 @dataclass
 class GetChapterDTO:
-    principal_id: UUID
+    principal_id: UUID | None
     textbook_id: UUID
     chapter_id: UUID
 

@@ -7,6 +7,7 @@ from src.app.core.exceptions import DataNotFoundError, DatabaseError, InvalidDat
 from src.app.endpoints.deps import (
     get_current_principal_id,
     get_modify_textbook_settings_dependencies,
+    get_get_textbook_settings_dependencies,
     get_session,
 )
 from src.app.schemas.api.textbook import (
@@ -15,7 +16,7 @@ from src.app.schemas.api.textbook import (
     TextbookSettingsValueOutput,
 )
 from src.app.usecase.textbook import ModifyTextbookSettingsUsecase, GetTextbookSettingsUsecase
-from src.app.usecase.textbook.dependencies import ModifyTextbookSettingsDependencies
+from src.app.usecase.textbook.dependencies import ModifyTextbookSettingsDependencies, GetTextbookSettingsDependencies
 from src.app.usecase.textbook.dto import ModifyTextbookSettingsDTO, TextbookDTO
 
 
@@ -55,7 +56,7 @@ def get_textbook_settings(
     textbook_id: UUID,
     principal_id: UUID = Depends(get_current_principal_id),
     session: Session = Depends(get_session),
-    dependencies: ModifyTextbookSettingsDependencies = Depends(get_modify_textbook_settings_dependencies),
+    dependencies: GetTextbookSettingsDependencies = Depends(get_get_textbook_settings_dependencies),
 ) -> TextbookSettingsOutput:
     try:
         usecase = GetTextbookSettingsUsecase(session=session, dependencies=dependencies)

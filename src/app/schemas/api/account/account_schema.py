@@ -15,6 +15,9 @@ class CreateAccountInput(ApiModel):
     account_name: str
     display_name: str
     email: EmailStr
+
+
+class AccountIdentity(ApiModel):
     subject: str
     provider: AllowedIdentityProvider
 

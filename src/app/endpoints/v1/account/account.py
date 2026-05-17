@@ -11,6 +11,7 @@ from src.app.endpoints.deps import (
     get_get_account_repositories,
     get_modify_account_repositories,
     get_session,
+    get_account_identity,
 )
 from src.app.model.account import AccountNameStrings, EmailStrings
 from src.app.schemas.api.account import (
@@ -41,6 +42,7 @@ from src.app.usecase.account.repository import (
     GetAccountRepositories,
     ModifyAccountRepositories,
 )
+from src.app.service.interface.identity import TokenData
 
 
 account_router = APIRouter(prefix="/account", tags=["account"])
@@ -49,6 +51,7 @@ account_router = APIRouter(prefix="/account", tags=["account"])
 @account_router.post("/create", status_code=status.HTTP_201_CREATED)
 def create_account(
     input: CreateAccountInput,
+    token_data: TokenData = Depends(get_account_identity),
     session: Session = Depends(get_session),
     repositories: CreateAccountRepositories = Depends(get_create_account_repositories),
 ) -> CreateAccountOutput:
@@ -57,8 +60,8 @@ def create_account(
             account_name=AccountNameStrings(value=input.account_name),
             display_name=input.display_name,
             email=EmailStrings(value=str(input.email)),
-            subject=input.subject,
-            provider=input.provider,
+            subject=token_data.subject,
+            provider=token_data.provider,
         )
         usecase = CreateAccountUsecase(session=session, repositories=repositories)
         principal_id = usecase.exec(create_account_dto=dto)

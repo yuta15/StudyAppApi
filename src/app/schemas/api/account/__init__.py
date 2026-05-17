@@ -9,6 +9,7 @@ from src.app.schemas.api.account.account_schema import (
     ModifyAccountBasicSettingsInput,
     ModifyAccountInput,
     ModifyAccountProfileInput,
+    AccountIdentity,
 )
 
 __all__ = [
@@ -22,4 +23,5 @@ __all__ = [
     "ModifyAccountBasicSettingsInput",
     "ModifyAccountInput",
     "ModifyAccountProfileInput",
+    "AccountIdentity",
 ]
