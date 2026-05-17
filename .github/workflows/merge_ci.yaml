@@ -6,13 +6,13 @@ on:
       - main
 
 env:
-  DB_ADMIN_USER: ${{ secrets.DB_ADMIN_USER }}
-  DB_ADMIN_PASSWORD: ${{ secrets.DB_ADMIN_PASSWORD }}
-  DB_NAME: ${{ secrets.DB_NAME }}
-  DB_MIGRATION_USER: ${{ secrets.DB_MIGRATION_USER }}
-  DB_MIGRATION_PASSWORD: ${{ secrets.DB_MIGRATION_PASSWORD }}
-  DB_APP_USER: ${{ secrets.DB_APP_USER }}
-  DB_APP_PASSWORD: ${{ secrets.DB_APP_PASSWORD}}
+  DB_ADMIN_USER: ${{ secrets.DEV_DB_ADMIN_USER }}
+  DB_ADMIN_PASSWORD: ${{ secrets.DEV_DB_ADMIN_PASSWORD }}
+  DB_NAME: ${{ secrets.DEV_DB_NAME }}
+  DB_MIGRATION_USER: ${{ secrets.DEV_DB_MIGRATION_USER }}
+  DB_MIGRATION_PASSWORD: ${{ secrets.DEV_DB_MIGRATION_PASSWORD }}
+  DB_APP_USER: ${{ secrets.DEV_DB_APP_USER }}
+  DB_APP_PASSWORD: ${{ secrets.DEV_DB_APP_PASSWORD}}
   DB_HOST: "localhost"
   DB_PORT: 5432
 
