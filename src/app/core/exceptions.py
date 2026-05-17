@@ -17,3 +17,19 @@ class DomainError(Exception):
 
 class NotFoundError(DomainError):
     """存在しない場合のエラー"""
+
+
+class DatabaseError(Exception):
+    """Database系のエラー"""
+
+
+class DataNotFoundError(Exception):
+    """存在しない場合のエラー"""
+
+
+class InvalidDataError(Exception):
+    """不正な値のエラー"""
+
+
+class NetworkError(Exception):
+    """NW系のエラー"""

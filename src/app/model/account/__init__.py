@@ -22,7 +22,13 @@ from src.app.model.account.service.delete_account_domain_service import (
     DeleteAccountDomainService,
 )
 from src.app.model.account.service.update_subjects_domain_service import UpdateSubjectsDomainService
-
+from src.app.model.account.interface.account_repository_interfaces import (
+    AccountRepositoryInterface,
+    AccountIdentityRepositoryInterface,
+    AccountProfileRepositoryInterface,
+    AccountMetadataRepositoryInterface,
+    AccountBasicSettingsRepositoryInterface,
+)
 
 __all__ = [
     "Account",
@@ -43,4 +49,9 @@ __all__ = [
     "DeleteAccountData",
     "DeleteAccountDomainService",
     "UpdateSubjectsDomainService",
+    "AccountRepositoryInterface",
+    "AccountIdentityRepositoryInterface",
+    "AccountProfileRepositoryInterface",
+    "AccountMetadataRepositoryInterface",
+    "AccountBasicSettingsRepositoryInterface",
 ]

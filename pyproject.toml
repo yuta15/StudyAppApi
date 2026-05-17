@@ -39,3 +39,11 @@ select = [
     "E9",
     "F",
 ]
+
+[tool.pytest.ini_options]
+testpaths = [
+    "src/test/unit",
+]
+markers = [
+    "integration: tests that require a real PostgreSQL database",
+]
