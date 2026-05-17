@@ -84,6 +84,10 @@ jobs:
           - 5432:5432
     steps:
       - uses: actions/checkout@v6
+
+      - name: install uv
+        uses: astral-sh/setup-uv@v8.1.0
+
       - name: run db initialize
         shell: bash
         run: |-
@@ -100,6 +104,7 @@ jobs:
             -U "$DB_ADMIN_USER" \
             -d "$DB_NAME" \
             -f infra/db/init/sql/initialize.sql
+
       - name: run migration
         shell: bash
         run: |-
@@ -131,6 +136,10 @@ jobs:
           - 5432:5432
     steps:
       - uses: actions/checkout@v6
+
+      - name: install uv
+        uses: astral-sh/setup-uv@v8.1.0
+
       - name: run db initialize
         shell: bash
         run: |-
@@ -147,6 +156,7 @@ jobs:
             -U "$DB_ADMIN_USER" \
             -d "$DB_NAME" \
             -f infra/db/init/sql/initialize.sql
+
       - name: initialize db
         shell: bash
         run: |-
