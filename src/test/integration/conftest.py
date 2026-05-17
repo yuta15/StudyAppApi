@@ -7,7 +7,7 @@ from src.app.core.config import Config
 
 @pytest.fixture(scope="session")
 def integration_config() -> Config:
-    return Config(_env_file=".env")
+    return Config()
 
 
 @pytest.fixture(scope="session")
